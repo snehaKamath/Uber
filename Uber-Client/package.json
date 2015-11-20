@@ -1,0 +1,15 @@
+{
+  "name": "Uber-Client",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "start": "node app.js"
+  },
+  "dependencies": {
+    "connect-mongo": "^0.8.2",
+    "ejs": "*",
+    "express": "3.2.6",
+    "express-sessions": "^1.0.5",
+    "mongodb": "^2.0.48"
+  }
+}
