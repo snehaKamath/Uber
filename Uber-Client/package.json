@@ -6,6 +6,7 @@
     "start": "node app.js"
   },
   "dependencies": {
+    "amqp": "^0.2.4",
     "connect-mongo": "^0.8.2",
     "ejs": "*",
     "express": "3.2.6",
