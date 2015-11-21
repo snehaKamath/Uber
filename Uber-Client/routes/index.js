@@ -1,8 +1,12 @@
 
 /*
- * GET home page.
+ * GET Root Page Application
  */
 
-exports.index = function(req, res){
-  res.render('index', { title: 'Express' });
+module.exports = function (app)	{	
+	app.post('/', root);
 };
+
+function root(req, res){
+  res.render('index', { title: 'Express' });
+}

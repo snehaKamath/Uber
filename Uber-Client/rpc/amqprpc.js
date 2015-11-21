@@ -5,9 +5,7 @@ var TIMEOUT=40000; //time to wait for response in ms
 var CONTENT_TYPE='application/json';
 var CONTENT_ENCODING='utf-8';
 var self;
- 
-exports = module.exports = AmqpRpc;
- 
+  
 function AmqpRpc(connection){
   self = this;
   this.connection = connection; 
@@ -59,7 +57,9 @@ AmqpRpc.prototype.setupResponseQueue = function(queue_name,next){
   self = this;
   //create the queue
   
-  var reply_queue= queue_name+"_reply";
+  var reply_queue= queue_name + "_reply";
+  console.log("Reply Queue for " + queue_name + " is " + reply_queue);
+  
   self.response_queue=reply_queue;
   self.connection.queue(reply_queue, function(q){  
 	  
@@ -76,9 +76,11 @@ AmqpRpc.prototype.setupResponseQueue = function(queue_name,next){
         //delete the entry from hash
         delete self.requests[correlationId];
         //callback, no err
-        entry.callback(null, message);
+        entry.callback(message);
       }
     });
     return next();    
   });
 };
+
+exports = module.exports = AmqpRpc;
