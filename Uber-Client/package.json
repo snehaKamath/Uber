@@ -10,6 +10,7 @@
     "connect-mongo": "^0.8.2",
     "ejs": "*",
     "express": "3.2.6",
+    "express-session": "^1.12.1",
     "express-sessions": "^1.0.5",
     "mongodb": "^2.0.48"
   }
