@@ -2,7 +2,7 @@
  * http://usejsdoc.org/
  */
 mysql = require('mysql');
-bcrypt = require('../../bcrypto');
+bcrypt = require('../app_services/bcrypt');
 
 function connectDB(){
   var connection = mysql.createConnection({
@@ -21,14 +21,15 @@ function connectDB(){
     return connection;
 }
 
-function validateDriver(email, password, callback){
-  
+exports.validateDriver = function(email, password, callback){
+ 
   var connection = connectDB();
   var query = "select * from driver_credentials where  email = "+connection.escape(email);
+  
     connection.query(query, function (err, rows, fields) {
+  
       if(rows.length >0){
-        bcrypt.decryption(password, rows[0].password, function(response){
-          
+        bcrypt.decryption(password, rows[0].PASSWORD, function(response){
           if(response == "success"){
             response = {statusCode : 200, message : rows[0]};
             
@@ -37,13 +38,13 @@ function validateDriver(email, password, callback){
             response = {statusCode : 401, message : "Passwords do not match"};
             
           }
+          callback(response);
         });
       }
       else{
         response = {statusCode : 401, message : "Invalid Email"};
-      }
-      
       callback(response);
+      }
     
     });
 }

@@ -1,9 +1,4 @@
-/**
- * http://usejsdoc.org/
- */
-
- 
- bcrypt = require('bcrypt');
+ var bcrypt = require('bcrypt');
 
  exports.excryption = function(password, callback){
    
@@ -18,7 +13,7 @@
  exports.decryption = function(inputPassword, dbPassword, callback){
    
    bcrypt.compare(inputPassword,dbPassword, function(err, res) {
-       
+    
      if(res == true)
        callback("success");
      else
