@@ -1,6 +1,5 @@
 
 var amqp = require('amqp');
-
 var adminModule = require('./services/app_services/admin');
 var billModule = require('./services/app_services/bill');
 var customerModule = require('./services/app_services/customer');

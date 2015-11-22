@@ -27,6 +27,38 @@ function customerSignIn(req, res)	{
 }
 
 function driverSignIn(req, res)	{
+	credentials = req.body;
 	
+	message = {email : credentials.email, password : credentials.password, reqType : "driverSignIn"};
+	
+	if(credentials.email == undefined || credentials.password == undefined ){
+	      json_responses = {"statusCode" : 401, message : "email and password cannot be empty"};
+			res.send(json_responses);
+	}
+	
+	if(credentials.email.length  >24 || credentials.password.length > 24){
+		json_responses = {"statusCode" : 401, message : "length cannot be greater than 24"};
+		res.send(json_responses);
+		
+	}
+	mq_client.make_request('signin_req_q',message, function(data){
+			
+			if(data.statusCode == 200){
+				
+				if(data.message.STATUS == 0)
+					res.send({statusCode : 401, message : "Request not yet Approved"});
+				req.session.driverId = data.message.DRIVER_ID;
+				req.session.email = data.message.EMAIL;
+				json_responses = {statusCode : 200, message : "success"};
+				res.send(json_responses);
+				
+			}
+			else
+			{
+				json_responses = {statusCode : 401, message : data.message};
+				res.send(json_responses);
+			} 
+		 
+	 });
 }
 

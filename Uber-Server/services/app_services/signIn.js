@@ -1,6 +1,4 @@
-/**
- * http://usejsdoc.org/
- */
+driverDAO = require('../db_services/driverDAO');
 
 var mysql=require('mysql');
  var connection = mysql.createConnection({
@@ -13,9 +11,13 @@ connection.connect();
    
 exports.handle_request=function(message,callback){
 
-  if(message.reqType=="adminSignIn"){
+	console.log("In handle_request"+message.reqType);
+  if(message.reqType == "adminSignIn"){
   adminSignIn(message,callback);
   }
+  if(message.reqType == "driverSignIn"){
+	  driverSignIn(message,callback);
+	}
 }
 
 
@@ -49,5 +51,12 @@ function adminSignIn(message,callback){
          callback(res);
   });
   console.log(query.sql);
+}
+
+function driverSignIn(message,callback){
+	  	
+		driverDAO.validateDriver(message.email, message.password, function(response){
+			callback(response);
+	});		
 }
 
