@@ -9,6 +9,7 @@ var express = require('express')
 
 var mongoSessionStoreURL = "mongodb://localhost:27017/sessions";
 var expressSession = require("express-session");
+console.log("ep" + expressSession);
 var mongoStore = require("connect-mongo")(expressSession);
 
 var app = express();
