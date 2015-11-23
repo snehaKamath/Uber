@@ -6,3 +6,12 @@ body {
 a {
   color: #00B7FF;
 }
+
+.border-right {
+    border-right: 1px solid black;
+}
+
+.col-centered{
+    float: none;
+    margin: 0 auto;
+}

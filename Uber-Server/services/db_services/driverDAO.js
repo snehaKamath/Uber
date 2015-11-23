@@ -10,7 +10,7 @@ function connectDB(){
   var connection = mysql.createConnection({
         host: '127.0.0.1',
         user: 'root',
-        password : 'password',
+        password : '',
         database : 'uber',
         multipleStatements : true
     });
@@ -110,7 +110,6 @@ connection.query(query, function (err, rows, fields)
 				response = {statusCode : 200, message : "success"};
 				
 				
-				var a=3;
 				qry={"_id":message.data[0],"reviews":[],"video":message.data[13],location:[],"car":{"brand":message.data[11],"number":message.data[12]}};
 				connectMongo("driver",qry,callback);
 				

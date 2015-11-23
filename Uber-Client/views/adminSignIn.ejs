@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html ng-app="uberApp">
+ 
+<head>
+
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+
+<!-- jQuery library -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+
+<!-- Latest compiled JavaScript -->
+<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.0-beta.5/angular.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.0rc1/angular-route.js"></script>
+<!--  <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"></link>
+<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+-->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script src="http://angular-ui.github.io/ui-router/release/angular-ui-router.js"></script>
+<link rel="stylesheet" type="text/css" href="/stylesheets/style.css"></link>
+<script src="/angularjs/UberApplication.js"></script>
+</head>
+ <body class="container-fluid" ng-controller="adminController">
+    <div class="panel-group">
+     <div class="panel panel-success">
+        <div class="panel-heading">
+				<h1><font face="Lucida Grande">Admin Account</font></h1>
+			</div>
+        </div>
+     </div>
+ 
+ <div class="row">
+		<div class="col-md-6 col-centered" >
+          <p>Login using your emailID and password</p>
+			<form  role="form" >
+				<div class="form-group">
+					<label for="email">Email:</label> <input type="email" size="32"
+						class="form-control" id="email" placeholder="Enter email"
+						ng-model="adminEmailid"/>
+				</div>
+				<div class="form-group">
+					<label for="pwd">Password:</label> <input type="password" size="8"
+						class="form-control" id="pwd" placeholder="Enter password"
+						ng-model="adminPassword"/>
+				</div>
+				
+
+				<button type="submit" class="btn btn-primary" ng-click="adminSignIn()">Submit</button>
+				
+			</form>
+			
+
+		</div>
+		
+	</div>
+   </body>
+   </html>
+     

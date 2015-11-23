@@ -11,7 +11,7 @@ var signUpModule = require('./services/app_services/signUp');
 
 //Initialize mongoDB and save the reference for other services to use.....
 var MongoClient = require('mongodb').MongoClient;
-var url = "mongodb://localhost:27017/fb_db";
+var url = "mongodb://localhost:27017/uber_db";
 MongoClient.connect(url, function(err, _db){
 	if (err) { throw new Error('Could not connect: '+err); }
     console.log("Successfully connectied to Mongo DB in Server");
@@ -122,7 +122,7 @@ connection.on('ready', function(){
 	connection.queue('signin_req_q', function(q){
 		q.subscribe(function(message, headers, deliveryInfo, m){
 			
-			signInModule.signIn(message, function(response){
+			signInModule.handle_request(message, function(response){
 
 				console.log("publishing to " + m.replyTo);
 				connection.publish(m.replyTo, response, {
