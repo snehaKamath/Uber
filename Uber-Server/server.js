@@ -1,13 +1,13 @@
 
 var amqp = require('amqp');
 
-var adminModule = require('./services/admin');
-var billModule = require('./services/bill');
-var customerModule = require('./services/customer');
-var driverModule = require('./services/driver');
-var ridesModule = require('./services/rides');
-var signInModule = require('./services/signIn');
-var signUpModule = require('./services/signUp');
+var adminModule = require('./services/app_services/admin');
+var billModule = require('./services/app_services/bill');
+var customerModule = require('./services/app_services/customer');
+var driverModule = require('./services/app_services/driver');
+var ridesModule = require('./services/app_services/rides');
+var signInModule = require('./services/app_services/signIn');
+var signUpModule = require('./services/app_services/signUp');
 
 //Initialize mongoDB and save the reference for other services to use.....
 var MongoClient = require('mongodb').MongoClient;
@@ -106,8 +106,7 @@ connection.on('ready', function(){
 	console.log("listening on signup_req_q");
 	connection.queue('signup_req_q', function(q){
 		q.subscribe(function(message, headers, deliveryInfo, m){
-			
-			signUpModule.signUp(message, function(response){
+			signUpModule.handle_request(message, function(response){
 
 				console.log("publishing to " + m.replyTo);
 				connection.publish(m.replyTo, response, {

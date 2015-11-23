@@ -4,9 +4,9 @@
  */
 
 module.exports = function (app)	{	
-	app.post('/', root);
+	app.get('/', root);
 };
 
 function root(req, res){
-  res.render('index', { title: 'Express' });
+  res.render('driver_signup', { title: 'Express' });
 }
