@@ -39,6 +39,7 @@ AmqpRpc.prototype.makeRequest = function(queue_name, content, callback){
   self.requests[correlationId]=entry;
  
   //make sure we have a response queue
+
     self.setupResponseQueue(queue_name, function(){
 	  
     //put the request on a queue

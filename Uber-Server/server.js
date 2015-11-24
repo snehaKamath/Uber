@@ -1,5 +1,6 @@
 
 var amqp = require('amqp');
+
 var adminModule = require('./services/app_services/admin');
 var billModule = require('./services/app_services/bill');
 var customerModule = require('./services/app_services/customer');
@@ -105,7 +106,6 @@ connection.on('ready', function(){
 	console.log("listening on signup_req_q");
 	connection.queue('signup_req_q', function(q){
 		q.subscribe(function(message, headers, deliveryInfo, m){
-			
 			signUpModule.handle_request(message, function(response){
 
 				console.log("publishing to " + m.replyTo);
