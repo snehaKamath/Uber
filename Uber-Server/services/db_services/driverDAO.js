@@ -1,8 +1,8 @@
 /**
  * http://usejsdoc.org/
  */
-mysql = require('mysql');
-bcrypt = require('../app_services/bcrypt');
+var mysql = require('mysql');
+var bcrypt = require('../app_services/bcrypt');
 
 function connectDB(){
   var connection = mysql.createConnection({
@@ -43,8 +43,8 @@ exports.validateDriver = function(email, password, callback){
       }
       else{
         response = {statusCode : 401, message : "Invalid Email"};
-      callback(response);
+        	callback(response);
       }
     
     });
-}
+};
