@@ -19,10 +19,8 @@ function customerSignUp(req, res)	{
 }
 
 function driverSignUp(req, res)	{
-	
-	
 	req.body.reqType="createDriver";
-	mq_client.make_request('signup_req_q',req.body, function(response){
+	mq_client.make_request('signup_req_q', req.body, function(response){
 		console.log(response);
 		res.send(response);
 	});
