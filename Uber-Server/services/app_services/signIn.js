@@ -1,5 +1,5 @@
 driverDAO = require('../db_services/driverDAO');
-
+customer = require('../db_services/customerDAO');
 var mysql=require('mysql');
  var connection = mysql.createConnection({
       host : 'localhost',
@@ -17,6 +17,9 @@ exports.handle_request=function(message,callback){
   }
   if(message.reqType == "driverSignIn"){
 	  driverSignIn(message,callback);
+	}
+  if(message.reqType == "customerSignIn"){
+	  customerSignIn(message,callback);
 	}
 }
 
@@ -59,4 +62,9 @@ function driverSignIn(message,callback){
 			callback(response);
 	});		
 }
-
+function customerSignIn(message,callback){
+  	
+	customer.validateCustomer(message.email, message.password, function(response){
+		callback(response);
+});		
+}
