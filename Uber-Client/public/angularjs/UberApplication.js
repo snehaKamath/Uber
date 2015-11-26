@@ -25,7 +25,7 @@ uberApp.config([ '$urlRouterProvider', '$stateProvider',
          url:'/delete',
          templateUrl:'partials/delete',
       });
-}])
+}]);
 
 
 
