@@ -55,23 +55,28 @@ exports.validateDriver = function(email, password, callback){
   var query = "select * from driver_credentials where  email = "+connection.escape(email);
   
     connection.query(query, function (err, rows, fields) {
-  
+      var res;
       if(rows.length >0){
+
         bcrypt.decryption(password, rows[0].PASSWORD, function(response){
           if(response == "success"){
-            response = {statusCode : 200, message : rows[0]};
+        	  console.log("If Inside-inside -begin");
+            res = {statusCode : 200, message : rows[0]};
             
           }
           else{
-            response = {statusCode : 401, message : "Passwords do not match"};
+        	  console.log("If Inside-else -begin");
+            res = {statusCode : 401, message : "Passwords do not match"};
             
           }
+          callback(res);    
         });
       }
       else{
-        response = {statusCode : 401, message : "Invalid Email"};
+    	res = {statusCode : 401, message : "Invalid Email"};
+    	callback(res);    
       }
-	callback(response);    
+      console.log("Response is "+res);
     });
 };
 

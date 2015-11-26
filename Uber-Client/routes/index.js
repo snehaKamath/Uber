@@ -11,7 +11,7 @@ module.exports = function (app)	{
 
 function root(req, res)
 {
-	res.render('driver_signup');
+	res.render('driverSignIn');
 }
 
 function adminSignIn(req, res) 
