@@ -56,22 +56,22 @@ exports.validateDriver = function(email, password, callback){
   
     connection.query(query, function (err, rows, fields) {
   
+      var res;
       if(rows.length >0){
         bcrypt.decryption(password, rows[0].PASSWORD, function(response){
           if(response == "success"){
-            response = {statusCode : 200, message : rows[0]};
-            
+            res = {statusCode : 200, message : {driverID : rows[0].DRIVER_ID, email : rows[0].EMAIL, approvalStatus : rows[0].STATUS}};            
           }
           else{
-            response = {statusCode : 401, message : "Passwords do not match"};
-            
+            res = {statusCode : 401, message : "Passwords do not match"};            
           }
+      	  callback(res);
         });
       }
       else{
-        response = {statusCode : 401, message : "Invalid Email"};
-      }
-	callback(response);    
+        res = {statusCode : 401, message : "Invalid Email"};
+    	callback(res);
+      }    
     });
 };
 
