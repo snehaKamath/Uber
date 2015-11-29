@@ -1,0 +1,45 @@
+<div ng-controller = "createRideController">
+    <h1>This is Customer Trips</h1>
+    
+     <div id = "divId" style = "width : 80%; height : 50%;" infinite-scroll='loadMore()' infinite-scroll-distance='1'>
+     <uib-accordion close-others=true>
+    
+    <uib-accordion-group is-open = "status.open" ng-repeat = "ride in ridesHistory">
+      <uib-accordion-heading >
+        {{x.name}} <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': status.open, 'glyphicon-chevron-right': !status.open}"></i>
+      </uib-accordion-heading>
+      <label>{{x.age}}</label>
+      This is just some content to illustrate fancy headings.
+    </uib-accordion-group>
+  </uib-accordion>
+         
+ </div>
+       
+    
+   
+     <!--               <table>
+                        <tr ng-repeat = "ride in ridesHistory">
+                            <td>
+                            
+                            {{ride.id}}
+                            
+                            </td>
+                            <td>
+                            
+                            {{ride.name}}
+                            
+                            </td>
+                            <td>
+                            
+                            {{ride.age}}
+                            
+                            </td>
+                        </tr>
+                    </table>
+                
+                </div> -->
+
+
+
+
+

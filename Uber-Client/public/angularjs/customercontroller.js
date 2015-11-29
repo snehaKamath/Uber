@@ -12,7 +12,7 @@ uberApp.controller("customercontroller",function($scope, $http) {
     	}
     	else
     		{
-    			window.location.assign('homePage');
+    			window.location.assign('home');
     		}
       
     }).error(function(data){

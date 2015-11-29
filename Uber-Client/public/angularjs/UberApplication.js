@@ -1,7 +1,7 @@
 /**
  * http://usejsdoc.org/
  */
-var uberApp = angular.module('uberApp', [ 'ngRoute', 'ui.router' ]);
+var uberApp = angular.module('uberApp', [ 'ngRoute', 'ui.router', 'ngMap','ui.bootstrap','infinite-scroll']);
 
 uberApp.config([ '$urlRouterProvider', '$stateProvider',
       function($urlRouterProvider, $stateProvider) {
@@ -21,10 +21,20 @@ uberApp.config([ '$urlRouterProvider', '$stateProvider',
         }).state('myProfile',{
           url:'/myProfile',
           templateUrl:'partials/myProfile',
-       }).state('delete',{
+        }).state('delete',{
          url:'/delete',
          templateUrl:'partials/delete',
-      });
+          }).state('customerTrips',{
+             url:'/myTrips',
+             templateUrl:'partials/customerTrips',
+          }).state('customerProfile',{
+              url:'/myprofile',
+              templateUrl:'partials/customerProfile',
+           }).state('createRide',{
+               url:'/createRide',
+               templateUrl:'partials/createRide',
+            });
+         
 }]);
 
 

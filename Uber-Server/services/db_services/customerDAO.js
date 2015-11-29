@@ -1,4 +1,5 @@
 var mysql = require('mysql');
+var bcrypt = require('../app_services/bcrypt');
 
 function connectDB(){
 	  var connection = mysql.createConnection({
@@ -23,7 +24,7 @@ exports.validateCustomer = function(email, password, callback){
 	  var query = "select * from customer_credentials where  email = "+connection.escape(email);
 	  
 	    connection.query(query, function (err, rows, fields) {
-	  
+	      console.log(err);
 	      if(rows.length >0){
 	        bcrypt.decryption(password, rows[0].PASSWORD, function(response){
 	          if(response == "success"){
@@ -60,18 +61,30 @@ exports.getCustomerDetails = function(query,params,callback){
 		});
 };
 
-exports.insertCustomerDataToDatabase = function(query, params, callback){
-		query = mysql.format(query,params);
-		console.log(query);
-		var connection=connectDB();
-		connection.query(query, function (err, rows, fields) {
-			if(rows){
-				callback(rows);
-			}
-			else{
-				callback(null);
-			}
-		});
+exports.insertDataToDatabase=function(customer_id,firstname,lastname,address,city,zipcode_primary,zipcode_secondary,state,phone_number,email,password,status,cardnumber,cardtype,expirydate,cvv,cardholdername,callback){
+	var firstInsertQuery="insert into customer values(?,?,?,?,?,?,?,?,?)";
+	var params=[customer_id,firstname,lastname,address,city,zipcode_primary,zipcode_secondary,state,phone_number];
+	var finalQuery=mysql.format(firstInsertQuery,params)+";";
+	var secondInsertQuery="insert into customer_credentials values(?,?,?,?)";
+	params=[email,password,customer_id,status];
+	finalQuery+=mysql.format(secondInsertQuery,params)+";";
+	var thirdInsertQuery="insert into creditcard values(?,?,?,?,?,?)";
+	params=[customer_id,cardnumber,cardtype,expirydate,cvv,cardholdername];
+	finalQuery+=mysql.format(thirdInsertQuery,params);
+	var connection=connectDB();
+	console.log(finalQuery);
+	/*var query="CALL storeCustomerSignUpData('"+customer_id+"','"+firstname+"','"+lastname+"','"+address+"','"+city+"','"+zipcode_primary+"','"+zipcode_secondary+"','"+state+"','"+phone_number+"','"+email+"','"+password+"','"+status+"','"+cardnumber+"','"+cardtype+"','"+expirydate+"','"+cvv+"','"+cardholdername+")";
+	var connection=connectDB();
+	console.log(query);
+	connection.query(query, function (err, rows, fields) {*/
+	connection.query(finalQuery, function (err, rows, fields) {
+		if(rows){
+			callback(rows);
+		}
+		else{
+			callback(null);
+		}
+	});
 };
 
 exports.deleteQuery = function(query,params,callback){

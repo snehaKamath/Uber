@@ -4,27 +4,40 @@ module.exports = function (app)	{
 	  app.get('/', root);     // sneha : app.get('/partials/:name', routes.partials); should always be first and all remaining routes should be below that
 	  app.get('/admin',	adminSignIn);
 	  app.get('/customerSignIn',	customerSignIn);
+	  app.get('/driverSignIn',	driverSignIn);
 	  app.get('/home',	homePage);
 	  app.get('/driverSignUp',	driverSignUp);
 	  app.get('/customerSignUp', customerSignUp);
+	  app.get('/redirectToLoginOptions',redirectToLoginOptions);
 };
 
 function root(req, res)	{	
-	res.render('driverSignUp');
+	res.render('index');
 }
+
+function redirectToLoginOptions(req, res)	{	
+	res.render('redirectToLoginOptions');
+}
+
 
 function adminSignIn(req, res) 
 {
   res.render('adminSignIn');
 }
 
-function customerSignUp(req, res)	{	
+function customerSignUp(req, res){	
 	res.render("customerSignUp");	
 }
+
 function customerSignIn(req,res){
 	
-	  res.render('customerSignIn');
-	}
+	 res.render('customerSignIn');
+}
+
+function driverSignIn(req, res) 
+{
+  res.render('driverSignIn');
+}
 
 function driverSignUp(req,res)	{	
 	res.render('driverSignUp');	
@@ -32,6 +45,7 @@ function driverSignUp(req,res)	{
 
 function homePage(req,res)
 {	
+	
 	if(req.session.adminEmailid)	{
 		res.render('adminHome');
 	}

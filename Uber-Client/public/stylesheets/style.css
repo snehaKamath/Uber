@@ -15,3 +15,104 @@ a {
     float: none;
     margin: 0 auto;
 }
+
+#headerDriver {
+    background-color: black;
+    /*Opacity start*/
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
+    filter: alpha(opacity=80);
+    -moz-opacity: 0.80;
+    -khtml-opacity: 0.8;
+    opacity: 0.8;
+    /*Opacity end*/
+    color: black;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 50px;
+    padding: 0;
+    margin: 0;
+}
+
+#header {
+    background-color: #f6f6f6;
+    /*Opacity start*/
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
+    filter: alpha(opacity=80);
+    -moz-opacity: 0.80;
+    -khtml-opacity: 0.8;
+    opacity: 0.8;
+    /*Opacity end*/
+    color: white;
+    position: fixed;
+    top: 70;
+    left: 0;
+    width: 100%;
+    height: 60px;
+    padding: 0;
+    margin: 0;
+}
+#header #header-content {
+    margin: 10px;
+}
+
+.customIndex{
+	background-size: 100%;
+  height: 100%;
+}
+
+.loginOptions_background{
+	background:#070716 !important;
+}
+
+
+.focused-view-subtitle {
+    margin-bottom: 30px;
+}
+.focused-view-subtitle {
+    font-size: 17px;
+    color: #c2c2c2;
+    text-transform: uppercase;
+}
+
+.center {
+    text-align: center;
+}
+
+p {
+    line-height: 27px;
+}
+
+p{
+    font-family: ff-clan-web-pro-wide,sans-serif;
+    font-weight: 400;
+}
+
+.border-center:after {
+    background: #53535C;
+    content: "";
+    display: block;
+    height: 1px;
+    margin-top: -12px;
+}
+
+.border-center>span {
+    display: inline-block;
+    padding: 0 20px;
+    background: #070716;
+}
+
+.uber-logo, .light .down-page .uber-logo {
+    display: inline-block;
+    width: 167px;
+    height: 23px;
+    background: transparent url(../images/logo.png) no-repeat left top;
+    background-size: 167px 23px;
+    background-color: transparent;
+    /* border: 0; */
+    overflow: hidden;
+    font: 0/0 a;
+    text-shadow: none;
+    color: transparent;
+}
