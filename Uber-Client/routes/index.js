@@ -7,6 +7,7 @@ module.exports = function (app)	{
 	  app.get('/home',	homePage);
 	  app.get('/driverSignUp',	driverSignUp);
 	  app.get('/customerSignUp', customerSignUp);
+	  app.get('/driversignin',driverSignIn);
 };
 
 function root(req, res)	{	
@@ -28,7 +29,9 @@ function customerSignIn(req,res)	{
 function driverSignUp(req,res)	{	
 	res.render('driver_signup');	
 }
-
+function driverSignIn(req,res)	{	
+	res.render('driverSignIn');	
+}
 function homePage(req,res)	{	
 	if(req.session.adminEmailid)	{
 		res.render('adminHome');

@@ -1,0 +1,12 @@
+
+<div>hello{{starttimestamp}}  
+	{{cust_id}}
+<button type="button" class="btn btn-primary" ng-click="start()">Start</button> &nbsp;&nbsp;   
+	
+	
+	<button type="button" class="btn btn-primary" ng-click="end()">EndRide</button>
+	<br>
+	 <p ng-if="bill_amount">{{'Bill amount is '+ bill_amount}}</p>
+	 <a ui-sref="billDetails"><button class="btn btn-success" ng-if="bill_amount">Submit Customer Review</button></a>
+	
+</div>

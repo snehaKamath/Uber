@@ -74,7 +74,8 @@ connection.on('ready', function(){
 	console.log("listening on driver_service_req_q");
 	connection.queue('driver_service_req_q', function(q){
 		q.subscribe(function(message, headers, deliveryInfo, m){			
-			
+			console.log('Here in server file ');
+			console.log(message);
 			driverModule.handle_request(message, function(response){
 
 				console.log("publishing to " + m.replyTo);
@@ -93,6 +94,7 @@ connection.on('ready', function(){
 			
 			ridesModule.handle_request(message, function(response){
 
+				console.log("Rsponse : " + response);
 				console.log("publishing to " + m.replyTo);
 				connection.publish(m.replyTo, response, {
 					contentType:'application/json',

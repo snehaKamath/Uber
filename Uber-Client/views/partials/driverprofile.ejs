@@ -1,0 +1,99 @@
+<form ng-controller="driverController" ng-submit="submit();">
+	*First Name<br/>
+	<input type="text" class="form-control" id="customer_firstname" maxlength="24" placeholder="First Name" ng-model="customer_firstname">
+	<span class="label label-danger" ng-hide="firstname_typeerror">Only Characters are allowed in firstname</span>
+	<span class="label label-danger" ng-hide="firstname_sizeerror">First name must be only 24 characters including spaces</span>
+	<span class="label label-danger" ng-hide="firstname_emptyerror">First name is mandatory</span>
+	*Last Name<br/>
+	<input type="text" class="form-control" id="customer_lastname" maxlength="24" placeholder="Last Name" ng-model="customer_lastname">
+	<span class="label label-danger" ng-hide="lastname_typeerror">Only Characters are allowed in lastname</span>
+	<span class="label label-danger" ng-hide="lastname_sizeerror">Last name must be only 24 characters including spaces</span>
+	<span class="label label-danger" ng-hide="lastname_emptyerror">last name is mandatory</span><br/>
+	*Address:<br/>
+	<textarea class="form-control" rows="4" cols="55" id="customer_address" placeholder="Address" maxlength="128" ng-model="customer_address"></textarea>
+	<span class="label label-danger" ng-hide="address_sizeerror">Max length of Address is only 128 characters</span>
+	<span class="label label-danger" ng-hide="address_emptyerror">Address is mandatory</span><br/>
+	*City:<br/>
+	<input type="text" class="form-control" id="customer_city" maxlength="32" placeholder="City" ng-model="customer_city">
+	<span class="label label-danger" ng-hide="city_typeerror">Invalid charactes in city</span>
+	<span class="label label-danger" ng-hide="city_sizeerror">City must be only 32 characters including spaces</span>
+	<span class="label label-danger" ng-hide="city_emptyerror">City is mandatory</span><br/>
+	*State:<br/>
+	<!--<input type="text" class="form-control" id="customer_state" maxlength="32" placeholder="State" ng-model="customer_state">-->
+	<input list="customer_state" class="form-control" name="customer_state" ng-model="customer_state" placeholder="Choose your state">
+	<datalist id="customer_state" ng-model="customer_state">
+		<option value="Alabama">Alabama</option>
+		<option value="Alaska">Alaska</option>
+		<option value="Arizona">Arizona</option>
+		<option value="Arkansas">Arkansas</option>
+		<option value="California">California</option>
+		<option value="Colorado">Colorado</option>
+		<option value="Connecticut">Connecticut</option>
+		<option value="Delaware">Delaware</option>
+		<option value="District Of Columbia">District Of Columbia</option>
+		<option value="Florida">Florida</option>
+		<option value="Georgia">Georgia</option>
+		<option value="Hawaii">Hawaii</option>
+		<option value="Idaho">Idaho</option>
+		<option value="Illinois">Illinois</option>
+		<option value="Indiana">Indiana</option>
+		<option value="Iowa">Iowa</option>
+		<option value="Kansas">Kansas</option>
+		<option value="Kentucky">Kentucky</option>
+		<option value="Louisiana">Louisiana</option>
+		<option value="Maine">Maine</option>
+		<option value="Maryland">Maryland</option>
+		<option value="Massachusetts">Massachusetts</option>
+		<option value="Michigan">Michigan</option>
+		<option value="Minnesota">Minnesota</option>
+		<option value="Mississippi">Mississippi</option>
+		<option value="Missouri">Missouri</option>
+		<option value="Montana">Montana</option>
+		<option value="Nebraska">Nebraska</option>
+		<option value="Nevada">Nevada</option>
+		<option value="New Hampshire">New Hampshire</option>
+		<option value="New Jersey">New Jersey</option>
+		<option value="New Mexico">New Mexico</option>
+		<option value="New York">New York</option>
+		<option value="North Carolina">North Carolina</option>
+		<option value="North Dakota">North Dakota</option>
+		<option value="Ohio">Ohio</option>
+		<option value="Oklahoma">Oklahoma</option>
+		<option value="Oregon">Oregon</option>
+		<option value="Pennsylvania">Pennsylvania</option>
+		<option value="Rhode Island">Rhode Island</option>
+		<option value="South Carolina">South Carolina</option>
+		<option value="South Dakota">South Dakota</option>
+		<option value="Tennessee">Tennessee</option>
+		<option value="Texas">Texas</option>
+		<option value="Utah">Utah</option>
+		<option value="Vermont">Vermont</option>
+		<option value="Virginia">Virginia</option>
+		<option value="Washington">Washington</option>
+		<option value="West Virginia">West Virginia</option>
+		<option value="Wisconsin">Wisconsin</option>
+		<option value="Wyoming">Wyoming</option>
+	</datalist>
+	<span class="label label-danger" ng-hide="state_typeerror">Invalid charactes in State</span>
+	<span class="label label-danger" ng-hide="state_sizeerror">State must be only 32 characters including spaces</span>
+	<span class="label label-danger" ng-hide="state_emptyerror">State is mandatory</span>
+	<span class="label label-danger" ng-hide="state_invaliderror">Invalid State</span><br/>
+	*Zip code:<br/>
+	<input type="text" class="form-control" id="customer_zip_1" style="width:47%;display:inline;" maxlength="5" placeholder="Zip Code" ng-model="customer_zip_1">&nbsp;-&nbsp;
+	<input type="text" class="form-control" id="customer_zip_2" style="width:47%;display:inline;" maxlength="4" placeholder="Zip Code" ng-model="customer_zip_2">
+	<span class="label label-danger" ng-hide="zip_typeerror">Zip code contains illegal characters</span>
+	<span class="label label-danger" ng-hide="zip_sizeerror">Zip code is not valid.</span>
+	<span class="label label-danger" ng-hide="zip2_sizeerror">Zip code is not valid.</span>
+	<span class="label label-danger" ng-hide="zip_emptyerror">Zip code is mandatory</span><br/>
+	*Phone:<br/>
+	<input type="text" class="form-control" style="width:61%;display:inline;" id="customer_phone_number" maxlength="10" placeholder="Phone Number" ng-model="customer_phone_number">
+	<span class="label label-danger" ng-hide="phone_typeerror">Phone Number contains illegal characters</span>
+	<span class="label label-danger" ng-hide="phone_sizeerror">Phone Number must be 10 digits</span>
+	<span class="label label-danger" ng-hide="phone_emptyerror">Phone Number is mandatory</span><br/><br/>
+	*Email:<br/>
+	<input type="email" class="form-control" id="customer_email" maxlength="32" placeholder="Email" ng-model="customer_email">
+	<span class="label label-danger" ng-hide="email_typeerror">Email format is not correct</span>
+	<span class="label label-danger" ng-hide="email_sizeerror">Email must be 32 characters in length</span>
+	<span class="label label-danger" ng-hide="email_emptyerror">Email ID is mandatory</span><br/>
+	<div ng-hide="updateProfile"><input type="submit" value="Update Profile"></div>
+	</form>
