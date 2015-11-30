@@ -1,7 +1,7 @@
 var amqp = require('amqp')
   , crypto = require('crypto');
  
-var TIMEOUT=40000; //time to wait for response in ms
+var TIMEOUT=1000 * 100; //Approximately 1.5 minutes
 var CONTENT_TYPE='application/json';
 var CONTENT_ENCODING='utf-8';
 var self;
@@ -52,7 +52,7 @@ AmqpRpc.prototype.makeRequest = function(queue_name, content, callback){
 };
  
  
-AmqpRpc.prototype.setupResponseQueue = function(queue_name,next){
+AmqpRpc.prototype.setupResponseQueue = function(queue_name, next){
   
 
   self = this;

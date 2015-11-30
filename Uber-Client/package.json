@@ -13,5 +13,10 @@
     "express-sessions": "^1.0.5",
     "express-session": "^1.12.1",
     "mongodb": "^2.0.48"
+  },
+  "devDependencies": {
+    "mocha": "^2.3.4",
+    "should": "^7.1.1",
+    "supertest": "^1.1.0"
   }
 }

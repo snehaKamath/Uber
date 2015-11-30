@@ -8,15 +8,22 @@ var driverModule = require('./services/app_services/driver');
 var ridesModule = require('./services/app_services/rides');
 var signInModule = require('./services/app_services/signIn');
 var signUpModule = require('./services/app_services/signUp');
+/*var CacheModule = require('./services/db_services/Cache');
+
+var Cache = new CacheModule();
+Cache.testMethod(); */ 
 
 //Initialize mongoDB and save the reference for other services to use.....
 var MongoClient = require('mongodb').MongoClient;
-var url = "mongodb://localhost:27017/uber_db";
+var url = "mongodb://localhost:27017/uber";
 MongoClient.connect(url, function(err, _db){
 	if (err) { throw new Error('Could not connect: '+err); }
     console.log("Successfully connectied to Mongo DB in Server");
-    global.db = _db;
+    global.mongoDB = _db;    
 });
+
+var pool = require('./services/db_services/connection_pool/pool');
+global.mysql_pool = new pool();
 
 //Initialize RabbitMQ connection
 var connection = amqp.createConnection({host:'localhost'});
@@ -137,3 +144,6 @@ connection.on('ready', function(){
 	});	
 });
 
+process.on("SIGTERM" , function()	{
+	mysql_pool.end();
+});

@@ -1,25 +1,25 @@
 <html>
 <head>
-    <script src = "https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0-beta.2/angular.min.js"></script>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" >
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.0rc1/angular-route.js"></script>
-    <script src="http://angular-ui.github.io/ui-router/release/angular-ui-router.js"></script>
-    <script src="/angularjs/UberApplication.js"></script>
+    <% include headerScripts.ejs%>
+    <script src="/angularjs/uberApplication.js"></script>
     <script src="/angularjs/driverController.js"></script>
-    <script src="/angularJS/customercontroller.js"></script>
+    <script src="/angularjs/customerController.js"></script>
+    <link rel= "stylesheet" href = "/stylesheets/style.css">
+    
 </head>
-<body style = "background-color : black" ng-app = "uberApp" ng-controller = "customercontroller">
+<body style = "background-color : black" ng-app = "uberApp" ng-controller = "customerController">
     <div class = "container">
     
     <div class = "row">
         
         <div class = "col-md-4 col-md-offset-4" style = "left : 30px">
         
-        <img style = "position : absolute; left : 85px;width : 200px; height : 200px;" src = "./images/uber.jpg"/>
-            <form class = "form" style = "position : absolute; top: 200px;">
+            <form class = "form" style = "position : absolute;">
+                     <p class="center uber-logo-container">
+                    <a href="/" class="uber-logo ir">Uber</a>
+                 </p>
+                <p class="focused-view-subtitle uppercase center border-center">
+                <span> Log In </span></p>
                 
                 <div class="form-group">
               <label style = "color : white; width : 200px;">EMAIL</label>
@@ -35,6 +35,9 @@
                 
             
                 </form>
+            <div ng-if = "errorDialog" class="alert alert-danger">
+                    {{errorMessage}}
+                </div>
         </div>
         
         

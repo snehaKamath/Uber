@@ -1,5 +1,5 @@
-var uber = angular.module('uberApp', []);
-uber.controller('signUp', function($scope, $http) {
+var uberApp = angular.module('uberApp');
+uberApp.controller('signUp', function($scope, $http) {
 	//disable all errors by default
 	//ssn
 	function malformed_state_exception(){
@@ -101,7 +101,7 @@ uber.controller('signUp', function($scope, $http) {
 		$scope.phone_typeerror=true;
 		$scope.phone_sizeerror=true;
 		$scope.phone_emptyerror=true;
-		//Phone
+		//Email
 		$scope.email_typeerror=true;
 		$scope.email_sizeerror=true;
 		$scope.email_emptyerror=true;
@@ -325,7 +325,7 @@ uber.controller('signUp', function($scope, $http) {
 			}
 		}
 		//Phone number checking
-		if($scope.customer_phone_code=='' || $scope.customer_phone_code==undefined || $scope.customer_phone_number=='' || $scope.customer_phone_number==undefined )
+		if($scope.customer_phone_number=='' || $scope.customer_phone_number==undefined )
 		{
 			$scope.phone_emptyerror=false;
 			error+=true;
@@ -488,7 +488,6 @@ uber.controller('signUp', function($scope, $http) {
 			customer_data.push($scope.customer_state);
 			customer_data.push($scope.customer_zip_1);
 			customer_data.push($scope.customer_zip_2);
-			customer_data.push($scope.customer_phone_code);
 			customer_data.push($scope.customer_phone_number);
 			customer_data.push($scope.customer_email);
 			customer_data.push($scope.customer_password);
@@ -506,7 +505,8 @@ uber.controller('signUp', function($scope, $http) {
 				}
 				}).success(function(result) {
 				if(result.status == "success"){
-					alert(result.msg);
+					alert("Successfully Registered");
+					window.location.assign("/customerSignIn");
 				}
 				else if(result.status=="fail")
 				{

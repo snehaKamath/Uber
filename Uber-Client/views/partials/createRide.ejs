@@ -1,0 +1,85 @@
+<script src = "/angularjs/ridesController.js"></script>
+<style>
+
+    .glyphicon-star{
+    font-size: 30px;
+    color : #FFDF00;
+}
+    .glyphicon-star-empty{
+    font-size: 30px;
+    color : #00000;
+}
+
+</style>
+<div ng-controller = "ridesController"  style = "background-color : white;">
+    
+    <div>
+        <div class = "row">
+              <div class = "col-md-11">  
+   <form  class = "form form-inline" name = "myForm">
+  <div class="form-group">
+    <label for="source">Pickup location</label>
+    <input places-auto-complete  component-restrictions="{country:'us'}" type="text" style = "width : 350px" class="form-control" id="source" ng-model = "source" on-place-changed = "placeChanged()" placeholder="Enter Source Address" required>
+  </div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  <div  class="form-group">
+    <label for="destination">Drop off location</label>
+    <input places-auto-complete on-place-changed = "placeChanged()" component-restrictions="{country:'us'}" style = "width : 360px" type="text" class="form-control" id="destination" ng-model = "destination" placeholder="Enter Destination Address" required>
+  <!--    places-auto-complete size=80
+    ng-model="origin"
+    component-restrictions="{country:'us'}"
+    types="{{types}}" -->
+       
+  </div><br><br>
+       <button ng-disabled = "myForm.$invalid" style = "position : absolute; left : 350px" type="submit" ng-click = "fetchDrivers(source, destination)" class="btn btn-primary">Show Drivers</button><br>
+</form>
+
+</div>
+        </div><br>
+    <div style  = "width : 300px; position : absolute; left : 280px" ng-if = "errorMessage" class = "alert alert-danger">{{errorMessage}}</div><br>
+<h5>CHOOSE DRIVER</h5>
+    <ng-map style="width:90%;height:65%"; zoom="5" center="[40.74, -74.18]">
+        <marker ng-repeat="position in positions" 
+				position="{{position.location}}" data="{{position}}"  animation="BOUNCE" title="This is that" on-click="showDriverDetails(position)"></marker>
+        <info-window id="foo">
+            <div ng-non-bindable="">
+          <h4>Hi, {{position}}</h4>
+                </div>
+        </info-window>
+            
+         <directions 
+          draggable="true"
+          panel="directions-panel"
+          travel-mode="DRIVING"
+          
+          origin="{{source}}"
+          destination="{{destination}}">
+        </directions>
+        
+  </ng-map><br>
+        
+        <div style = "width : 90%" class="panel panel-info" ng-if = "driverPanel">
+      <div style = "background-color : black; color : white" class="panel-heading">{{driver.firstName}}&nbsp;{{driver.lastName}}</div>
+      <div class="panel-body">
+            <div class = "container">
+            
+            <span style = "display: inline-block; width : 30%">CONTACT</span>{{driver.phone}}<br>
+            <span style = "display: inline-block; width : 30%">RATING</span> 
+                <div><uib-rating ng-model="ratingg" max="5" state-on="'glyphicon glyphicon-star'" readonly = "true" state-off="'glyphicon glyphicon-star-empty'" aria-labelledby="custom-icons-1"></uib-rating></div>
+                
+                
+                <button class = "btn btn-primary" ng-click = "requestRide(driver.driverId)">{{buttonLabel}}</button>
+            
+            </div>
+          
+          
+            </div>
+                
+            
+    </div>
+        
+        
+</div>
+
+
+
+</div>

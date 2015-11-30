@@ -4,34 +4,45 @@ module.exports = function (app)	{
 	  app.get('/', root);     // sneha : app.get('/partials/:name', routes.partials); should always be first and all remaining routes should be below that
 	  app.get('/admin',	adminSignIn);
 	  app.get('/customerSignIn',	customerSignIn);
+	  app.get('/driverSignIn',	driverSignIn);
 	  app.get('/home',	homePage);
 	  app.get('/driverSignUp',	driverSignUp);
 	  app.get('/customerSignUp', customerSignUp);
-	  app.get('/driversignin',driverSignIn);
+	  app.get('/loginOptions',loginOptions);
 };
 
 function root(req, res)	{	
-	res.render('driverSignUp');
+	res.render('index');
 }
 
-function adminSignIn(req, res) {
-  res.render('adminSignIn');  
+function loginOptions(req, res)	{	
+	res.render('loginOptions');
 }
 
-function customerSignUp(req, res)	{	
+
+function adminSignIn(req, res) 
+{
+  res.render('adminSignIn');
+}
+
+function customerSignUp(req, res){	
 	res.render("customerSignUp");	
 }
 
-function customerSignIn(req,res)	{	
-	  res.render('customerSignIn');
+function customerSignIn(req,res){
+	
+	 res.render('customerSignIn');
+}
+
+function driverSignIn(req, res) 
+{
+  res.render('driverSignIn');
 }
 
 function driverSignUp(req,res)	{	
-	res.render('driver_signup');	
+	res.render('driverSignUp');	
 }
-function driverSignIn(req,res)	{	
-	res.render('driverSignIn');	
-}
+
 function homePage(req,res)	{	
 	if(req.session.adminEmailid)	{
 		res.render('adminHome');
@@ -47,7 +58,8 @@ function homePage(req,res)	{
 	}
 }
 
-function partials(req, res) 	{
+function partials(req, res) 
+{
 	var name = req.params.name;
 	res.render('partials/' + name);
 }

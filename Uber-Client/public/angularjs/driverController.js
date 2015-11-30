@@ -1,4 +1,4 @@
-uberApp = angular.module('uberApp');
+var uberApp = angular.module('uberApp');
 uberApp.controller("driverController",function($scope, $state, $http, $window){
 	function malformed_state_exception(){
 		
@@ -733,12 +733,7 @@ uberApp.controller('driversignUp', function($scope, $http)
 
 				if(error=="")
 				{
-				//console.log('I am here after validation');
-				//	console.log($scope.vid);
 			  ssn=Number($scope.driver_id_1+$scope.driver_id_2+$scope.driver_id_3);
-			//	console.log('new 1 is '+ssn);
-
-				    //  console.log(video); 
 			 var video;
 			  driver_data=[];
 		       driver_data.push(ssn);
@@ -756,17 +751,13 @@ uberApp.controller('driversignUp', function($scope, $http)
 		       driver_data.push($scope.state);
 		       driver_data.push($scope.carbrand);
 		       driver_data.push($scope.carnumber);
-		       //driver_data.push(video);
 		       var f = document.getElementById('file').files[0],
 			      r = new FileReader();
 		       console.log(f);
 				var  video;
 			  r.onloadend = function(e){
 			   video = e.target.result;
-			  // driver_data.push(video)
 			   
-			    //send you binary data via $http or $resource or do anything else with it
-			    //console.log(data);
 			   driver_data.push(video);
 			   console.log(driver_data);
 				$http({
@@ -781,30 +772,17 @@ uberApp.controller('driversignUp', function($scope, $http)
 					if(result.message == "success")
 						//window.location = '/homepage';
 						alert("success");
-					else if(result.message === "exist")
-					{
-						
-							alert("User already Exist");
-						
+					else if(result.message === "exist")	{						
+							alert("User already Exist");						
 					}
 					}).error(function(error) {
 						alert("Unknown error.Please try again later");
 					});
 			  }
-			 r.readAsBinaryString(f);
-
-			  
-			  //driver_data.push(video);
-
-			  //console.log(driver_data);
-		      
-
-
-				}
-				else
-					return false;
-			
+			 r.readAsArrayBuffer(f);			 
 		}
-			
+				else
+					return false;			
+		}			
 		});
 

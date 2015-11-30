@@ -3,8 +3,10 @@
  */
 
 exports.handle_request = function(message, callback)	{
-	console.log("In handle_request"+message.reqType);
-	if(message.reqType === "driverriderequest")		{ 
+	if(message.reqType === "driverLocations")		{ 
+		getDriverLocation(message, callback);
+	}
+if(message.reqType === "driverriderequest")		{ 
 		
 	getriderequest(message,callback);
 	}
@@ -20,7 +22,18 @@ exports.handle_request = function(message, callback)	{
 	
 	}
 };
+function getDriverLocation(message, callback){
+	console.log("In service");
+	
+	 // message.pickupLng = '80.79567559999998'; 
+	  //message.pickupLat = '16.5271931';
+	   location = [Number(message.pickupLng), Number(message.pickupLat)];
+	   console.log(location);
+		driverDAO.getDriverLocation(location, function(response){
 
+			callback(response);
+	});			
+}
 function getriderequest(message,callback){
 	  
 	driverDAO.getriderequest({id:message.id},function(response){
@@ -76,3 +89,5 @@ function updateDriverDetails(message,callback){
 	});
 	  
 };
+
+

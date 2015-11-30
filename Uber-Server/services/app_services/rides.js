@@ -1,14 +1,14 @@
-/**
- * http://usejsdoc.org/
- */
-var driverDAO = require('../db_services/driverDAO');
 ridesDAO = require('../db_services/ridesDAO');
-
 exports.handle_request = function(message, callback)	{
-	
-	console.log("In handle_request"+message.reqType);
-	
-	if(message.reqType ==="updatedriverreview"){
+	console.log(message);
+	if(message.reqType === "createRide"){ 
+		createRide(message, callback);
+	}
+	if(message.reqType === "getCustomerRidesHistory"){ 
+		
+		getCustomerRidesHistory(message, callback);
+	}
+if(message.reqType ==="updatedriverreview"){
 		
 		updatedriverreview(message,callback);
 	}
@@ -35,7 +35,22 @@ exports.handle_request = function(message, callback)	{
 		 console.log('Here in server side to check the incomplete reviews b4 DAO block ');
 		 incompletereview(message,callback);
 		}
-	
+};
+
+function createRide(message, callback){
+
+		ridesDAO.createRide(message.rideData, message.locations, function(response){
+
+			callback(response);
+	});			
+};
+
+function getCustomerRidesHistory(message, callback){
+
+		ridesDAO.getCustomerRides(message.count, function(response){
+
+			callback(response);
+	});			
 };
 
 function createBill(message,callback)
@@ -86,5 +101,6 @@ function incompletereview(message,callback){
 	ridesDAO.incompletereview(message,callback);
 	
 }
+
 
 

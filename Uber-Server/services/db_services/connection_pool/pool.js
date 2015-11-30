@@ -1,9 +1,10 @@
-var Lib_Connection = require('mysql/lib/Connection');
+var ConnectionConfig = require('mysql/lib/ConnectionConfig');
 var Connection = require('./connection');
-var MAX_NUMBER_OF_CONNECTIONS = 30;
-var connectionAcquireTimeOut = 1000;
 
-var connection_config = {
+var MAX_NUMBER_OF_CONNECTIONS = 30;
+var CONNECTION_ACQUIRE_TIMEOUT = 10000;
+
+var CONNECTION_CONFIG = {
         host: '127.0.0.1',
         user: 'root',
         password : '',
@@ -11,8 +12,7 @@ var connection_config = {
         multipleStatements : true
 };
 
-function pool(options) {
-
+function pool() {
   this._freeConnections      = [];
   this._scheduledConnections      = [];
 }
@@ -25,9 +25,9 @@ pool.prototype.getConnection = function getConnection(cb) {
   var pool = this;
 
   function createConnection()	{
-	    var conn = new Connection(this, connection_config);
+	    var conn = new Connection(pool, {config: new ConnectionConfig(CONNECTION_CONFIG)});
 
-	    return conn.connect(function onConnect(err) {
+	    return conn.connect({timeout: CONNECTION_ACQUIRE_TIMEOUT}, function onConnect(err) {
 
 	      if (err) {
 	        cb(err);
@@ -35,7 +35,7 @@ pool.prototype.getConnection = function getConnection(cb) {
 	      }
 
 		  console.log("Pushing the connection to scheduled connections...");
-	      this._scheduledConnections.push(conn); // If i am here that means somebody requested, so i push directly to scheduled list of connections.
+	      pool._scheduledConnections.push(conn); // If i am here that means somebody requested, so i push directly to scheduled list of connections.
 	      cb(null, conn);
 	    });	      
   }
@@ -43,7 +43,7 @@ pool.prototype.getConnection = function getConnection(cb) {
   if (this._freeConnections.length > 0) {
 	  //Remove the first connection from _freeConnections array and return it if connection is still alive...
 	  connection = this._freeConnections.shift();
-	  connection.ping(connectionAcquireTimeOut, function(err)	{
+	  connection.ping(CONNECTION_ACQUIRE_TIMEOUT, function(err)	{
 		  if(err)	{
 			  connection.endConnection();
 			  console.log("Creating new connection - on error");
@@ -74,7 +74,8 @@ pool.prototype.releaseConnection = function releaseConnection(connection) {
     }
 };
 
-pool.prototype.end = function (cb) {
+pool.prototype.end = function () {
+	
   while (this._scheduledConnections.length !== 0) {
 	var conn = this._scheduledConnections.shift();
 	conn.endConnection();
@@ -88,9 +89,10 @@ pool.prototype.end = function (cb) {
   }
 };
 
+//Everybody should this method for running the query...
 pool.prototype.query = function (sql, values, cb) {
-	  
-  var query = Connection.createQuery(sql, values, cb);
+
+  var query = Connection.generateQuery(sql, values, cb);  
   var pool = this;
   
   if (this._freeConnections.length == 0 && this._scheduledConnections.length == MAX_NUMBER_OF_CONNECTIONS) {
@@ -112,22 +114,23 @@ pool.prototype.query = function (sql, values, cb) {
       conn.release();
     });
 
+    //Execute the query
     conn.query(query);
   });
 
+  //Maintained same behaviour of pool to ensure, clients using pool can get query that is being executed...
   return query;
 };
 
-pool.prototype._removeConnection = function(connection) {
-  connection._pool = null;
+pool.prototype.removeConnection = function(connection) {
+	  connection._pool = null;
+	  // Remove connection from scheduled connections
+	  spliceConnection(this._scheduledConnections, connection);
 
-  // Remove connection from all connections
-  spliceConnection(this._allConnections, connection);
-
-  // Remove connection from free connections
-  spliceConnection(this._freeConnections, connection);
-
-  this.releaseConnection(connection);
+	  // Remove connection from free connections
+	  spliceConnection(this._freeConnections, connection);
+	 
+	  connection.endConnection();	  	  
 };
 
 function spliceConnection(array, connection) {

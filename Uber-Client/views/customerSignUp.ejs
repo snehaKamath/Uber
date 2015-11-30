@@ -1,14 +1,9 @@
 <html>
 <head>
-	<link rel='stylesheet' href='/stylesheets/style.css' />
-	<link rel="stylesheet"href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-	 <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.11/jquery-ui.min.js"></script>
-	  <link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.1/themes/base/jquery-ui.css" rel="stylesheet" type="text/css"/>
-	<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-	<script src= "http://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
-	<script src="/angularjs/UberApplication.js"></script>
+	<%include headerScripts %>
+	<script src="/angularjs/uberApplication.js"></script>
 	<script src="/angularjs/customerSignUpController.js"></script>
+	<link rel='stylesheet' href='/stylesheets/style.css' />
 	<style>
         .ui-autocomplete { 
             cursor:pointer; 
@@ -122,8 +117,7 @@
 						<span class="label label-danger" ng-hide="zip2_sizeerror">Zip code is not valid.</span>
 						<span class="label label-danger" ng-hide="zip_emptyerror">Zip code is mandatory</span><br/>
 						*Phone:<br/>
-						<input type="button" value="+" class=btn btn-default" disabled>
-						<input type="text" maxlength="3" class="form-control" style="width:25%;display:inline;" id="customer_phone_code" placeholder="Code" ng-model="customer_phone_code">
+						<input type="button" value="+1" class=btn btn-default" disabled>
 						<input type="text" class="form-control" style="width:61%;display:inline;" id="customer_phone_number" maxlength="10" placeholder="Phone Number" ng-model="customer_phone_number">
 						<span class="label label-danger" ng-hide="phone_typeerror">Phone Number contains illegal characters</span>
 						<span class="label label-danger" ng-hide="phone_sizeerror">Phone Number must be 10 digits</span>
