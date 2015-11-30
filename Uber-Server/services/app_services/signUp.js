@@ -6,14 +6,38 @@ var bcryptObject = require('./bcrypt');
 var customerDAOObject=require('../db_services/customerDAO');
 
 exports.handle_request = function(message, callback)	{
+	console.log('This is reached at driver handle request');
 	if(message.reqType === "createDriver")		{ 
 		console.log('This is reached at driver handle request');
-		driverDAO.createDriver(message,callback);
+		createDriver(message, callback);		
 	}
+	
 	if(message.reqType === "customerSignUp")		{
 		customer(message, callback);
 	}	
 };
+
+function createDriver(message, callback)	{
+	console.log("Inside Sign Up Start");
+	var driverid = message.data[0];
+	var firstname = message.data[1];
+	var lastname = message.data[2];
+	var password = message.data[3];
+	var email = message.data[4];
+	var phone = message.data[5];
+	var zip_primary = message.data[6];
+	var zip_secondary = message.data[7];
+	var address = message.data[8];
+	var city = message.data[9];
+	var state = message.data[10];
+	var carbrand = message.data[11];
+	var carnumber = message.data[12];
+	var video = message.data[13];
+	console.log("Inside Sign Up after fetch");
+
+	driverDAO.createDriver( driverid, firstname, lastname, password, email,
+			phone, zip_primary, zip_secondary, address, city, state, carbrand, carnumber, video, callback);
+}
 
 //Dont follow this way of implementation, I will refactor this code. If others also add same code then it will be  overhead for me...
 function customer(message, callback)	{

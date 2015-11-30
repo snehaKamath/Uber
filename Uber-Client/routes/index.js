@@ -6,7 +6,7 @@ module.exports = function (app)	{
 	  app.get('/customerSignIn',	customerSignIn);
 	  app.get('/home',	homePage);
 	  app.get('/driverSignUp',	driverSignUp);
-	  app.get('/customerSignUp', customerSignUp);
+	  app.get('/customerSignUp', customerSignUp);	  
 };
 
 function root(req, res)	{	
@@ -26,7 +26,7 @@ function customerSignIn(req,res)	{
 }
 
 function driverSignUp(req,res)	{	
-	res.render('driver_signup');	
+	res.render('driverSignUp');	
 }
 
 function homePage(req,res)	{	
