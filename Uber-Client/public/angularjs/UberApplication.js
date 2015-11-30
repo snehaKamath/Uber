@@ -28,7 +28,7 @@ uberApp.config([ '$urlRouterProvider', '$stateProvider',
              url:'/myTrips',
              templateUrl:'partials/customerTrips',
           }).state('customerProfile',{
-              url:'/myprofile',
+              url:'/profile',
               templateUrl:'partials/customerProfile',
            }).state('createRide',{
                url:'/createRide',
