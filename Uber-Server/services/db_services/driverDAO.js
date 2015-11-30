@@ -1,6 +1,5 @@
 
 var mysql = require('mysql');
-var mongo = require("./mongo");
 var bcrypt = require('../app_services/bcrypt');
 var mongoHandler = require('./mongoHandler');
 
@@ -82,11 +81,10 @@ exports.createDriver = function( driverid, firstname, lastname, password, email,
 exports.getDriverLocation = function(location, callback){
 	var combinedDriversArray = {};
 	
-		var driver= mongoDB.collection('driver');
 		query = {location:{ $near:{  $geometry:{  type:"point", coordinates: location }, $maxDistance:16093.4}  } }
 		options = {limit : 2, "sort" : [['_id', 'desc']]};
 		console.log(query);
-		driver.find(query, options).toArray(function(err, mongoDrivers){
+		mongoHandler.find('driver', query, options).toArray(function(err, mongoDrivers){
 			var res;
 			if(mongoDrivers.length > 0){
 				
