@@ -1,4 +1,4 @@
-uberApp = angular.module('uberApp');
+var uberApp = angular.module('uberApp');
 uberApp.controller("customerController",function($scope, $http) {
   
 	  $scope.authenticate=function(credentials){
@@ -359,8 +359,6 @@ uberApp.controller("customerController",function($scope, $http) {
 			customer_data.push($scope.customer_city);
 			customer_data.push($scope.customer_state);
 			customer_data.push($scope.customer_zip_1);
-			if($scope.customer_zip_2=='')
-				$scope.customer_zip_2	=null;
 			customer_data.push($scope.customer_zip_2);
 			customer_data.push($scope.customer_phone_number);
 			customer_data.push($scope.customer_email);
@@ -398,4 +396,6 @@ uberApp.controller("customerController",function($scope, $http) {
 		$scope.customer_state=data.state;
 	 }, function() {
 		});
+  
+  
 });

@@ -1,4 +1,4 @@
-uberApp = angular.module('uberApp');
+var uberApp = angular.module('uberApp');
 uberApp.controller("ridesController",function($scope, $state, $http, $window, NgMap){
 	var Map;
 	var source_address = {};

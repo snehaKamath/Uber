@@ -1,69 +1,20 @@
-/**
- * http://usejsdoc.org/
- */
+
 var mysql = require('mysql');
 var mongo = require("./mongo");
-var MongoClient = require('mongodb').MongoClient; 
-var mongoURL = "mongodb://localhost:27017/uber"
 var bcrypt = require('../app_services/bcrypt');
-
-function connectDB(){
-  var connection = mysql.createConnection({
-        host: '127.0.0.1',
-        user: 'root',
-        password : '',
-        database : 'uber',
-        multipleStatements : true
-    });
-
-    connection.connect(function (err) {
-    
-        if (err) { throw err; }
-
-    });
-    return connection;
-}
-
-// this connection takes collection name, qry  and callback to be executed........
-function connectMongo(colname,qry,callback){
-	var connectionmongo=
-		MongoClient.connect("mongodb://localhost:27017/uber", function(err, _db){ 	
-	if(err){throw err;}
-	console.log(_db);
-	//return _db;
-	//return _db;
-		
-		db=_db;
-		coll=db.collection(colname);
-		coll.insert(qry,function(err,res){
-			if(err)	{
-				response = {statusCode : 401, message : "Passwords do not match"};
-				callback(response);
-			}
-			else
-				{
-				response = {statusCode : 200, message : "success"};
-				callback(response);
-				}
-			});
-		
-		});
-//return connectionmongo;	
-};
+var mongoHandler = require('./mongoHandler');
 
 exports.validateDriver = function(email, password, callback){
  
-  var connection = connectDB();
-  var query = "select * from driver_credentials where  email = "+connection.escape(email);
+  var query = "select * from driver_credentials where  email = ?";
   
-    connection.query(query, function (err, rows, fields) {
-      
+    mysql_pool.query(query, [email], function(err, rows, fields) {
+  
       var res;
       if(rows.length >0){
         bcrypt.decryption(password, rows[0].PASSWORD, function(response){
           if(response == "success"){
-            res = {statusCode : 200, message : {driverID : rows[0].DRIVER_ID, email : rows[0].EMAIL, approvalStatus : rows[0].STATUS}};
-            
+            res = {statusCode : 200, message : {driverID : rows[0].DRIVER_ID, email : rows[0].EMAIL, approvalStatus : rows[0].STATUS}};            
           }
           else{
             res = {statusCode : 401, message : "Passwords do not match"};            
@@ -79,46 +30,59 @@ exports.validateDriver = function(email, password, callback){
     });
 };
 
-exports.createDriver=function(message,callback)
-{
-	console.log(message);	
+exports.createDriver = function( driverid, firstname, lastname, password, email,
+												phonenumber, zip_primary, zip_secondary, address, city, 
+												state, carbrand, carnumber, video, 
+												callback)	{
 	console.log('In create driver database object');	
-	var connection = connectDB();
-	var query = "INSERT INTO driver(driver_id, firstname,lastname,address,city,state,phone_number,zip_primary, zip_secondary) VALUES("+message.data[0]+",'"+message.data[1]+"','"+message.data[2]+"','"+message.data[8]+"','"+message.data[9]+"','"+message.data[10]+"',"+message.data[5]+","+message.data[6]+","+message.data[7]+");";
-	console.log(query);
-	connection.query(query, function (err, rows, fields) 
-		{
+	
+	var insert_query = "INSERT INTO driver VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)";
+	var params = [ driverid, firstname, lastname, address, city, zip_primary, state, phonenumber, zip_secondary ];
+	
+	var query = mysql_pool.query(insert_query, params, function (err, rows, fields) {
 			if(err)
 				{
+					console.log(err);
 					response = {statusCode : 401, message : "exist"};
 					callback(response);
 				}
 			if(!err)
 				{
-					var query2="INSERT INTO driver_credentials values('"+message.data[4]+"','"+message.data[3]+"',"+message.data[0]+","+0+");";
-					console.log(query2);
-					connection.query(query2,function(err,rows,fields){
+					var insert_query = "INSERT INTO driver_credentials values(?, ?, ?, ?)";
+					var params = [ email, password,  driverid, 0 ];
 					
-					if(err)
-						{
-							response = {statusCode : 401, message : "failure"};
-							callback(response);
-						}
-					if(!err)
-						{
-							response = {statusCode : 200, message : "success"};								
-							qry={"_id":message.data[0],"reviews":[],"video":message.data[13],location:[],"car":{"brand":message.data[11],"number":message.data[12]}};
-							connectMongo("driver",qry,callback);											
-						}						
-					});
+					var query = mysql_pool.query(insert_query, params, function(err,rows,fields){
+						var response;
+							if(err)
+								{
+									response = {statusCode : 401, message : "failure"};
+									callback(response);
+								}
+							if(!err)
+								{
+									response = {statusCode : 200, message : "success"};								
+									var qry={"_id": driverid, "reviews":[], "video" : video, location:[], "car":{"brand":carbrand, "number" : carnumber}};
+									mongoHandler.insert("driver", qry, function(err, res)	{
+										var response;
+										if(err)	{
+											response = {statusCode : 401, message : "Passwords do not match"};
+										}
+										else	{
+											response = {statusCode : 200, message : "success"};
+										}
+										callback(response);
+									});											
+								}						
+							});
+					console.log(query);
 				}	
 		});
 };
 
 exports.getDriverLocation = function(location, callback){
 	var combinedDriversArray = {};
-	mongo.connect(mongoURL, function(db){
-		var driver= mongo.collection(db,'driver');
+	
+		var driver= mongoDB.collection('driver');
 		query = {location:{ $near:{  $geometry:{  type:"point", coordinates: location }, $maxDistance:16093.4}  } }
 		options = {limit : 2, "sort" : [['_id', 'desc']]};
 		console.log(query);
@@ -131,10 +95,10 @@ exports.getDriverLocation = function(location, callback){
 					mongoDrivers[res].location = mongoDrivers[res].location.reverse();
 					driversArray.push(mongoDrivers[res]._id);
 				}
-				var connection = connectDB();
+				
 				var query = "select driver_id,firstname, lastname, phone_number from driver where driver_id in ("+driversArray+")order by driver_id desc"
 				console.log("query is "+query);
-				connection.query(query, function (err, sqlDrivers, fields){
+				mysql_pool.query(query, function (err, sqlDrivers, fields){
 				
 					console.log(err);
 					console.log(sqlDrivers[0]);
@@ -167,11 +131,7 @@ exports.getDriverLocation = function(location, callback){
 			{
 				res = {statusCode : 404, message : "No cars available"};
 				callback(res);
-			}
-			
-			
-		}); 
-		
+			}					 		
 		
 	})
 

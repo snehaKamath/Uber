@@ -1,4 +1,4 @@
-uberApp = angular.module('uberApp');
+var uberApp = angular.module('uberApp');
 uberApp.controller("adminController",function($scope,$http,$window,$state){
   
   $scope.adminSignIn=function(){

@@ -8,15 +8,15 @@ module.exports = function (app)	{
 	  app.get('/home',	homePage);
 	  app.get('/driverSignUp',	driverSignUp);
 	  app.get('/customerSignUp', customerSignUp);
-	  app.get('/redirectToLoginOptions',redirectToLoginOptions);
+	  app.get('/loginOptions',loginOptions);
 };
 
 function root(req, res)	{	
 	res.render('index');
 }
 
-function redirectToLoginOptions(req, res)	{	
-	res.render('redirectToLoginOptions');
+function loginOptions(req, res)	{	
+	res.render('loginOptions');
 }
 
 
@@ -65,5 +65,3 @@ function partials(req, res)
 	var name = req.params.name;
 	res.render('partials/' + name);
 }
-
-

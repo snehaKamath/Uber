@@ -1,37 +1,18 @@
-var mysql = require('mysql');
 var bcrypt = require('../app_services/bcrypt');
-
-function connectDB(){
-	  var connection = mysql.createConnection({
-	        host: '127.0.0.1',
-	        user: 'root',
-	        password : '',
-	        database : 'uber',
-	        multipleStatements : true
-	    });
-
-	    connection.connect(function (err) {
-	    
-	        if (err) { throw err; }
-
-	    });
-	    return connection;
-	}
+var mysql = require('mysql');    //Use this only for format
  
 exports.validateCustomer = function(email, password, callback){
 	 
-	  var connection = connectDB();
-	  var query = "select * from customer_credentials where  email = "+connection.escape(email);
+	  var query = "select * from customer_credentials where  email =  ? ";	  
+	    mysql_pool.query(query, [email], function (err, rows, fields) {
 	  
-	    connection.query(query, function (err, rows, fields) {
-	      console.log(err);
 	      var res;
 	      if(rows.length >0){
 	        bcrypt.decryption(password, rows[0].PASSWORD, function(response){
-	          if(response == "success"){
+	          if(response === "success")	{
 	            res = {statusCode : 200, message : {customerID : rows[0].CUSTOMER_ID, email : rows[0].EMAIL, approvalStatus : rows[0].STATUS}};
 	          }
-	          else{
+	          else	{
 	            res = {statusCode : 401, message : "Passwords do not match"};
 	          }
 	          callback(res);	            	          
@@ -43,23 +24,21 @@ exports.validateCustomer = function(email, password, callback){
 	    });
 };
 	
+
 exports.getCustomerDetails = function(query,params,callback){
-		query = mysql.format(query,params);
-		console.log(query);
-		var connection=connectDB();
-		connection.query(query, function (err, rows, fields) {
-			if(err){
-				callback(null);
+	mysql_pool.query(query, params, function (err, rows, fields) {
+		if(err){
+			callback(null);
+		}
+		else{
+			if(rows.length>0){
+				callback(rows);
 			}
 			else{
-				if(rows.length>0){
-					callback(rows);
-				}
-				else{
-					callback(null);
-				}
+				callback(null);
 			}
-		});
+		}
+	});
 };
 
 exports.insertDataToDatabase=function(customer_id,firstname,lastname,address,city,zipcode_primary,zipcode_secondary,state,phone_number,email,password,status,cardnumber,cardtype,expirydate,cvv,cardholdername,callback){
@@ -72,13 +51,12 @@ exports.insertDataToDatabase=function(customer_id,firstname,lastname,address,cit
 	var thirdInsertQuery="insert into creditcard values(?,?,?,?,?,?)";
 	params=[customer_id,cardnumber,cardtype,expirydate,cvv,cardholdername];
 	finalQuery+=mysql.format(thirdInsertQuery,params);
-	var connection=connectDB();
 	console.log(finalQuery);
 	/*var query="CALL storeCustomerSignUpData('"+customer_id+"','"+firstname+"','"+lastname+"','"+address+"','"+city+"','"+zipcode_primary+"','"+zipcode_secondary+"','"+state+"','"+phone_number+"','"+email+"','"+password+"','"+status+"','"+cardnumber+"','"+cardtype+"','"+expirydate+"','"+cvv+"','"+cardholdername+")";
 	var connection=connectDB();
 	console.log(query);
 	connection.query(query, function (err, rows, fields) {*/
-	connection.query(finalQuery, function (err, rows, fields) {
+	mysql_pool.query(finalQuery, function (err, rows, fields) {
 		if(rows){
 			callback(rows);
 		}
@@ -91,8 +69,7 @@ exports.insertDataToDatabase=function(customer_id,firstname,lastname,address,cit
 exports.deleteQuery = function(query,params,callback){
 		query = mysql.format(query,params);
 		console.log(query);
-		var connection=connectDB();
-		connection.query(query, function (err, rows, fields) {
+		mysql_pool.query(query, function (err, rows, fields) {
 			if(rows){
 				callback(rows);
 			}
@@ -108,8 +85,7 @@ exports.getCustomerProfileDetails=function(ssn,callback){
 	var select_creditcard_query="select * from creditcard where customer_id="+ssn;
 	var data={};
 	console.log(select_customer_query+"\n"+select_customer_credentials_query);
-	var connection=connectDB();
-	connection.query(select_customer_query, function (err, rows, fields) {
+	mysql_pool.query(select_customer_query, function (err, rows, fields) {
 		if(err){
 			callback(null);
 		}
@@ -123,14 +99,14 @@ exports.getCustomerProfileDetails=function(ssn,callback){
 				data.zipcode_secondary=rows[0].ZIP_SECONDARY;
 				data.phone=rows[0].PHONE_NUMBER;
 				data.state=rows[0].STATE;
-				connection.query(select_customer_credentials_query, function (err, rows, fields) {
+				mysql_pool.query(select_customer_credentials_query, function (err, rows, fields) {
 					if(err){
 						callback(null);
 					}
 					else{
 						if(rows.length>0){
 							data.email=rows[0].EMAIL;
-							connection.query(select_creditcard_query, function (err, rows, fields) {
+							mysql_pool.query(select_creditcard_query, function (err, rows, fields) {
 								if(err){
 									callback(null);
 								}
@@ -169,8 +145,7 @@ exports.updateCustomerDetails=function(ssn,firstName,lastName,address,city,state
 	params=[email,ssn];
 	finalQuery+=mysql.format(update_customer_credentials_query,params)+";";
 	console.log(finalQuery);
-	var connection=connectDB();
-	connection.query(finalQuery, function (err, rows, fields) {
+	mysql_pool.query(finalQuery, function (err, rows, fields) {
 		if(rows){
 			callback(rows);
 		}
