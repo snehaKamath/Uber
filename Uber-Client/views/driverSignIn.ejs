@@ -3,6 +3,10 @@
     <%include headerScripts.ejs %>
     <script src="/angularjs/uberApplication.js"></script>
     <script src="/angularjs/driverController.js"></script>
+    <link rel= "stylesheet" href="/stylesheets/style.css"></link>
+    
+
+    
     
 </head>
 <body style = "background-color : black" ng-app = "uberApp" ng-controller = "driverController">
@@ -12,9 +16,13 @@
         
         <div class = "col-md-4 col-md-offset-4" style = "left : 30px">
         
-        <img style = "position : absolute; left : 85px;width : 200px; height : 200px;" src = "./images/uber.jpg"/>
-            <form class = "form" style = "position : absolute; top: 200px;">
-                
+       
+                <form class = "form" style = "position : absolute;">
+                     <p class="center uber-logo-container">
+                    <a href="/" class="uber-logo ir">Uber</a>
+                 </p>
+                <p class="focused-view-subtitle uppercase center border-center">
+                <span> Log In </span></p>
                 <div class="form-group">
               <label style = "color : white; width : 200px;">EMAIL</label>
                 <input type="email" style = "width : 350px; height : 50px" class="form-control" ng-model = "credentials.email">

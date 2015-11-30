@@ -1,8 +1,5 @@
-/**
- * http://usejsdoc.org/
- */
+
 var mysql = require('mysql');
-var mongo = require("./mongo");
 var bcrypt = require('../app_services/bcrypt');
 var mongoHandler = require('./mongoHandler');
 
@@ -44,6 +41,7 @@ exports.createDriver = function( driverid, firstname, lastname, password, email,
 	var query = mysql_pool.query(insert_query, params, function (err, rows, fields) {
 			if(err)
 				{
+					console.log(err);
 					response = {statusCode : 401, message : "exist"};
 					callback(response);
 				}
@@ -82,12 +80,11 @@ exports.createDriver = function( driverid, firstname, lastname, password, email,
 
 exports.getDriverLocation = function(location, callback){
 	var combinedDriversArray = {};
-	mongo.connect(mongoURL, function(db){
-		var driver= mongo.collection(db,'driver');
+	
 		query = {location:{ $near:{  $geometry:{  type:"point", coordinates: location }, $maxDistance:16093.4}  } }
 		options = {limit : 2, "sort" : [['_id', 'desc']]};
 		console.log(query);
-		driver.find(query, options).toArray(function(err, mongoDrivers){
+		mongoHandler.find('driver', query, options).toArray(function(err, mongoDrivers){
 			var res;
 			if(mongoDrivers.length > 0){
 				
@@ -96,10 +93,10 @@ exports.getDriverLocation = function(location, callback){
 					mongoDrivers[res].location = mongoDrivers[res].location.reverse();
 					driversArray.push(mongoDrivers[res]._id);
 				}
-				var connection = connectDB();
+				
 				var query = "select driver_id,firstname, lastname, phone_number from driver where driver_id in ("+driversArray+")order by driver_id desc"
 				console.log("query is "+query);
-				connection.query(query, function (err, sqlDrivers, fields){
+				mysql_pool.query(query, function (err, sqlDrivers, fields){
 				
 					console.log(err);
 					console.log(sqlDrivers[0]);
@@ -132,11 +129,7 @@ exports.getDriverLocation = function(location, callback){
 			{
 				res = {statusCode : 404, message : "No cars available"};
 				callback(res);
-			}
-			
-			
-		}); 
-		
+			}					 		
 		
 	})
 

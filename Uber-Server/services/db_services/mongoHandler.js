@@ -23,8 +23,8 @@ exports.findOne = function (collectionName, query, callback){
 	});	
 };
 
-exports.find = function (collectionName, query){
+exports.find = function (collectionName, query, options){
 	var collection = global.mongoDB.collection(collectionName);
-	return collection.find(query);	
+	return collection.find(query, options);	
 };
 

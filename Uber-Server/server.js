@@ -8,10 +8,10 @@ var driverModule = require('./services/app_services/driver');
 var ridesModule = require('./services/app_services/rides');
 var signInModule = require('./services/app_services/signIn');
 var signUpModule = require('./services/app_services/signUp');
-var CacheModule = require('./services/db_services/Cache');
+/*var CacheModule = require('./services/db_services/Cache');
 
 var Cache = new CacheModule();
-Cache.testMethod(); 
+Cache.testMethod(); */ 
 
 //Initialize mongoDB and save the reference for other services to use.....
 var MongoClient = require('mongodb').MongoClient;
