@@ -1,5 +1,5 @@
-var uber = angular.module('uberApp', []);
-uber.controller('signUp', function($scope, $http) {
+var uberApp = angular.module('uberApp');
+uberApp.controller('signUp', function($scope, $http) {
 	//disable all errors by default
 	//ssn
 	function malformed_state_exception(){

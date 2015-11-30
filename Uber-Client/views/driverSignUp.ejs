@@ -2,14 +2,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-<script src ="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.7/angular.min.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.16/angular-route.min.js"></script>
-	<script src="http://angular-ui.github.io/ui-router/release/angular-ui-router.js"></script>
-<link rel='stylesheet' href='style.css'/>
-<script src="/angularjs/UberApplication.js"></script>
+<%include headerScripts %>
+<script src="/angularjs/uberApplication.js"></script>
     <script src="/angularjs/driverController.js"></script>
 </head>
  <body background="/images/uber_driver.jpg" ng-controller="driversignUp">
@@ -38,9 +32,9 @@
 				<span class="label label-danger" ng-hide="lname_sizeerror">Last name must be only 24 characters including spaces</span>
 				<span class="label label-danger" ng-hide="lname_emptyerror">last name is mandatory</span><br/>
 				
-				<input type="text" class="form-control" id="driver_id_1" maxlength="3" placeholder="123" style="width:25%;display:inline;" ng-model="driver_id_1"> -
+				<input type="text" class="form-control" id="driver_id_1" maxlength="3" placeholder="123" style="width:20%;display:inline;" ng-model="driver_id_1"> -
 				<input type="text" class="form-control" id="driver_id_2" maxlength="2" placeholder="12" style="width:20%;display:inline;" ng-model="driver_id_2"> - 
-				<input type="text" class="form-control" id="driver_id_3" maxlength="4" placeholder="1234(SSN Number)" style="width:47%;display:inline;" ng-model="driver_id_3">
+				<input type="text" class="form-control" id="driver_id_3" maxlength="4" placeholder="1234(SSN Number)" style="width:45%;display:inline;" ng-model="driver_id_3">
 				<span class="label label-danger" ng-hide="ssn_typeerror">Please Enter Only numbers</span>
 				<span class="label label-danger" ng-hide="ssn_emptyerror">SSN is mandatory</span>
 				<span class="label label-danger" ng-hide="ssn_sizeerror">SSN Must be in (123-23-4567) format</span>

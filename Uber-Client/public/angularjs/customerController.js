@@ -1,5 +1,5 @@
-uberApp = angular.module('uberApp',[]);
-uberApp.controller("customercontroller",function($scope, $http) {
+var uberApp = angular.module('uberApp');
+uberApp.controller("customerController",function($scope, $http) {
   
 	  $scope.authenticate=function(credentials){
     
@@ -12,7 +12,7 @@ uberApp.controller("customercontroller",function($scope, $http) {
     	}
     	else
     		{
-    			window.location.assign('homePage');
+    			window.location.assign('home');
     		}
       
     }).error(function(data){

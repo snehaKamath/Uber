@@ -1,4 +1,4 @@
-uberApp = angular.module('uberApp');
+var uberApp = angular.module('uberApp');
 uberApp.controller("driverController",function($scope, $state, $http, $window){
   
   $scope.authenticate=function(credentials){

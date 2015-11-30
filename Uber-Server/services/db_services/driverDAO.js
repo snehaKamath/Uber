@@ -1,6 +1,8 @@
 /**
  * http://usejsdoc.org/
  */
+var mysql = require('mysql');
+var mongo = require("./mongo");
 var bcrypt = require('../app_services/bcrypt');
 var mongoHandler = require('./mongoHandler');
 
@@ -18,14 +20,15 @@ exports.validateDriver = function(email, password, callback){
           }
           else{
             res = {statusCode : 401, message : "Passwords do not match"};            
+            
           }
-      	  callback(res);
+	  callback(res);
         });
       }
       else{
         res = {statusCode : 401, message : "Invalid Email"};
-    	callback(res);
-      }    
+        callback(res);
+      }   
     });
 };
 
@@ -41,7 +44,7 @@ exports.createDriver = function( driverid, firstname, lastname, password, email,
 	var query = mysql_pool.query(insert_query, params, function (err, rows, fields) {
 			if(err)
 				{
-					var response = {statusCode : 401, message : "exist"};
+					response = {statusCode : 401, message : "exist"};
 					callback(response);
 				}
 			if(!err)
@@ -75,5 +78,68 @@ exports.createDriver = function( driverid, firstname, lastname, password, email,
 					console.log(query);
 				}	
 		});
-	console.log(query);
 };
+
+exports.getDriverLocation = function(location, callback){
+	var combinedDriversArray = {};
+	mongo.connect(mongoURL, function(db){
+		var driver= mongo.collection(db,'driver');
+		query = {location:{ $near:{  $geometry:{  type:"point", coordinates: location }, $maxDistance:16093.4}  } }
+		options = {limit : 2, "sort" : [['_id', 'desc']]};
+		console.log(query);
+		driver.find(query, options).toArray(function(err, mongoDrivers){
+			var res;
+			if(mongoDrivers.length > 0){
+				
+				var driversArray = [];
+				for(res in mongoDrivers){
+					mongoDrivers[res].location = mongoDrivers[res].location.reverse();
+					driversArray.push(mongoDrivers[res]._id);
+				}
+				var connection = connectDB();
+				var query = "select driver_id,firstname, lastname, phone_number from driver where driver_id in ("+driversArray+")order by driver_id desc"
+				console.log("query is "+query);
+				connection.query(query, function (err, sqlDrivers, fields){
+				
+					console.log(err);
+					console.log(sqlDrivers[0]);
+					console.log(mongoDrivers);
+					for(driver in mongoDrivers)
+					{
+						   combinedDriversArray[mongoDrivers[driver]._id] = {
+								   										  driverId : mongoDrivers[driver]._id,
+								   										  firstName : sqlDrivers[driver].firstname, 
+								   							   			  lastName : sqlDrivers[driver].lastname,
+								   							   			  phone : sqlDrivers[driver].phone_number,
+								   							   			  carDetails : mongoDrivers[driver].car,
+								   							   			  driverReviews : mongoDrivers[driver].reviews,
+								   							   			  location : mongoDrivers[driver].location,
+								   							   			  video : mongoDrivers[driver].video,
+								   							   			  rating : mongoDrivers[driver].rating
+								   							   			  }; 
+						
+						   
+					}
+		
+					console.log("Array "+combinedDriversArray["109090910"].firstName);
+	
+					res = {statusCode : 200, message : { driverData : combinedDriversArray, locations : mongoDrivers}};
+					callback(res);
+				});
+				
+			}
+			else
+			{
+				res = {statusCode : 404, message : "No cars available"};
+				callback(res);
+			}
+			
+			
+		}); 
+		
+		
+	})
+
+  
+};
+
