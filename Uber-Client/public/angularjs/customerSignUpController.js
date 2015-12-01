@@ -9,6 +9,7 @@ uberApp.controller('signUp', function($scope, $http) {
 	$scope.ssn_typeerror=true;
 	$scope.ssn_emptyerror=true;
 	$scope.ssn_sizeerror=true;
+	$scope.ssn_exists=true;
 	//first name
 	$scope.firstname_typeerror=true;
 	$scope.firstname_sizeerror=true;
@@ -38,11 +39,12 @@ uberApp.controller('signUp', function($scope, $http) {
 	$scope.phone_typeerror=true;
 	$scope.phone_sizeerror=true;
 	$scope.phone_emptyerror=true;
+	$scope.phone_exists=true;
 	//Phone
 	$scope.email_typeerror=true;
 	$scope.email_sizeerror=true;
 	$scope.email_emptyerror=true;
-	
+	$scope.email_exists=true;
 	//password
 	$scope.password_sizeerror=true;
 	$scope.password_emptyerror=true;
@@ -72,6 +74,7 @@ uberApp.controller('signUp', function($scope, $http) {
 		$scope.ssn_typeerror=true;
 		$scope.ssn_emptyerror=true;
 		$scope.ssn_sizeerror=true;
+		$scope.ssn_exists=true;
 		//first name
 		$scope.firstname_typeerror=true;
 		$scope.firstname_sizeerror=true;
@@ -101,11 +104,12 @@ uberApp.controller('signUp', function($scope, $http) {
 		$scope.phone_typeerror=true;
 		$scope.phone_sizeerror=true;
 		$scope.phone_emptyerror=true;
+		$scope.phone_exists=true;
 		//Email
 		$scope.email_typeerror=true;
 		$scope.email_sizeerror=true;
 		$scope.email_emptyerror=true;
-		
+		$scope.email_exists=true;
 		//password
 		$scope.password_sizeerror=true;
 		$scope.password_emptyerror=true;
@@ -504,14 +508,22 @@ uberApp.controller('signUp', function($scope, $http) {
 					"data" : customer_data
 				}
 				}).success(function(result) {
-				if(result.status == "success"){
-					alert("Successfully Registered");
-					window.location.assign("/customerSignIn");
-				}
-				else if(result.status=="fail")
-				{
-					alert(result.msg);
-				}
+					if(result.status == "success"){
+						alert("Successfully Registered");
+						window.location.assign("/customerSignIn");
+					}
+					else if(result.status=="fail")
+					{
+						if(result.msg=="SSN exists"){
+							$scope.ssn_exists=false;
+						}
+						else if(result.msg=="Phone exists"){
+							$scope.phone_exists=false;
+						}
+						else if(result.msg=="Email exists"){
+							$scope.email_exists=false;
+						}
+					}
 				}).error(function(error) {
 					alert("Unknown error.Please try again later");
 			});

@@ -1,5 +1,5 @@
 uberApp = angular.module('uberApp');
-uberApp.controller("driverRideController",function($scope, $state, $http, $window){
+uberApp.controller("driverRideController",function($scope, $state, $http, $window, $interval){
 	
 console.log('Inside driver ride controller');
 $http.get('/driverincompletereview').success(function(data){
@@ -26,7 +26,7 @@ console.log(data);
 });
 
 
-$http.get('/getriderequest').success(function(data){
+$interval(function(){$http.get('/getriderequest').success(function(data){
 	console.log(data);
 	var cust=data.msg.message;
 	//console.log('This is the final obtained after fetch');
@@ -48,7 +48,7 @@ $http.get('/getriderequest').success(function(data){
 	$scope.distance=cust.distance;
 		}
 
-});
+})},12000);
 	
 $scope.accept=function(){
 	$scope.flag1=0;
@@ -139,9 +139,9 @@ var formdata={customer_id:$scope.cust_id,rating:$scope.ratingg,review:$scope.rev
 console.log(formdata);
 $http.post('/reviewcustomer',formdata).success(function(data){
 	console.log(data);
+});
 $http.post('/updatedriverreview',{ride_id:$scope.ride_id}).success(function(data){
 	
-});
 });
 window.location.assign("home");
 };

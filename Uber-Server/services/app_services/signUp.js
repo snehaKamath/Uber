@@ -3,17 +3,17 @@
  */
 var driverDAO = require('../db_services/driverDAO');
 var bcryptObject = require('./bcrypt'); 
-var customerDAOObject=require('../db_services/customerDAO');
+var customerDAO=require('../db_services/customerDAO');
 
 exports.handle_request = function(message, callback)	{
 	console.log('This is reached at driver handle request');
 	if(message.reqType === "createDriver")		{ 
-		console.log('This is reached at driver handle request');
+		console.log('This is create  at driver handle request');
 		createDriver(message, callback);		
 	}
 	
 	if(message.reqType === "customerSignUp")		{
-		customer(message, callback);
+		createCustomer(message, callback);
 	}	
 };
 
@@ -34,13 +34,15 @@ function createDriver(message, callback)	{
 	var carnumber = message.data[12];
 	var video = message.data[13];
 	console.log("Inside Sign Up after fetch");
-
-	driverDAO.createDriver( driverid, firstname, lastname, password, email,
-			phone, zip_primary, zip_secondary, address, city, state, carbrand, carnumber, video, callback);
+	bcryptObject.encryption(password, function(hash) {
+		var hashedPassword=hash;
+		driverDAO.createDriver( driverid, firstname, lastname, hashedPassword, email,
+				phone, zip_primary, zip_secondary, address, city, state, carbrand, carnumber, video, callback);
+	});
 }
 
 //Dont follow this way of implementation, I will refactor this code. If others also add same code then it will be  overhead for me...
-function customer(message, callback)	{
+function createCustomer(message, callback)	{
 	var ssn=message.data[0]+message.data[1]+message.data[2];
 	var firstname=message.data[3];
 	var lastname=message.data[4];
@@ -60,21 +62,24 @@ function customer(message, callback)	{
 	var status=0;
 	var myuser = [];
 	var res={};
-	var select_customerDetails_query="select * from customer where customer_id=? OR PHONE_NUMBER=?";
-	var params=[ssn,phone];
-	customerDAOObject.getCustomerDetails(select_customerDetails_query, params, function(results){
+	customerDAO.getCustomerDetails(ssn,phone, function(results){
 		if(results){
-			res.code = "401";
-			res.value="SSN or PhoneNumber already exists";
-			callback(res);
+			if(ssn==results[0].CUSTOMER_ID){
+				res.code = "401";
+				res.value="SSN exists";
+				callback(res);
+			}
+			else if(phone==results[0].PHONE_NUMBER){
+				res.code = "401";
+				res.value="Phone exists";
+				callback(res);
+			}
 		}
 		else{
-			var select_customerCredentials_query="select * from customer_credentials where email=?";
-			var params=[email];
-			customerDAOObject.getCustomerDetails(select_customerCredentials_query, params, function(results){
+			customerDAO.getCustomerCredentialsDetails(email,function(results){
 				if(results){
 					res.code = "401";
-					res.value="Email already exists";
+					res.value="Email exists";
 					callback(res);
 				}
 				else{
@@ -82,7 +87,7 @@ function customer(message, callback)	{
 						var hashedPassword=hash;
 						bcryptObject.encryption(cardnumber, function(hash) {
 							var hashedCreditCardNumber=hash;
-							customerDAOObject.insertDataToDatabase(ssn, firstname, lastname, address, city, zip_primary, zip_secondary, state, phone, email, hashedPassword, status, hashedCreditCardNumber, cardtype, expirydate, cvv, cardHolderName, function(result) {
+							customerDAO.insertDataToDatabase(ssn, firstname, lastname, address, city, zip_primary, zip_secondary, state, phone, email, hashedPassword, status, hashedCreditCardNumber, cardtype, expirydate, cvv, cardHolderName, function(result) {
 								if(result){
 									res.code = "200";
 									res.value="Successfully Created Account";

@@ -1,7 +1,7 @@
-/**
+ /**
  * New node file
  */
-
+customerDAO = require('../db_services/driverDAO');
 exports.handle_request = function(message, callback)	{
 	if(message.reqType === "driverLocations")		{ 
 		getDriverLocation(message, callback);
@@ -35,8 +35,8 @@ function getDriverLocation(message, callback){
 	});			
 }
 function getriderequest(message,callback){
-	  
-	driverDAO.getriderequest({id:message.id},function(response){
+	  var driver_id=message.id;
+	driverDAO.getriderequest(driver_id,function(response){
 		callback(response);
 	});
 	  
@@ -75,19 +75,40 @@ function updateDriverDetails(message,callback){
 	var status=0;
 	var myuser = [];
 	var res={};
-	driverDAO.updateDriverDetails(ssn,firstName,lastName,address,city,state,zip_primary,zip_secondary,phone,email,function(results){
+	driverDAO.getDriverDetails('',phone, function(results){
 		if(results){
-			res.code=200;
-			res.value="Successfully Updated";
-			callback(res);
+			if(phone==results[0].PHONE_NUMBER){
+				res.code = "401";
+				res.value="Phone exists";
+				callback(res);
+			}
 		}
 		else{
-			res.code=401;
-			res.value="No records found";
-			callback(res);
+			driverDAO.getDriverCredentialsDetails(email, function(results) {
+				if(results){
+					if(email==results[0].EMAIL){
+					res.code = "401";
+					res.value="Email exists";
+					callback(res);
+					}
+				}
+				else{
+					driverDAO.updateDriverDetails(ssn,firstName,lastName,address,city,state,zip_primary,zip_secondary,phone,email,function(results){
+						if(results){
+							res.code=200;
+							res.value="Successfully Updated";
+							callback(res);
+						}
+						else{
+							res.code=401;
+							res.value="No records found";
+							callback(res);
+						}
+					});
+				}
+			})
 		}
 	});
-	  
 };
 
 

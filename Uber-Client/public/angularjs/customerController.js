@@ -48,10 +48,12 @@ uberApp.controller("customerController",function($scope, $http) {
 	$scope.phone_typeerror=true;
 	$scope.phone_sizeerror=true;
 	$scope.phone_emptyerror=true;
+	$scope.phone_exists=true;
 	//Email
 	$scope.email_typeerror=true;
 	$scope.email_sizeerror=true;
 	$scope.email_emptyerror=true;
+	$scope.email_exists=true;
 	//state
 	$scope.state_typeerror=true;
 	$scope.state_sizeerror=true;
@@ -97,10 +99,12 @@ uberApp.controller("customerController",function($scope, $http) {
 		$scope.phone_typeerror=true;
 		$scope.phone_sizeerror=true;
 		$scope.phone_emptyerror=true;
+		$scope.phone_exists=true;
 		//Email
 		$scope.email_typeerror=true;
 		$scope.email_sizeerror=true;
 		$scope.email_emptyerror=true;
+		$scope.email_exists=true;
 		//state
 		$scope.state_typeerror=true;
 		$scope.state_sizeerror=true;
@@ -369,8 +373,17 @@ uberApp.controller("customerController",function($scope, $http) {
 					"data" : customer_data
 				}
 				}).success(function(result) {
-					if(result){
-						alert(result);
+					if(result.status == "success"){
+						alert("Successfully Updated");
+					}
+					else if(result.status=="fail")
+					{
+						if(result.msg=="Phone exists"){
+							$scope.phone_exists=false;
+						}
+						else if(result.msg=="Email exists"){
+							$scope.email_exists=false;
+						}
 					}
 				}).error(function(error) {
 					alert("Unknown error.Please try again later");

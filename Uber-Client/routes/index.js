@@ -9,10 +9,16 @@ module.exports = function (app)	{
 	  app.get('/driverSignUp',	driverSignUp);
 	  app.get('/customerSignUp', customerSignUp);
 	  app.get('/loginOptions',loginOptions);
+	  app.get('/logout',logout);
 };
 
 function root(req, res)	{	
 	res.render('index');
+}
+
+function logout(req,res){
+	req.session.destroy();
+	res.redirect('/');
 }
 
 function loginOptions(req, res)	{	

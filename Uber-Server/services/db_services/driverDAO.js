@@ -31,15 +31,27 @@ exports.validateDriver = function(email, password, callback){
     });
 };
 
-exports.createDriver=function(message,callback)
+exports.createDriver=function(driverid, firstname, lastname, password, email,
+		phone, zip_primary, zip_secondary, address, city, state, carbrand, carnumber, video, callback)
 {
-	console.log(message);	
+	
 	console.log('In create driver database object');	
+	var driver_data = {
+		DRIVER_ID : driverid,	
+		FIRSTNAME : firstname,
+		LASTNAME : lastname,
+		ADDRESS : address,
+		STATE : state,
+		CITY : city,
+		ZIP_PRIMARY : zip_primary,
+		PHONE_NUMBER : phone,
+		ZIP_SECONDARY : zip_secondary
+	};
 	
-	var insert_query = "INSERT INTO driver VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)";
-	var params = [ driverid, firstname, lastname, address, city, zip_primary, state, phonenumber, zip_secondary ];
+	var insert_query = "INSERT INTO driver SET ?";
+	//var params = [ driverid, firstname, lastname, address, city, zip_primary, state, phone_number, zip_secondary ];
 	
-	var query = mysql_pool.query(insert_query, params, function (err, rows, fields) {
+	var query = mysql_pool.query(insert_query, [driver_data], function (err, rows, fields) {
 			if(err)
 				{
 					console.log(err);
@@ -48,10 +60,15 @@ exports.createDriver=function(message,callback)
 				}
 			if(!err)
 				{
-					var insert_query = "INSERT INTO driver_credentials values(?, ?, ?, ?)";
-					var params = [ email, password,  driverid, 0 ];
+					var insert_query = "INSERT INTO driver_credentials SET ?";
+					var credentials = {
+						EMAIL : email,
+						PASSWORD : password,
+						DRIVER_ID : driverid
+					};
+					//var params = [ email, password,  driverid, 0 ];
 					
-					var query = mysql_pool.query(insert_query, params, function(err,rows,fields){
+					var query = mysql_pool.query(insert_query, [credentials], function(err,rows,fields){
 						var response;
 							if(err)
 								{
@@ -78,14 +95,12 @@ exports.createDriver=function(message,callback)
 				}	
 		});
 };
-exports.getriderequest=function(message,callback)
+exports.getriderequest=function(driver_id,callback)
 {
+var query="select r.ride_id,c.customer_id,c.firstname,c.lastname,c.phone_number,r.source_location,r.source_street,r.source_area,r.source_zipcode,r.source_city,r.destination_location,r.destination_street,r.destination_city,r.destination_zipcode,r.distance from uber.customer c join uber.rides r on c.customer_id=r.customer_id where r.ride_status=0 and r.driver_id=?";
 
-var connection = connectDB();	
-
-var query="select r.ride_id,c.customer_id,c.firstname,c.lastname,c.phone_number,r.source_location,r.source_street,r.source_area,r.source_zipcode,r.source_city,r.destination_location,r.destination_street,r.destination_city,r.destination_zipcode,r.distance from uber.customer c join uber.rides r on c.customer_id=r.customer_id where r.ride_status=0 and r.driver_id="+message.id;
 console.log(query);
-connection.query(query, function (err, rows, fields) 
+mysql_pool.query(query,driver_id, function (err, rows, fields) 
 		{
 	if(err)
 	{
@@ -104,17 +119,17 @@ connection.query(query, function (err, rows, fields)
 	
 };
 
-exports.createBill=function(message,callback)
+exports.createBill=function(ride_id,billing_date,pickup_time,drop_time,status,distance,callback)
 {
-	var connection = connectDB();	
+		
 	console.log('reached bil DAO..');
-	var x=message.message;
-	console.log(x);
 	
-	var durationquery="select UNIX_TIMESTAMP('"+x.drop_time+"')-UNIX_TIMESTAMP('"+x.pickup_time+"') as output;";
+	
+	var durationquery="select UNIX_TIMESTAMP(?)-UNIX_TIMESTAMP(?) as output";
+	var params=[drop_time,pickup_time];
 	//console.log(query);
 	console.log(durationquery);
-	connection.query(durationquery, function (err, rows, fields) 
+	mysql_pool.query(durationquery,params, function (err, rows, fields) 
 			{
 			console.log('duration obtained is ');
 			console.log(rows[0]);
@@ -122,12 +137,13 @@ exports.createBill=function(message,callback)
 			
 			//calculating bill amount here....
 			
-			var bill_amount=x.distance*10+duration*(1/60);
+			var bill_amount=distance*10+duration*(1/60);
 			console.log(bill_amount);
-			console.log(x);
-			var query="update uber.rides set billing_date='"+x.BILLING_DATE+"', pickup_time='"+x.pickup_time+"',drop_time ='"+x.drop_time+"', ride_status = 2, bill_amount="+bill_amount+" where ride_id="+x.ride_id;
-			console.log(query);
-			connection.query(query, function (err, rows, fields) 
+			//console.log(x);
+			var query="update uber.rides set billing_date=?, pickup_time=?,drop_time =?, ride_status = ?, bill_amount=? where ride_id=?";
+			var billparams=[billing_date,pickup_time,drop_time,2,bill_amount,ride_id];
+			console.log(billparams);
+			mysql_pool.query(query, billparams,function (err, rows, fields) 
 				{
 					
 				if(err)
@@ -151,15 +167,16 @@ exports.createBill=function(message,callback)
 });
 };
 
-exports.inprogress=function(message,callback)
+exports.inprogress=function(ride_id,ride_status,callback)
 {
 	
-	var connection = connectDB();	
+	
 	console.log('In update progress DAO....');
-	console.log(message);
-	var query="update uber.rides set ride_status =1 where ride_id="+message.ride_id;
-	console.log(query);
-	connection.query(query, function (err, rows, fields) 
+
+	var query="update uber.rides set ride_status =? where ride_id=?";
+	var params=[ride_id,ride_status];
+console.log(ride_status);
+	mysql_pool.query(query,params, function (err, rows, fields) 
 			{
 				
 			if(err)
@@ -178,11 +195,13 @@ exports.inprogress=function(message,callback)
 	
 });};
 
-exports.reviewcustomer=function(message,callback){
-	var connection = connectDB();
+exports.reviewcustomer=function(driver_id,customer_id,rating,review,callback){
 	console.log('Here in the DAO object for submission of review and rating');
 	
-	console.log(message);
+	//console.log(message);
+	
+	console.log(driver_id);
+	console.log(customer_id);
 	var connectionmongo=
 		MongoClient.connect("mongodb://localhost:27017/uber", function(err, _db){ 	
 	if(err){throw err;}
@@ -191,20 +210,70 @@ exports.reviewcustomer=function(message,callback){
 	//return _db;
 		
 		db=_db;
-		coll=db.collection('driver');
-		coll.update({"_id":message.driver_id},{$push:{reviews:{"customerid":message.message.customer_id,rating:message.message.rating,review:message.message.review}},"$set":{"driver_status":0}},function(err,res){
+		coll=db.collection('customer_reviews');
+		coll.update({"_id":customer_id},{$push:{reviews:{"driverid":driver_id,rating:rating,review:review}}},function(err,res){
 			  if(err)
 				  throw err;
 			  else
 				  {
 				  response={"StatusCode":200};
-				  callback(response);
+				  //callback(response);
+				  coll=db.collection('driver');
+				  coll.update({"_id":driver_id},{$set:{"driver_status":0}},function(err,results){
+					 if(err)
+						 throw err;
+					 else
+						 {
+						 response={"StatusCode":200};
+						 callback(response);
+						 }
+				  });
+				  
+				  
 				  }
 					
 		});
 		});
 };
-	
+
+exports.getDriverDetails = function(ssn,email,callback){
+	var get_driver_query="select * from driver where driver_id=? OR PHONE_NUMBER=?";
+	var params=[ssn,email];
+	mysql_pool.query(get_driver_query, params, function (err, rows, fields) {
+		if(err){
+			callback(null);
+		}
+		else{
+			if(rows.length>0){
+				callback(rows);
+			}
+			else{
+				callback(null);
+			}
+		}
+	});
+};
+
+exports.getDriverCredentialsDetails = function(email,callback){
+	var get_driver_credentials_query="select * from driver_credentials where email=?";
+	var params=[email];
+	mysql_pool.query(get_driver_credentials_query, params, function (err, rows, fields) {
+		if(err){
+			callback(null);
+		}
+		else{
+			if(rows.length>0){
+				callback(rows);
+			}
+			else{
+				callback(null);
+			}
+		}
+	});
+};
+
+
+
 exports.getDriverProfile=function(ssn,callback){
 	console.log('below is ssn');
 	console.log(ssn);
@@ -212,8 +281,7 @@ exports.getDriverProfile=function(ssn,callback){
 	var select_driver_credentials_query="select * from driver_credentials where driver_id="+ssn;
 	var data = {};
 	console.log(select_driver_query+"\n"+select_driver_credentials_query);
-	var connection=connectDB();
-	connection.query(select_driver_query, function (err, rows, fields) {
+	mysql_pool.query(select_driver_query, function (err, rows, fields) {
 		if(err){
 			callback(null);
 		}
@@ -227,7 +295,7 @@ exports.getDriverProfile=function(ssn,callback){
 				data.zipcode_secondary=rows[0].ZIP_SECONDARY;
 				data.phone=rows[0].PHONE_NUMBER;
 				data.state=rows[0].STATE;
-				connection.query(select_driver_credentials_query, function (err, rows, fields) {
+				mysql_pool.query(select_driver_credentials_query, function (err, rows, fields) {
 					if(err){
 						callback(null);
 					}
@@ -256,8 +324,7 @@ exports.updateDriverDetails=function(ssn,firstName,lastName,address,city,state,z
 	params=[email,ssn];
 	finalQuery+=mysql.format(update_driver_credentials_query,params)+";";
 	console.log(finalQuery);
-	var connection=connectDB();
-	connection.query(finalQuery, function (err, rows, fields) {
+	mysql_pool.query(finalQuery, function (err, rows, fields) {
 		if(rows){
 			callback(rows);
 		}

@@ -90,12 +90,14 @@
 	<input type="text" class="form-control" style="width:61%;display:inline;" id="customer_phone_number" maxlength="10" placeholder="Phone Number" ng-model="customer_phone_number">
 	<span class="label label-danger" ng-hide="phone_typeerror">Phone Number contains illegal characters</span>
 	<span class="label label-danger" ng-hide="phone_sizeerror">Phone Number must be 10 digits</span>
-	<span class="label label-danger" ng-hide="phone_emptyerror">Phone Number is mandatory</span><br/><br/>
+	<span class="label label-danger" ng-hide="phone_emptyerror">Phone Number is mandatory</span>
+	<span class="label label-danger" ng-hide="phone_exists">Account with phone Number Already exists</span><br/><br/>
 	*Email:<br/>
 	<input type="email" class="form-control" id="customer_email" maxlength="32" placeholder="Email" ng-model="customer_email">
 	<span class="label label-danger" ng-hide="email_typeerror">Email format is not correct</span>
 	<span class="label label-danger" ng-hide="email_sizeerror">Email must be 32 characters in length</span>
-	<span class="label label-danger" ng-hide="email_emptyerror">Email ID is mandatory</span><br/>
+	<span class="label label-danger" ng-hide="email_emptyerror">Email ID is mandatory</span>
+	<span class="label label-danger" ng-hide="email_exists">Email ID Already exists</span><br/>
 	<div ng-hide="updateProfile"><input type="submit" class="btn btn-success" value="Update Profile"></div>
 	</form>
 

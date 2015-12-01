@@ -25,8 +25,28 @@ exports.validateCustomer = function(email, password, callback){
 };
 	
 
-exports.getCustomerDetails = function(query,params,callback){
-	mysql_pool.query(query, params, function (err, rows, fields) {
+exports.getCustomerDetails = function(ssn,email,callback){
+	var get_customer_query="select * from customer where customer_id=? OR PHONE_NUMBER=?";
+	var params=[ssn,email];
+	mysql_pool.query(get_customer_query, params, function (err, rows, fields) {
+		if(err){
+			callback(null);
+		}
+		else{
+			if(rows.length>0){
+				callback(rows);
+			}
+			else{
+				callback(null);
+			}
+		}
+	});
+};
+
+exports.getCustomerCredentialsDetails = function(email,callback){
+	var get_customer_credentials_query="select * from customer_credentials where email=?";
+	var params=[email];
+	mysql_pool.query(get_customer_credentials_query, params, function (err, rows, fields) {
 		if(err){
 			callback(null);
 		}
@@ -49,13 +69,9 @@ exports.insertDataToDatabase=function(customer_id,firstname,lastname,address,cit
 	params=[email,password,customer_id,status];
 	finalQuery+=mysql.format(secondInsertQuery,params)+";";
 	var thirdInsertQuery="insert into creditcard values(?,?,?,?,?,?)";
-	params=[customer_id,cardnumber,cardtype,expirydate,cvv,cardholdername];
+	var params=[customer_id,cardnumber,cardtype,expirydate,cvv,cardholdername];
 	finalQuery+=mysql.format(thirdInsertQuery,params);
 	console.log(finalQuery);
-	/*var query="CALL storeCustomerSignUpData('"+customer_id+"','"+firstname+"','"+lastname+"','"+address+"','"+city+"','"+zipcode_primary+"','"+zipcode_secondary+"','"+state+"','"+phone_number+"','"+email+"','"+password+"','"+status+"','"+cardnumber+"','"+cardtype+"','"+expirydate+"','"+cvv+"','"+cardholdername+")";
-	var connection=connectDB();
-	console.log(query);
-	connection.query(query, function (err, rows, fields) {*/
 	mysql_pool.query(finalQuery, function (err, rows, fields) {
 		if(rows){
 			callback(rows);
