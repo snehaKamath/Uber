@@ -1,5 +1,5 @@
 var bcrypt = require('../app_services/bcrypt');
-var mysql = require('mysql');    //Use this only for format
+var mysql = require('mysql');    //Use this only for mysql.format
  
 exports.validateCustomer = function(email, password, callback){
 	 
@@ -42,20 +42,21 @@ exports.getCustomerDetails = function(query,params,callback){
 };
 
 exports.insertDataToDatabase=function(customer_id,firstname,lastname,address,city,zipcode_primary,zipcode_secondary,state,phone_number,email,password,status,cardnumber,cardtype,expirydate,cvv,cardholdername,callback){
+	
 	var firstInsertQuery="insert into customer values(?,?,?,?,?,?,?,?,?)";
 	var params=[customer_id,firstname,lastname,address,city,zipcode_primary,zipcode_secondary,state,phone_number];
 	var finalQuery=mysql.format(firstInsertQuery,params)+";";
+	
 	var secondInsertQuery="insert into customer_credentials values(?,?,?,?)";
-	params=[email,password,customer_id,status];
+	params=[email,password,customer_id,status];	
 	finalQuery+=mysql.format(secondInsertQuery,params)+";";
+	
 	var thirdInsertQuery="insert into creditcard values(?,?,?,?,?,?)";
 	params=[customer_id,cardnumber,cardtype,expirydate,cvv,cardholdername];
 	finalQuery+=mysql.format(thirdInsertQuery,params);
+	
 	console.log(finalQuery);
-	/*var query="CALL storeCustomerSignUpData('"+customer_id+"','"+firstname+"','"+lastname+"','"+address+"','"+city+"','"+zipcode_primary+"','"+zipcode_secondary+"','"+state+"','"+phone_number+"','"+email+"','"+password+"','"+status+"','"+cardnumber+"','"+cardtype+"','"+expirydate+"','"+cvv+"','"+cardholdername+")";
-	var connection=connectDB();
-	console.log(query);
-	connection.query(query, function (err, rows, fields) {*/
+
 	mysql_pool.query(finalQuery, function (err, rows, fields) {
 		if(rows){
 			callback(rows);
