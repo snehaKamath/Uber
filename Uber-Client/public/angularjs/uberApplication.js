@@ -18,6 +18,7 @@ uberApp.config([ '$urlRouterProvider', '$stateProvider',
          }).state('billDetails',{
            url:'/billDetails',
            templateUrl:'partials/billDetails',
+          controller:'driverRideController',
         }).state('adminProfile',{
           url:'/adminProfile',
           templateUrl:'partials/adminProfile',
@@ -33,7 +34,23 @@ uberApp.config([ '$urlRouterProvider', '$stateProvider',
            }).state('createRide',{
                url:'/createRide',
                templateUrl:'partials/createRide',
-            });
+           }).state('riderequest',{
+           url:'/riderequests',
+           templateUrl:'partials/riderequest',
+           controller:'driverRideController',
+       }).state('driverridehistory',{
+           url:'/driverridehistory',
+           templateUrl:'partials/driverridehistory',
+           controller:'driverridehistorycontroller',
+       }).state('driverprofile',{
+           url:'/driverprofile',
+           templateUrl:'partials/driverprofile',
+           controller:'driverController',
+       }).state('ongoingride',{
+           url:'/Ridenow',
+           templateUrl:'partials/ongoingride',
+           controller:'driverRideController',    
+      }); 
          
 }]);
 

@@ -1,0 +1,88 @@
+<div class="container" ng-show="flag1">
+	<div class="row">
+		
+		<div class="col-md-1">
+			
+		</div>
+	<div class="col-md-4">
+	<h2></h2><br>
+  <div class="panel-group">
+
+    <div class="panel panel-info">
+      <div class="panel-heading text-center">Ride Request</div>
+		
+      <div class="panel-body text-center">CustomerName : <b>{{cust_fname }}</b> <br>
+		  Customer Phone :<b> {{cust_phone}} </b><br>
+		  Source City:<b> {{cust_city}} </b><br>
+		  Source Zipcode :<b> {{cust_zipcode}} </b><br>
+		  
+		  PickUp Lat, Lng :<b> {{cust_location}} </b>
+	<hr>
+		  Destination Location Lat, Lng: <b>{{destination_location}}</b><br>
+		  Destination City :<b> {{destination_city}}</b><br>
+		  Destination State : <b>{{destination_street}}</b><br>
+		  Destination ZipCode : <b>{{destination_zipcode}}</b><br>
+		
+		
+		</div>
+		
+    </div><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+	  <button class="btn btn-success" ng-click="accept()">Accept Ride</button>
+  </div>
+		
+		</div>
+	</div>
+</div>
+
+<div ng-show="flag2">hello{{starttimestamp}}  
+	{{cust_id}}
+<button type="button" class="btn btn-primary" ng-click="start()">Start</button> &nbsp;&nbsp;   
+	
+	
+	<button type="button" class="btn btn-primary" ng-click="end()">EndRide</button>
+	<br>
+	 <p ng-if="bill_amount">{{'Bill amount is '+ bill_amount}}</p>
+	 <button class="btn btn-success" ng-click="showbill();">Submit Customer Review</button>
+	
+</div>
+
+<div ng-show="flag3">
+Bill amount genereated is {{bill_amount}}  <br>
+	Customer_id is {{cust_id}}	
+	{{ride_id}}
+	<button class="btn btn-success" ng-click="givereview();">Submit Customer Review</button>
+</div>
+
+<div class="col-md-6" ng-show="flag4">
+	
+<style>
+
+    .glyphicon-star{
+    font-size: 30px;
+    color : #FFDF00;
+}
+    .glyphicon-star-empty{
+    font-size: 30px;
+    color : #00000;
+}
+
+</style>
+
+<hr>
+	You need to complete this review before taking another ride!!!
+Customer Review Here
+Billing ID   is {{ride_id}}	
+Bill amount genereated is {{bill_amount}} 
+Rating :xxxxxxx <br>
+Feedback :<br>
+<div class="form-group">
+      <label for="comment">FeedBack:</label>
+      <textarea class="form-control" rows="5" id="comment" ng-model="review"></textarea>
+    </div>
+	
+	
+	<uib-rating ng-model="ratingg" max="5" min="0" state-on="'glyphicon glyphicon-star'" readonly = "false" state-off="'glyphicon glyphicon-star-empty'" aria-labelledby="custom-icons-1"></uib-rating>
+<button class="btn btn-success" ng-click="submittedreview();">Submit</button>
+</div>
+
+

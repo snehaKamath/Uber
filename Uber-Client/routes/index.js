@@ -9,10 +9,16 @@ module.exports = function (app)	{
 	  app.get('/driverSignUp',	driverSignUp);
 	  app.get('/customerSignUp', customerSignUp);
 	  app.get('/loginOptions',loginOptions);
+	  app.get('/logout',logout);
 };
 
 function root(req, res)	{	
 	res.render('index');
+}
+
+function logout(req,res){
+	req.session.destroy();
+	res.redirect('/');
 }
 
 function loginOptions(req, res)	{	
@@ -43,9 +49,7 @@ function driverSignUp(req,res)	{
 	res.render('driverSignUp');	
 }
 
-function homePage(req,res)
-{	
-	
+function homePage(req,res)	{	
 	if(req.session.adminEmailid)	{
 		res.render('adminHome');
 	}
@@ -65,3 +69,5 @@ function partials(req, res)
 	var name = req.params.name;
 	res.render('partials/' + name);
 }
+
+
