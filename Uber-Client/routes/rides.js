@@ -3,12 +3,12 @@ var mq_client = require('../rpc/client');
 module.exports = function (app)	{
 	app.put('/createRide', createRide);
 	app.get('/getCustomerRidesHistory/:count', getCustomerRidesHistory);
-	app.get('/getriderequest',getriderequest);
+	app.post('/searchBill',searchBill);
+        app.get('/getriderequest',getriderequest);
 	app.post('/createBill',createBill);
 	app.post('/rideinprogress',rideinprogress);
 	app.post('/reviewcustomer',reviewcustomer);
-	app.get('/searchBill',searchBill); 
-	app.get('/driverincompletereview',driverincompletereview);
+        app.get('/driverincompletereview',driverincompletereview);
 	app.post('/updatedriverreview',updatedriverreview);
 };
 function getriderequest(req,res){
@@ -107,15 +107,7 @@ mq_client.make_request('rides_service_req_q',msg_payload,function(results){
 });	
 
 }
-function getCustomerRidesHistory(req, res){
-	
-	  var message={ count : req.params.count, reqType:"getCustomerRidesHistory"};
-	  mq_client.make_request('rides_service_req_q',message,function(results){
-	  
-	         res.send(results);  
- 
-	});	  
-}
+
 function rideinprogress(req,res){
 	console.log('In ride in progress module at node  client ');	
 	var message={ride_id:req.body.ride_id,reqType:"inprogress"};
@@ -129,23 +121,32 @@ function rideinprogress(req,res){
 		res.send({"status":"failure"});;
 	});
 	}
-function searchBill(req,res){
-	 
-	  if(req.session.customerId){ // for currently logged in customer's ride history
-	    var searchBill_msg={id:req.session.customerId,reqType:"searchBill_customerId"}
-	  }else if(req.session.driverId){ // for currently logged in driver's ride history
-	    var searchBill_msg={id:req.session.driverId,reqType:"searchBill_driverId"}  
-	  }else if(req.body.idType=="Customer ID"){    //below statements are for post request
-	    var searchBill_msg={id:req.body.id,reqType:"searchBill_customerId"}
-	  }else if(req.body.idType=="Driver ID"){
-	    var searchBill_msg={id:req.body.id,reqType:"searchBill_driverId"}
-	  }else if(req.body.idType=="Bill ID"){
-	    var searchBill_msg={id:req.body.id,reqType:"searchBill_billid"}
-	  } else{
-	    res.send({statusCode:401,message:"ID is undefined"});
-	  }
-	  mq_client.make_request('rides_service_req_q',searchBill_msg,function(results){
-	    res.send(results);
-	    });
+function getCustomerRidesHistory(req, res){
+	
+	  var message={ count : req.params.count, reqType:"getCustomerRidesHistory"};
+	  mq_client.make_request('rides_service_req_q',message,function(results){
 	  
-	}
+	         res.send(results);     
+	});	  
+}
+
+function searchBill(req,res){
+ 
+  if(req.session.customerId){ // for currently logged in customer's ride history
+    var searchBill_msg={id:req.session.customerId,reqType:"searchBill_customerId"}
+  }else if(req.session.driverId){ // for currently logged in driver's ride history
+    var searchBill_msg={id:req.session.driverId,reqType:"searchBill_driverId"}  
+  }else if(req.body.idType=="Customer ID"){    //below statements are for post request
+    var searchBill_msg={id:req.body.id,reqType:"searchBill_customerId"}
+  }else if(req.body.idType=="Driver ID"){
+    var searchBill_msg={id:req.body.id,reqType:"searchBill_driverId"}
+  }else if(req.body.idType=="Bill ID"){
+    var searchBill_msg={id:req.body.id,reqType:"searchBill_billid"}
+  } else{
+    res.send({statusCode:401,message:"ID is undefined"});
+  }
+  mq_client.make_request('rides_service_req_q',searchBill_msg,function(results){
+    res.send(results);
+    });
+  
+}

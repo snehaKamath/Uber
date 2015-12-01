@@ -1,44 +1,48 @@
-<!DOCTYPE html>
-<html ng-app="uberApp">
- 
+<html>
 <head>
-<%include headerScripts %>
-<link rel="stylesheet" type="text/css" href="/stylesheets/style.css"></link>
-<script src="/angularjs/uberApplication.js"></script>
+  
+        <%include headerScripts %>
+    <script src="/angularjs/uberApplication.js"></script>
+    <script src="/angularjs/adminControllers/adminSignInController.js"></script>
+    
 </head>
- <body class="container-fluid" ng-controller="adminController">
-    <div class="panel-group">
-     <div class="panel panel-success">
-        <div class="panel-heading">
-				<h1><font face="Lucida Grande">Admin Account</font></h1>
-			</div>
+<body style = "background-color : black" ng-app = "uberApp" ng-controller = "adminSignInController">
+    <div class = "container">
+    
+    <div class = "row">
+        
+        <div class = "col-md-4 col-md-offset-4" style = "left : 30px">
+        <video src=""></video>
+        <img style = "position : absolute; left : 85px;width : 200px; height : 200px;" src = "./images/uber.jpg"/>
+            <form class = "form" style = "position : absolute; top: 200px;">
+                <h3 style="color:white">Sign in as admin</h3>
+                <div class="form-group">
+              <label style = "color : white; width : 200px;">EMAIL</label>
+                <input type="email" style = "width : 350px; height : 50px" class="form-control" ng-model = "adminEmailid">
+            </div>
+            <div class="form-group">
+              <label style = "color : white; width : 350px;">PASSWORD</label>
+                <input type="password"  style = "width : 350px; height : 50px" class="form-control" ng-model = "adminPassword">
+            </div><br>
+                <div class="form-group">
+                    <button class="btn btn-info" style = "width : 100%; height : 50px" ng-click = "adminSignIn()" id="group">SIGN IN</button>
+            </div>
+                <div ng-if = "errorDialog" class="alert alert-danger">
+                    {{errorMessage}}
+                </div>
+            
+                </form>
         </div>
-     </div>
- 
- <div class="row">
-		<div class="col-md-6 col-centered" >
-          <p>Login using your emailID and password</p>
-			<form  role="form" >
-				<div class="form-group">
-					<label for="email">Email:</label> <input type="email" size="32"
-						class="form-control" id="email" placeholder="Enter email"
-						ng-model="adminEmailid"/>
-				</div>
-				<div class="form-group">
-					<label for="pwd">Password:</label> <input type="password" size="8"
-						class="form-control" id="pwd" placeholder="Enter password"
-						ng-model="adminPassword"/>
-				</div>
-				
+        
+        
+        
+    </div>
+    
+    </div>
+    
+</body>
 
-				<button type="submit" class="btn btn-primary" ng-click="adminSignIn()">Submit</button>
-				
-			</form>
-			
 
-		</div>
-		
-	</div>
-   </body>
-   </html>
+
+</html>
      

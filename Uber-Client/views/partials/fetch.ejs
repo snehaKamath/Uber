@@ -1,0 +1,137 @@
+<div class="row">
+
+<div class="col-md-6" ng-controller="fetchDriversController">
+<div ng-if = "noRequests" class="alert alert-danger">{{noRequestsMessage}}</div>
+
+<table  class="table table-bordered"  >
+    <thead class="info">
+      <tr>
+        <th><button ng-click="viewDrivers()" style="width:100%;" class="btn btn-primary" >See all drivers</button></th>
+        
+      </tr>
+    </thead>
+    </table>
+<div id = "divId"  infinite-scroll='loadMore()' infinite-scroll-distance='1'>
+<div ng-if="viewDriversClicked" ng-repeat="driver in drivers">
+      <button type="button"  ng-click=setCurrentDriver(driver) class="btn btn-success" style="width:100%" data-toggle="modal" data-target="#viewDrivers">{{driver.FIRSTNAME}}  {{driver.LASTNAME}}</button>
+      </div>
+      </div>
+          <div class="modal fade" id="viewDrivers" role="dialog">
+     <div class="modal-dialog">
+     <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+           <h4 class="modal-title">Driver details</h4>
+           <br>
+           <br>
+         
+  </div>
+  <div class="modal-body">
+  <table class="table">
+    <tr class="success">
+        <td>Driver SSN:{{currentDriver.DRIVER_ID}}</td>
+  </tr>
+   <tr class="success">
+        <td>First Name:{{currentDriver.FIRSTNAME}}</td>
+  </tr>
+   <tr class="success">
+        <td>Last Name:{{currentDriver.LASTNAME}}</td>
+  </tr>
+   <tr class="success">
+        <td>Address:{{currentDriver.ADDRESS}}</td>
+  </tr>
+   <tr class="success">
+        <td>City:{{currentDriver.CITY}}</td>
+  </tr>
+   <tr class="success">
+        <td>Zipcode:{{currentDriver.ZIPCODE}}</td>
+  </tr>
+   <tr class="success">
+        <td>State:{{currentDriver.STATE}}</td>
+  </tr>
+   <tr class="success">
+        <td>Phone number:{{currentDriver.PHONE_NUMBER}}</td>
+  </tr>
+   <tr><td><div ng-if="noCarDetails" class="alert alert-danger">{{noCarDetailsMessage}}</div></td></tr>
+ 
+  <tr class="success">
+        <td>Car Brand:{{currentDriver.carBrand}}</td>
+  </tr>
+  <tr class="success">
+        <td>Car Number:{{currentDriver.carNumber}}</td>
+  </tr>
+  </table>
+  <div class="modal-footer">
+          
+         <!--    <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="rejectRequest()">Reject Request</button>-->
+        </div>
+  </div>
+  </div>
+  </div>
+  </div>
+  </div>
+  
+  <div class="col-md-6" ng-controller="fetchCustomersController">
+<div ng-if = "noRequests" class="alert alert-danger">{{noRequestsMessage}}</div>
+
+<table  class="table table-bordered"  >
+    <thead class="info">
+      <tr>
+        <th><button ng-click="viewCustomers()" style="width:100%;" class="btn btn-primary" >See all customers</button></th>
+        
+      </tr>
+    </thead>
+    </table>
+<div id = "divId"  infinite-scroll='loadMore()' infinite-scroll-distance='1'>
+<div ng-if="viewCustomersClicked" ng-repeat="customer in customers">
+      <button type="button"  ng-click=setCurrentCustomer(customer) class="btn btn-success" style="width:100%" data-toggle="modal" data-target="#viewCustomers">{{customer.FIRSTNAME}}  {{customer.LASTNAME}}</button>
+      </div>
+      </div>
+          <div class="modal fade" id="viewCustomers" role="dialog">
+     <div class="modal-dialog">
+     <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+           <h4 class="modal-title">Customer details</h4>
+           <br>
+           <br>
+         
+  </div>
+  <div class="modal-body">
+  <table class="table">
+    <tr class="success">
+        <td>Customer SSN:{{currentCustomer.CUSTOMER_ID}}</td>
+  </tr>
+   <tr class="success">
+        <td>First Name:{{currentCustomer.FIRSTNAME}}</td>
+  </tr>
+   <tr class="success">
+        <td>Last Name:{{currentCustomer.LASTNAME}}</td>
+  </tr>
+   <tr class="success">
+        <td>Address:{{currentCustomer.ADDRESS}}</td>
+  </tr>
+   <tr class="success">
+        <td>City:{{currentCustomer.CITY}}</td>
+  </tr>
+   <tr class="success">
+        <td>Zipcode:{{currentCustomer.ZIPCODE}}</td>
+  </tr>
+   <tr class="success">
+        <td>State:{{currentCustomer.STATE}}</td>
+  </tr>
+   <tr class="success">
+        <td>Phone number:{{currentCustomer.PHONE_NUMBER}}</td>
+  </tr>
+
+  </table>
+  <div class="modal-footer">
+  
+         <!--    <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="rejectRequest()">Reject Request</button>-->
+        </div>
+  </div>
+  </div>
+  </div>
+  </div>
+  </div>
+  </div>

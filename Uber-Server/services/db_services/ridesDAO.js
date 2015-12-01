@@ -42,9 +42,10 @@ exports.getCustomerRides = function(count, callback){
 	       });
 	     
 };*/
+
 exports.searchBill=function(id,type,callback){
   if(type=="searchBill_billid"){
-      mysql_pool.query("select *, customer.FIRSTNAME AS CFNAME, customer.LASTNAME AS CLNAME, driver.FIRSTNAME as dfname, driver.LASTNAME AS dlname from rides inner join customer on rides.CUSTOMER_ID=customer.CUSTOMER_ID inner join driver on rides.DRIVER_ID=driver.DRIVER_ID where ride_id=? ORDER BY DROP_TIME DESC",[id],function(err,rows,fields){
+      query=mysql_pool.query("select *, customer.FIRSTNAME AS CFNAME, customer.LASTNAME AS CLNAME, driver.FIRSTNAME as dfname, driver.LASTNAME AS dlname from rides inner join customer on rides.CUSTOMER_ID=customer.CUSTOMER_ID inner join driver on rides.DRIVER_ID=driver.DRIVER_ID where ride_id=? and ride_status=2 ORDER BY DROP_TIME DESC",[id],function(err,rows,fields){
       console.log(query.sql);
       if(!err){
       if(rows.length<=0){
@@ -58,7 +59,7 @@ exports.searchBill=function(id,type,callback){
     
   })
   }else if(type=="searchBill_customerId"){
-    query=mysql_pool.query("select *, customer.FIRSTNAME AS CFNAME, customer.LASTNAME AS CLNAME, driver.FIRSTNAME as dfname, driver.LASTNAME AS dlname from rides inner join customer on rides.CUSTOMER_ID=customer.CUSTOMER_ID inner join driver on rides.DRIVER_ID=driver.DRIVER_ID where rides.customer_id=? ORDER BY DROP_TIME DESC",[id],function(err,rows,fields){
+    query=mysql_pool.query("select *, customer.FIRSTNAME AS CFNAME, customer.LASTNAME AS CLNAME, driver.FIRSTNAME as dfname, driver.LASTNAME AS dlname from rides inner join customer on rides.CUSTOMER_ID=customer.CUSTOMER_ID inner join driver on rides.DRIVER_ID=driver.DRIVER_ID where rides.customer_id=? and ride_status=2  ORDER BY DROP_TIME DESC",[id],function(err,rows,fields){
       if(!err){
       if(rows.length<=0){
         callback({statuscode:401,message:"There exists no bill for this customer"});
@@ -71,7 +72,7 @@ exports.searchBill=function(id,type,callback){
     
   })
   }else if(type=="searchBill_driverId"){
-    query=mysql_pool.query("select *, customer.FIRSTNAME AS CFNAME, customer.LASTNAME AS CLNAME, driver.FIRSTNAME as dfname, driver.LASTNAME AS dlname from rides inner join customer on rides.CUSTOMER_ID=customer.CUSTOMER_ID inner join driver on rides.DRIVER_ID=driver.DRIVER_ID where rides.driver_id=? ORDER BY DROP_TIME DESC",[id],function(err,rows,fields){
+    query=mysql_pool.query("select *, customer.FIRSTNAME AS CFNAME, customer.LASTNAME AS CLNAME, driver.FIRSTNAME as dfname, driver.LASTNAME AS dlname from rides inner join customer on rides.CUSTOMER_ID=customer.CUSTOMER_ID inner join driver on rides.DRIVER_ID=driver.DRIVER_ID where rides.driver_id=? and ride_status=2  ORDER BY DROP_TIME DESC",[id],function(err,rows,fields){
       if(!err){
       if(rows.length<=0){
         callback({statuscode:401,message:"There exists no bill for this driver"});
@@ -84,7 +85,7 @@ exports.searchBill=function(id,type,callback){
     
   })
   }
-};
+}
 
 exports.incompletereview=function(driver_id,callback){
 

@@ -8,7 +8,10 @@ exports.handle_request = function(message, callback)	{
 		
 		getCustomerRidesHistory(message, callback);
 	}
-if(message.reqType ==="updatedriverreview"){
+ if(message.reqType === "searchBill_billid" || message.reqType== "searchBill_customerId" || message.reqType=="searchBill_driverId" )   { 
+	    searchBill(message,callback);
+	   }
+    if(message.reqType ==="updatedriverreview"){
 		
 		updatedriverreview(message,callback);
 	}
@@ -16,9 +19,7 @@ if(message.reqType ==="updatedriverreview"){
 		
 		createBill(message,callback)
 	}
-	if(message.reqType === "searchBill_billid" || message.reqType== "searchBill_customerId" || message.reqType=="searchBill_driverId" )   { 
-	    searchBill(message,callback);
-	   }
+	
 	
 	if(message.reqType==="inprogress"){
 		console.log('Here in inprogress server side rides');
@@ -46,12 +47,18 @@ function createRide(message, callback){
 };
 
 function getCustomerRidesHistory(message, callback){
-
-		ridesDAO.getCustomerRides(message.count, function(response){
-
-			callback(response);
+    ridesDAO.getCustomerRides(message.count, function(response){
+    callback(response);
 	});			
 };
+
+function searchBill(message,callback){
+   var id=message.id; // id in ssn format
+   var type=message.reqType; //type of id.
+   ridesDAO.searchBill(id,type,function(response){
+   callback(response);
+   })
+ }
 
 function createBill(message,callback)
 {
@@ -126,6 +133,3 @@ function incompletereview(message,callback){
 	ridesDAO.incompletereview(driver_id,callback);
 	
 }
-
-
-
