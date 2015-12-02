@@ -75,6 +75,7 @@ function updateDriverDetails(message,callback){
 	var status=0;
 	var myuser = [];
 	var res={};
+	console.log('Heyy mann updating details  using customerDAO in driver DAO wtffff');
 	driverDAO.getDriverDetails('',phone, function(results){
 		if(results){
 			if(phone==results[0].PHONE_NUMBER){

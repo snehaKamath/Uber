@@ -108,8 +108,9 @@ function reviewcustomer(message,callback){
 function searchBill(message,callback){
 	  var id=message.id; // id in ssn format
 	  var type=message.reqType; //type of id.
+	  var count = Number(message.count);
 	  console.log("making dao request ");
-	  ridesDAO.searchBill(id,type,function(response){
+	  ridesDAO.searchBill(id,type,count,function(response){
 	  callback(response);
 	  })
 	  

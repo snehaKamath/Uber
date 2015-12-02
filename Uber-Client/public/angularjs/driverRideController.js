@@ -1,6 +1,6 @@
 uberApp = angular.module('uberApp');
 uberApp.controller("driverRideController",function($scope, $state, $http, $window, $interval){
-	
+$scope.show=true;	
 console.log('Inside driver ride controller');
 $http.get('/driverincompletereview').success(function(data){
 console.log(data);
@@ -33,6 +33,7 @@ $interval(function(){$http.get('/getriderequest').success(function(data){
 	//console.log(cust);
 	if(cust!== undefined)
 		{
+	$scope.show=false;	
 	$scope.ride_id=cust.ride_id;
 	$scope.cust_id=cust.customer_id;
 	$scope.cust_fname=cust.firstname;
@@ -48,7 +49,7 @@ $interval(function(){$http.get('/getriderequest').success(function(data){
 	$scope.distance=cust.distance;
 		}
 
-})},12000);
+})},6000);
 	
 $scope.accept=function(){
 	$scope.flag1=0;
@@ -118,7 +119,7 @@ $scope.end=function()
 		console.log('Reached back');
 		console.log($scope.cust_id);
 		console.log(data);
-		$scope.bill_amount=data.msg.bill_amount;
+		$scope.bill_amount=Math.round(data.msg.bill_amount*100)/100;
 		console.log($scope.bill_amount);
 		console.log()
 		$scope.duration=data.msg.duration;
@@ -127,6 +128,10 @@ $scope.end=function()
 		// $state.transitionTo ('billDetails', {}, { location: false, inherit: true, relative: $state.$current, notify: true })
 		
 	});
+	$scope.flag1=0;
+	$scope.flag2=0;
+	$scope.flag3=1;
+	$scope.flag4=0;	
 };
 
 $scope.submittedreview=function()

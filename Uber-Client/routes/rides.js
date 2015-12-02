@@ -7,7 +7,7 @@ module.exports = function (app)	{
 	app.post('/createBill',createBill);
 	app.post('/rideinprogress',rideinprogress);
 	app.post('/reviewcustomer',reviewcustomer);
-	app.get('/searchBill',searchBill); 
+	app.get('/getDriverRidesHistory/:count',searchBill); 
 	app.get('/driverincompletereview',driverincompletereview);
 	app.post('/updatedriverreview',updatedriverreview);
 };
@@ -130,11 +130,12 @@ function rideinprogress(req,res){
 	});
 	}
 function searchBill(req,res){
-	 
-	  if(req.session.customerId){ // for currently logged in customer's ride history
-	    var searchBill_msg={id:req.session.customerId,reqType:"searchBill_customerId"}
+	console.log('below printing the value of count');
+	 console.log(Number(req.params.count));
+	if(req.session.customerId){ // for currently logged in customer's ride history
+	    var searchBill_msg={id : req.session.customerId, count : Number(req.params.count), reqType:"searchBill_customerId"}
 	  }else if(req.session.driverId){ // for currently logged in driver's ride history
-	    var searchBill_msg={id:req.session.driverId,reqType:"searchBill_driverId"}  
+	    var searchBill_msg={id:req.session.driverId, count : Number(req.params.count), reqType:"searchBill_driverId"}  
 	  }else if(req.body.idType=="Customer ID"){    //below statements are for post request
 	    var searchBill_msg={id:req.body.id,reqType:"searchBill_customerId"}
 	  }else if(req.body.idType=="Driver ID"){

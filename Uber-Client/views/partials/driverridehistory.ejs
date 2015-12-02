@@ -1,8 +1,14 @@
-Heyyy!!! here are your ongoing ride histories...!!!!
 
 
-<div infinite-scroll='loadMore()' infinite-scroll-distance='2'>
-        <div ng-repeat='n in numbers'>
-			{{n}}
-    </div>
-</div>
+
+<div id = "divId"  infinite-scroll='loadMore()' infinite-scroll-distance='1'>
+     
+		
+		<div ng-repeat = "x in ridesHistory">
+	
+	{{x.CFNAME}}
+	</div>
+
+
+         
+ </div>

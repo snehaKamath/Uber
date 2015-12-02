@@ -7,8 +7,9 @@
 	<div class="col-md-4">
 	<h2></h2><br>
   <div class="panel-group">
-
+<div ng-show="show"><h3>Looking for the customer's</h3></div>
     <div class="panel panel-info">
+		
       <div class="panel-heading text-center">Ride Request</div>
 		
       <div class="panel-body text-center">CustomerName : <b>{{cust_fname }}</b> <br>
@@ -27,29 +28,30 @@
 		</div>
 		
     </div><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-	  <button class="btn btn-success" ng-click="accept()">Accept Ride</button>
+	  <button class="btn btn-success" ng-click="accept()" ng-hide="show">Accept Ride</button>
   </div>
 		
 		</div>
 	</div>
 </div>
 
-<div ng-show="flag2">hello{{starttimestamp}}  
-	{{cust_id}}
-<button type="button" class="btn btn-primary" ng-click="start()">Start</button> &nbsp;&nbsp;   
+<div ng-show="flag2">
+Please click on start ride when customer is readyyy!!!.
+<br><br>
+<button type="button" class="btn btn-primary" ng-click="start()" ng-hide="starttimestamp">Start Ride</button> &nbsp;&nbsp;   
 	
 	
-	<button type="button" class="btn btn-primary" ng-click="end()">EndRide</button>
+	<button type="button" class="btn btn-primary" ng-click="end()" ng-show="starttimestamp">EndRide</button>
 	<br>
-	 <p ng-if="bill_amount">{{'Bill amount is '+ bill_amount}}</p>
-	 <button class="btn btn-success" ng-click="showbill();">Submit Customer Review</button>
+	 
+	 <button class="btn btn-success" ng-click="showbill();" ng-show="endtimestamp">Submit Customer Review</button>
 	
 </div>
 
 <div ng-show="flag3">
-Bill amount genereated is {{bill_amount}}  <br>
-	Customer_id is {{cust_id}}	
-	{{ride_id}}
+Please collect amount ${{bill_amount}}  <br>
+for this ride  {{ride_id}}	<br>
+	
 	<button class="btn btn-success" ng-click="givereview();">Submit Customer Review</button>
 </div>
 
@@ -69,19 +71,18 @@ Bill amount genereated is {{bill_amount}}  <br>
 </style>
 
 <hr>
-	You need to complete this review before taking another ride!!!
-Customer Review Here
-Billing ID   is {{ride_id}}	
-Bill amount genereated is {{bill_amount}} 
-Rating :xxxxxxx <br>
-Feedback :<br>
+	You need to complete this review before taking another ride!!!<br>
+Give Customer Review below <br>
+Billing ID   is {{ride_id}}	<br>
+Bill amount genereated is {{bill_amount}} <br>
+ <br>
 <div class="form-group">
       <label for="comment">FeedBack:</label>
       <textarea class="form-control" rows="5" id="comment" ng-model="review"></textarea>
     </div>
 	
 	
-	<uib-rating ng-model="ratingg" max="5" min="0" state-on="'glyphicon glyphicon-star'" readonly = "false" state-off="'glyphicon glyphicon-star-empty'" aria-labelledby="custom-icons-1"></uib-rating>
+	<uib-rating ng-model="ratingg" max="5" min="0" state-on="'glyphicon glyphicon-star'" readonly = "false" state-off="'glyphicon glyphicon-star-empty'" aria-labelledby="custom-icons-1"></uib-rating><br><br>
 <button class="btn btn-success" ng-click="submittedreview();">Submit</button>
 </div>
 

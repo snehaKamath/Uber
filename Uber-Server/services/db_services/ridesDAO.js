@@ -42,9 +42,12 @@ exports.getCustomerRides = function(count, callback){
 	       });
 	     
 };*/
-exports.searchBill=function(id,type,callback){
+exports.searchBill=function(id,type,count,callback){
+	console.log('id for the search bill is '+id);
+	console.log('type value is '+type);
+	console.log('count values is '+count);
   if(type=="searchBill_billid"){
-      mysql_pool.query("select *, customer.FIRSTNAME AS CFNAME, customer.LASTNAME AS CLNAME, driver.FIRSTNAME as dfname, driver.LASTNAME AS dlname from rides inner join customer on rides.CUSTOMER_ID=customer.CUSTOMER_ID inner join driver on rides.DRIVER_ID=driver.DRIVER_ID where ride_id=? ORDER BY DROP_TIME DESC",[id],function(err,rows,fields){
+      mysql_pool.query("select *, customer.FIRSTNAME AS CFNAME, customer.LASTNAME AS CLNAME, driver.FIRSTNAME as dfname, driver.LASTNAME AS dlname from rides inner join customer on rides.CUSTOMER_ID=customer.CUSTOMER_ID inner join driver on rides.DRIVER_ID=driver.DRIVER_ID where rides.driver_id=? ORDER BY DROP_TIME DESC LIMIT "+count+",10",[id],function(err,rows,fields){
       console.log(query.sql);
       if(!err){
       if(rows.length<=0){
@@ -56,7 +59,7 @@ exports.searchBill=function(id,type,callback){
        callback({statusCode:401,message:"Database error"});
      }
     
-  })
+  });
   }else if(type=="searchBill_customerId"){
     query=mysql_pool.query("select *, customer.FIRSTNAME AS CFNAME, customer.LASTNAME AS CLNAME, driver.FIRSTNAME as dfname, driver.LASTNAME AS dlname from rides inner join customer on rides.CUSTOMER_ID=customer.CUSTOMER_ID inner join driver on rides.DRIVER_ID=driver.DRIVER_ID where rides.customer_id=? ORDER BY DROP_TIME DESC",[id],function(err,rows,fields){
       if(!err){
@@ -71,14 +74,46 @@ exports.searchBill=function(id,type,callback){
     
   })
   }else if(type=="searchBill_driverId"){
-    query=mysql_pool.query("select *, customer.FIRSTNAME AS CFNAME, customer.LASTNAME AS CLNAME, driver.FIRSTNAME as dfname, driver.LASTNAME AS dlname from rides inner join customer on rides.CUSTOMER_ID=customer.CUSTOMER_ID inner join driver on rides.DRIVER_ID=driver.DRIVER_ID where rides.driver_id=? ORDER BY DROP_TIME DESC",[id],function(err,rows,fields){
+	  console.log('This is driver zone for pulling history ');
+    query=mysql_pool.query("select *, DATE_FORMAT(REQUESTED_TIME, '%d %b %y') as pickup_date, TIME(pickup_time) as pickup_time, TIME(drop_time) as drop_time, customer.FIRSTNAME AS CFNAME, customer.LASTNAME AS CLNAME, driver.FIRSTNAME as dfname, driver.LASTNAME AS dlname from rides inner join customer on rides.CUSTOMER_ID=customer.CUSTOMER_ID inner join driver on rides.DRIVER_ID=driver.DRIVER_ID where rides.driver_id=? and rides.RIDE_STATUS = 2 ORDER BY DROP_TIME DESC LIMIT "+count+",10",[id],function(err,rows,fields){
       if(!err){
       if(rows.length<=0){
         callback({statuscode:401,message:"There exists no bill for this driver"});
       }else if(rows.length>0){
+       
+    	  for( r in rows){
+    		  
+    		  if(rows[r].SOURCE_ZIPCODE != null)
+    	    	  rows[r].SOURCE_ZIPCODE = Number(rows[r].SOURCE_ZIPCODE);
+    	    	  else
+    	    		  rows[r].SOURCE_ZIPCODE = "";
+    	    	  
+    	    	  if(rows[r].DESTINATION_ZIPCODE != null)
+    		    	  rows[r].DESTINATION_ZIPCODE = Number(rows[r].DESTINATION_ZIPCODE);
+    		    	  else
+    		    		  rows[r].DESTINATION_ZIPCODE = "";
+    	    	  
+    	    	  source_address = rows[r].SOURCE_STREET+","+rows[r].SOURCE_AREA+","+rows[r].SOURCE_CITY+","+rows[r].SOURCE_STATE+" "+rows[r].SOURCE_ZIPCODE;
+    	    	  source_address = source_address.replace(",,",",");
+    	    	  
+    	    	  destination_address = rows[r].DESTINATION_STREET+","+rows[r].DESTINATION_AREA+","+rows[r].DESTINATION_CITY+","+rows[r].DESTINATION_STATE+" "+rows[r].DESTINATION_ZIPCODE;
+    	    	  destination_address = destination_address.replace(",,",",");
+    	    	  
+    	    	  if(source_address.charAt(0) == ",")
+    	    		  rows[r].source_address =   source_address.slice(1,source_address.length).trim();
+    	    	  
+    	    	  if(destination_address.charAt(0) == ",")
+    	    		  rows[r].destination_address =   destination_address.slice(1,destination_address.length).trim();
+    		  
+    		  
+    	  }
+    	  
+    	//console.log(JSON.stringify(rows[0].SOURCE_LOCATION));
         callback({statusCode:200,message:rows});
+    	  
       }
      }else{
+    	 //throw err;
        callback({statusCode:401,message:"Database error"});
      }
     

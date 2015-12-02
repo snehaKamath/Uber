@@ -60,7 +60,7 @@ uberApp.controller("ridesController",function($scope, $state, $http, $window, Ng
 		$scope.driverPanel = true;
 		$scope.driver = driverData[position._id.toString()];
 		console.log("driver Data "+JSON.stringify(driverData));
-		window.scrollTo(0,document.body.scrollHeight);
+		//window.scrollTo(0,document.body.scrollHeight);
 		
 		}
 	$scope.examples = [
