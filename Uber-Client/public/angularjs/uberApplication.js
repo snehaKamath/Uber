@@ -18,10 +18,9 @@ uberApp.config([ '$urlRouterProvider', '$stateProvider',
          }).state('billDetails',{
            url:'/billDetails',
            templateUrl:'partials/billDetails',
-          controller:'driverRideController',
-        }).state('adminProfile',{
+         }).state('myProfile',{
           url:'/adminProfile',
-          templateUrl:'partials/adminProfile',
+          templateUrl:'partials/myProfile',
         }).state('delete',{
          url:'/delete',
          templateUrl:'partials/delete',
@@ -34,7 +33,10 @@ uberApp.config([ '$urlRouterProvider', '$stateProvider',
            }).state('createRide',{
                url:'/createRide',
                templateUrl:'partials/createRide',
-           }).state('riderequest',{
+            }).state('fetch',{
+        url:'/fetch',
+        templateUrl:'partials/fetch',
+     }).state('riderequest',{
            url:'/riderequests',
            templateUrl:'partials/riderequest',
            controller:'driverRideController',
@@ -50,7 +52,7 @@ uberApp.config([ '$urlRouterProvider', '$stateProvider',
            url:'/Ridenow',
            templateUrl:'partials/ongoingride',
            controller:'driverRideController',    
-      }); 
+      });
          
 }]);
 
