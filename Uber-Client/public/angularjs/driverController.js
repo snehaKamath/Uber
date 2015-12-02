@@ -764,7 +764,7 @@ uberApp.controller('driversignUp', function($scope, $http)
 		       driver_data.push($scope.carnumber);
 		       var f = document.getElementById('file').files[0],
 			      r = new FileReader();
-		       console.log(f);
+		      // console.log(f);
 				var  video;
 			  r.onloadend = function(e){
 			   video = e.target.result;
