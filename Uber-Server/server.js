@@ -9,7 +9,7 @@ var ridesModule = require('./services/app_services/rides');
 var signInModule = require('./services/app_services/signIn');
 var signUpModule = require('./services/app_services/signUp');
 //var cacheHandler = require('./services/db_services/cache');
-var cacheModule = require('./services/db_services/cache');
+//var cacheModule = require('./services/db_services/cache');
 var async = require('async');
 
 console.log("I am here");
@@ -18,7 +18,7 @@ var pool = require('./services/db_services/connection_pool/pool');
 global.mysql_pool = new pool(); // mysql pool should be initialized first before initializing the cache..
 
 //cacheHandler.loadData();
-var cache = new cacheModule();
+/*var cache = new cacheModule();
 cache.testMethod();
 
 async.parallel([function(callback){
@@ -26,7 +26,7 @@ async.parallel([function(callback){
 }], function(err, results)	{
 	console.log("Finished cache initialization");
 	console.log(results);
-});
+});*/
 
 //Initialize mongoDB and save the reference for other services to use.....
 var MongoClient = require('mongodb').MongoClient;
@@ -48,6 +48,7 @@ connection.on('ready', function(){
 			
 			adminModule.handle_request(message, function(response){
 
+				console.log(response);
 				console.log("publishing to " + m.replyTo);
 				connection.publish(m.replyTo, response, {
 					contentType:'application/json',
@@ -145,6 +146,7 @@ connection.on('ready', function(){
 			
 			signInModule.handle_request(message, function(response){
 
+				console.log("response : " + response);
 				console.log("publishing to " + m.replyTo);
 				connection.publish(m.replyTo, response, {
 					contentType:'application/json',

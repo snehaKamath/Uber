@@ -18,8 +18,7 @@ uberApp.config([ '$urlRouterProvider', '$stateProvider',
          }).state('billDetails',{
            url:'/billDetails',
            templateUrl:'partials/billDetails',
-           controller:'driverRideController',
-        }).state('myProfile',{
+         }).state('myProfile',{
           url:'/adminProfile',
           templateUrl:'partials/myProfile',
         }).state('delete',{

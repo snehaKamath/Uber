@@ -7,14 +7,15 @@ bcrypt = require('../app_services/bcrypt');
 
 exports.validateAdmin = function(email, password, callback) {
    var query = "select * from admin where  USERNAME = ?";
-  mysql_pool.query(query,[email], function(err, rows, fields) {
+  var query_1 = mysql_pool.query(query,[email], function(err, rows, fields) {
    if (rows.length > 0) {
       bcrypt.decryption(password, rows[0].PASSWORD, function(response) {
         if (response == "success") {
-          response = {statusCode : 200,message : rows[0]};
+        	  response = {statusCode : 200,message : rows[0]};
         } else {
          response = {statusCode : 401,message : "Invalid Password"};
         }
+        console.log(response.statusCode);
         callback(response);
       });
    } else {
@@ -23,6 +24,8 @@ exports.validateAdmin = function(email, password, callback) {
   }
 
   });
+  console.log(query_1.sql);
+  console.log("query:"+query_1);
 }
 
 exports.viewDriverApprovals=function(callback){
