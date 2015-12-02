@@ -163,11 +163,11 @@ function searchBill(req,res){
 	  }else if(req.session.driverId){ // for currently logged in driver's ride history
 	    var searchBill_msg={id:req.session.driverId, count : Number(req.params.count), reqType:"searchBill_driverId"}  
 	  }else if(req.body.idType=="Customer ID"){    //below statements are for post request
-	    var searchBill_msg={id:req.body.id,reqType:"searchBill_customerId"}
+	    var searchBill_msg={id:req.body.id,count : 0,reqType:"searchBill_customerId"}
 	  }else if(req.body.idType=="Driver ID"){
-	    var searchBill_msg={id:req.body.id,reqType:"searchBill_driverId"}
+	    var searchBill_msg={id:req.body.id,count : 0,reqType:"searchBill_driverId"}
 	  }else if(req.body.idType=="Bill ID"){
-	    var searchBill_msg={id:req.body.id,reqType:"searchBill_billid"}
+	    var searchBill_msg={id:req.body.id,count : 0,reqType:"searchBill_billid"}
 	  } else{
 	    res.send({statusCode:401,message:"ID is undefined"});
 	  }

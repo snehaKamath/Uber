@@ -59,7 +59,7 @@ exports.updateCustomerRide= function(rideData,ssn,locations, rideId, callback){
 };
 exports.searchBill = function(id,type, count, callback){
 	  if(type=="searchBill_billid"){
-	      query=connection.query("select *, customer.FIRSTNAME AS CFNAME, customer.LASTNAME AS CLNAME, driver.FIRSTNAME as dfname, driver.LASTNAME AS dlname from rides inner join customer on rides.CUSTOMER_ID=customer.CUSTOMER_ID inner join driver on rides.DRIVER_ID=driver.DRIVER_ID where ride_id=? ORDER BY DROP_TIME DESC",[id],function(err,rows,fields){
+	      query=connection.query("select *, customer.FIRSTNAME AS CFNAME, customer.LASTNAME AS CLNAME, driver.FIRSTNAME as dfname, driver.LASTNAME AS dlname from rides inner join customer on rides.CUSTOMER_ID=customer.CUSTOMER_ID inner join driver on rides.DRIVER_ID=driver.DRIVER_ID where ride_id=? and ride_status = 2 ORDER BY DROP_TIME DESC",[id],function(err,rows,fields){
 	      console.log(query.sql);
 	      if(!err){
 	      if(rows.length<=0){
@@ -117,7 +117,7 @@ exports.searchBill = function(id,type, count, callback){
 	    
 	  })
 	  }else if(type=="searchBill_driverId"){
-	    query=connection.query("select *, customer.FIRSTNAME AS CFNAME, customer.LASTNAME AS CLNAME, driver.FIRSTNAME as dfname, driver.LASTNAME AS dlname from rides inner join customer on rides.CUSTOMER_ID=customer.CUSTOMER_ID inner join driver on rides.DRIVER_ID=driver.DRIVER_ID where rides.driver_id=? ORDER BY DROP_TIME DESC",[id],function(err,rows,fields){
+	    query=connection.query("select *, customer.FIRSTNAME AS CFNAME, customer.LASTNAME AS CLNAME, driver.FIRSTNAME as dfname, driver.LASTNAME AS dlname from rides inner join customer on rides.CUSTOMER_ID=customer.CUSTOMER_ID inner join driver on rides.DRIVER_ID=driver.DRIVER_ID where rides.driver_id=? and rides.ride_id = 2 ORDER BY DROP_TIME DESC",[id],function(err,rows,fields){
 	      if(!err){
 	      if(rows.length<=0){
 	        callback({statuscode:401,message:"There exists no bill for this driver"});
