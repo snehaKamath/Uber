@@ -1,4 +1,5 @@
 <script src = "/angularjs/ridesController.js"></script>
+
 <style>
 
     .glyphicon-star{
@@ -12,6 +13,45 @@
 
 </style>
 <div ng-controller = "ridesController"  style = "background-color : white;">
+    <script type="text/ng-template" id="myModal.html">
+        <div class="modal-header">
+            <h3 class="modal-title">Review</h3>
+        </div>
+        <div class="modal-body">
+            <table>
+            <tr>
+                <td>Soure Address</td>
+                <td>{{ride.source_address}}</td>
+            </tr>
+            <tr>
+                <td>Destination Address</td>
+                <td>{{ride.destination_address}}</td>
+            </tr>
+            <tr>
+                <td>Bill Amount</td>
+                <td>{{ride.bill_amount}}</td>
+            </tr>
+            <tr>
+                <td>Driver Name</td>
+                <td>{{ride.driverName}}</td>
+            </tr>
+            </table>
+            <form role="form" name = "myForm">
+                <div class="form-group">
+                    <label for="usr" style = "width : 150px">Rating</label>
+                   <uib-rating id = "usr" ng-model="feedback.rating" max="5" state-on="'glyphicon glyphicon-star'"  state-off="'glyphicon glyphicon-star-empty'" aria-labelledby="custom-icons-1" required></uib-rating>
+                </div>
+                <div class="form-group">
+                    <label for="comment">Comment:</label>
+                    <textarea class="form-control" ng-model = "feedback.comments" rows="5" id="comment" required></textarea>
+                </div>
+                 
+            </form>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-primary" ng-disabled = "myForm.$invalid" ng-click="submitReview(feedback)">Submit Review</button>
+        </div>
+    </script>
     
     <div>
         <div class = "row">
@@ -65,7 +105,16 @@
             <span style = "display: inline-block; width : 30%">CONTACT</span>{{driver.phone}}<br>
             <span style = "display: inline-block; width : 30%">RATING</span> 
                 <div><uib-rating ng-model="ratingg" max="5" state-on="'glyphicon glyphicon-star'" readonly = "true" state-off="'glyphicon glyphicon-star-empty'" aria-labelledby="custom-icons-1"></uib-rating></div>
-                
+                <div id = "divId" style = "width : 80%; height : 50%;" infinite-scroll='loadDriverReviews()' infinite-scroll-distance='1'> 
+                    
+                    <table>
+                        <tr ng-repeat = "driver in driverReviewsArray">
+                            <td>{{driver.rating}}</td>
+                            <td>{{driver.review}}</td>
+                        </tr>
+                    </table>
+                    
+                </div>
                 
                 <button class = "btn btn-primary" ng-click = "requestRide(driver.driverId)">{{buttonLabel}}</button>
             

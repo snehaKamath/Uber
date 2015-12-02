@@ -397,5 +397,5 @@ uberApp.controller("customerController",function($scope, $http) {
 	 }, function() {
 		});
   
-  
+	
 });

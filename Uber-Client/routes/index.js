@@ -9,7 +9,12 @@ module.exports = function (app)	{
 	  app.get('/driverSignUp',	driverSignUp);
 	  app.get('/customerSignUp', customerSignUp);
 	  app.get('/loginOptions',loginOptions);
+	 
 };
+
+function myModalOpen(){
+	res.render('/myModal');
+}
 
 function root(req, res)	{	
 	res.render('index');

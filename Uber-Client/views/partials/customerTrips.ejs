@@ -1,15 +1,66 @@
+
 <div ng-controller = "ridesController">
-    <h1>This is Customer Trips</h1>
+    <h1>MY TRIPS</h1><br>
     
      <div id = "divId" style = "width : 80%; height : 50%;" infinite-scroll='loadMore()' infinite-scroll-distance='1'>
-     <uib-accordion close-others=true>
-    
-    <uib-accordion-group is-open = "status.open" ng-repeat = "ride in ridesHistory">
-      <uib-accordion-heading >
-        {{x.name}} <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': status.open, 'glyphicon-chevron-right': !status.open}"></i>
+    <!-- <table class = "table">
+         
+    <thead>
+        <th>RIDE_ID</th>
+        <th>PICK UP DATE</th>
+        <th>DRIVER</th>
+        <th>FARE</th>
+        <th>CITY</th>
+         
+    </thead>
+         
+    <tbody>
+         <tr ng-repeat = "ride in ridesHistory">
+         <td>{{ride.RIDE_ID}}</td>
+         <td>{{ride.pickup_date}}</td>
+         <td>{{ride.dfname}}&nbsp;{{ride.dlname}}</td>
+         <td>{{ride.BILL_AMOUNT}}</td>
+         <td>{{ride.CITY}}</td>
+         </tr>
+    </tbody>
+         
+    </table> -->
+        
+    <uib-accordion close-others="oneAtATime">
+   <table style="position : absolute; left : 90px;width: 70%; max-width: 100%; margin-bottom: 30px;">
+         <thead>
+             
+             <td ><label>Pickup</label></td>
+             <td><label>Driver</label></td>
+             <td><label>Fare</label></td>
+             <td><label>City</label></td>
+         </thead>
+            
+         
+         </table> <br><br><hr>
+    <uib-accordion-group ng-repeat = "ride in ridesHistory" is-open="status.open">
+      <uib-accordion-heading>
+        <table style="width: 100%; max-width: 100%; margin-bottom: 20px;">
+            
+            <tr>
+                <td><i class="pull-left glyphicon" ng-class="{'glyphicon-chevron-down': status.open, 'glyphicon-chevron-right': !status.open}"></i></td>
+                <td>{{ride.pickup_date}}</td>
+                <td >{{ride.dfname}}&nbsp;{{ride.dlname}}</td>
+                <td style = "width : 100px">{{ride.BILL_AMOUNT}}</td>
+                <td><center>{{ride.CITY}}</center></td>
+            </tr>  
+        </table>
       </uib-accordion-heading>
-      <label>{{x.age}}</label>
-      This is just some content to illustrate fancy headings.
+      <table class="table" style="width: 100%; max-width: 100%; margin-bottom: 20px;cell-padding:10px">
+            <tr>
+                <td><b>PickUp Time :</b> {{ride.pickup_time}}</td>
+                <td ><b>Source :</b> {{ride.source_address}}</td>
+            </tr>  
+            <tr>
+                <td><b>Drop Time :</b> {{ride.drop_time}}</td>
+                <td><b>Destination :</b> {{ride.destination_address}}</td>
+            </tr>
+    </table>
     </uib-accordion-group>
   </uib-accordion>
          

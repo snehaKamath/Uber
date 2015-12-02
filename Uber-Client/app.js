@@ -45,7 +45,6 @@ require('./routes')(app);
 require('./routes/signUp')(app);
 require('./routes/signIn')(app);
 require('./routes/admin')(app);
-require('./routes/bill')(app);
 require('./routes/customer')(app);
 require('./routes/driver')(app);
 require('./routes/rides')(app);

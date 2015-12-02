@@ -2,7 +2,6 @@
 var amqp = require('amqp');
 
 var adminModule = require('./services/app_services/admin');
-var billModule = require('./services/app_services/bill');
 var customerModule = require('./services/app_services/customer');
 var driverModule = require('./services/app_services/driver');
 var ridesModule = require('./services/app_services/rides');
@@ -46,21 +45,7 @@ connection.on('ready', function(){
 		});				
 	});
 	
-	console.log("listening on bill_service_req_q");
-	connection.queue('bill_service_req_q', function(q){
-		q.subscribe(function(message, headers, deliveryInfo, m){			
-			
-			billModule.handle_request(message, function(response){
-
-				console.log("publishing to " + m.replyTo);
-				connection.publish(m.replyTo, response, {
-					contentType:'application/json',
-					contentEncoding:'utf-8',
-					correlationId:m.correlationId
-				});
-			});
-		});				
-	});
+	
 	
 	console.log("listening on customer_service_req_q");
 	connection.queue('customer_service_req_q', function(q){

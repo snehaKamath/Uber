@@ -132,7 +132,53 @@ exports.getDriverLocation = function(location, callback){
 			}					 		
 		
 	})
-
-  
 };
+
+exports.reviewDriver = function(rating, comments, rideId, driverId, customerId, callback){
+	
+	console.log("rating "+rating);
+	console.log("comments "+comments);
+	console.log("ride "+rideId);
+	console.log("customer "+customerId);
+	console.log("driver "+driverId);
+	mongoHandler.update('driver',{"_id":driverId},{$push:{reviews:{"customerid":customerId,"rating":rating,"review":comments}}},function(err,res){
+
+			 if(err)
+				  throw err;
+			  else
+				  {
+				  var query="update uber.rides set review_status=review_status+2 where ride_id=?";
+				  var params=[rideId];
+				  console.log(mysql.format(query,params));
+				  	mysql_pool.query(query,params, function(err, rows,fields){
+		
+						console.log("rows length is"+rows.length);
+						console.log(rows);
+					  if(rows)
+						  callback({statusCode : 200, message : "Updated Successfully"});
+					  else
+						  callback({statusCode : 401, message : "Not updated"});
+				  });
+				  
+				  }	
+		});
+};
+
+exports.getDriverReviews = function(driverId, callback){
+	
+	console.log("driver "+driverId);
+    var query = {"_id" : driverId};
+	var options = { _id : 0, reviews : 1}; 
+	mongoHandler.findOne('driver',query,options,function(err,res){
+			console.log(res);
+			if(res){
+				console.log("hetee");
+				callback({statusCode : 200, message : res.reviews});
+			}
+			else
+				callback({statusCode : 401, message : "No reviews recorded yet"});
+		
+		});
+};
+
 

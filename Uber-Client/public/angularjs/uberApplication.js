@@ -33,9 +33,29 @@ uberApp.config([ '$urlRouterProvider', '$stateProvider',
            }).state('createRide',{
                url:'/createRide',
                templateUrl:'partials/createRide',
-            });
+            }).state('updateRide',{
+                url:'/updateRide',
+                templateUrl:'partials/updateRide',
+                params : {rideId : null}
+             });
+         
+         
          
 }]);
+uberApp.factory("uberService", function(){
+	
+	var check;
+	var rideId;
+	
+
+	  // public API
+	  return {
+	    getRideHider: function () { return check; },
+	    setRideHider: function ( id ) { check = id; },
+	    getRideId: function () { return rideId; },
+	    setRideId: function ( id ) { rideId = id; }
+	  };
+});
 
 
 

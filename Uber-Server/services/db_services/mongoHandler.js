@@ -9,16 +9,16 @@ exports.insert = function (collectionName, query, callback){
 	});	
 };
 
-exports.update = function (collectionName, query, callback){
+exports.update = function (collectionName, query, options, callback){
 	var collection = global.mongoDB.collection(collectionName);
-	collection.update(query, function(err,res){		
+	collection.update(query, options, function(err,res){		
 		callback(err, res);		
 	});	
 };
 
-exports.findOne = function (collectionName, query, callback){
+exports.findOne = function (collectionName, query, options, callback){
 	var collection = global.mongoDB.collection(collectionName);
-	collection.findOne(query, function(err,res){		
+	collection.findOne(query, options, function(err,res){		
 		callback(err, res);		
 	});	
 };

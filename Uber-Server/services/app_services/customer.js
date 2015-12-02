@@ -8,6 +8,9 @@ exports.handle_request = function(message, callback)	{
 	if(message.reqType === "updateCustomerDetails"){ 
 		updateCustomerDetails(message, callback);
 	}
+	if(message.reqType == "getRideStatus"){
+		getRideStatus(message,callback);
+	}
 };
 
 
@@ -46,6 +49,24 @@ function updateCustomerDetails(message, callback){
 		if(results){
 			res.code=200;
 			res.value="Successfully Updated";
+			callback(res);
+		}
+		else{
+			res.code=401;
+			res.value="No records found";
+			callback(res);
+		}
+	});
+}
+
+function getRideStatus(message,callback){
+	var ssn=message.ssn;
+	var res={};
+	customerDAO.getRideStatus(ssn,function(results) {
+		if(results){
+			res.code=200;
+			console.log("results received from db"+results);
+			res.value=results[0];
 			callback(res);
 		}
 		else{

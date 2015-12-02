@@ -2,7 +2,11 @@
      <%include headerScripts %>
 <script src="/angularjs/uberApplication.js"></script>
 <script src = "/angularjs/customerController.js"></script>
+<script src = "/angularjs/layoutController.js"></script>
 <script src = "/angularjs/ridesController.js"></script>
+<script src = "/angularjs/modalController.js"></script>
+<script src = "/angularjs/updateRideController.js"></script>
+
 <style>
     
     .verticalLine {
@@ -27,20 +31,22 @@ background-color:black;
     </style>
 </head>
  
-<body ng-app = "uberApp">
+<body ng-app = "uberApp" >
     <div class = "header">
      
     </div>
  <hr class = "verticalLine"/>
- <div class="row">
+ <div class="row" ng-controller = "layoutController">
     <br>
   <div class="col-md-3"> 
       
- <ul class="nav nav-pills nav-stacked">
+ <ul  class="nav nav-pills nav-stacked">
      
   <li role="presentation"><a ui-sref="customerProfile"><center>Profile</center></a></li>
   <li role="presentation" class="active"><a ui-sref="customerTrips"><center>My Trips</center></a></li>
-  <li role="presentation"><a ui-sref="createRide"><center>Create Ride</center></a></li>
+  <li ng-if = "createRideHider" role="presentation"><a ui-sref="createRide"><center>Create Ride</center></a></li>
+  <li ng-if = "!createRideHider" role="presentation"><a ui-sref="updateRide"><center>Update Ride</center></a></li>
+  
 </ul>
       
       

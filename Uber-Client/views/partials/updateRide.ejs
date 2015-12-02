@@ -1,0 +1,116 @@
+
+
+<style>
+
+    .glyphicon-star{
+    font-size: 30px;
+    color : #FFDF00;
+}
+    .glyphicon-star-empty{
+    font-size: 30px;
+    color : #00000;
+}
+
+</style>
+<div ng-controller = "updateRideController"  style = "background-color : white;">
+   
+    
+    <div>
+        <div class = "row">
+              <div class = "col-md-11">  
+                  <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Current Ride</h3>
+                </div>
+                <div class="panel-body">
+                    <table class = "table">
+                        <tr>
+                            <td>SOURCE ADDRESS</td>
+                            <td>{{currentRide.source_address}}</td>
+                        </tr>
+                        <tr>
+                            <td>DESTINATION ADDRESS</td>
+                            <td>{{currentRide.destination_address}}</td>
+                        </tr>
+                        <tr>
+                            <td>DRIVER NAME</td>
+                            <td>{{currentRide.dfname}}&nbsp; {{currentRide.dlname}}</td>
+                        </tr>
+                        <tr>
+                            <td>ESTIMATED DISTANCE</td>
+                            <td>{{currentRide.DISTANCE}}</td>
+                        </tr>
+                    </table>
+                </div>
+</div>
+                  
+                  <center><table>
+                      <tr><td>
+                   <input places-auto-complete on-place-changed = "placeChanged()" component-restrictions="{country:'us'}" style = "width : 360px" type="text" class="form-control" id="destination" ng-disabled="disableDestination" ng-model = "EditedDestination" placeholder="Edit Destination" required></td>
+                          <td><button  style = " right : 150px" type="submit" ng-click = "updateRide(EditedDestination)" class="btn btn-primary">Update</button></td></tr>
+
+                      </table><br>
+                      
+                      <div><button ng-click = "deleteRide()" class = "btn btn-danger">DELETE RIDE</button></div>
+                  {{userMessage}}
+                  
+           
+
+</div>
+        </div><br>
+    <div style  = "width : 300px; position : absolute; left : 280px" ng-if = "errorMessage" class = "alert alert-danger">{{errorMessage}}</div><br>
+    <ng-map style="width:90%;height:65%"; zoom="5" center="[40.74, -74.18]">
+        <marker ng-repeat="position in positions" 
+				position="{{position.location}}" data="{{position}}"  animation="BOUNCE" title="This is that" on-click="showDriverDetails(position)"></marker>
+        <info-window id="foo">
+            <div ng-non-bindable="">
+          <h4>Hi, {{position}}</h4>
+                </div>
+        </info-window>
+            
+         <directions 
+          draggable="true"
+          panel="directions-panel"
+          travel-mode="DRIVING"
+          
+          origin="{{origin}}"
+          destination="{{destination}}">
+        </directions>
+        
+  </ng-map><br>
+        
+        <div style = "width : 90%" class="panel panel-info" ng-if = "driverPanel">
+      <div style = "background-color : black; color : white" class="panel-heading">{{driver.firstName}}&nbsp;{{driver.lastName}}</div>
+      <div class="panel-body">
+            <div class = "container">
+            
+            <span style = "display: inline-block; width : 30%">CONTACT</span>{{driver.phone}}<br>
+            <span style = "display: inline-block; width : 30%">RATING</span> 
+                <div><uib-rating ng-model="ratingg" max="5" state-on="'glyphicon glyphicon-star'" readonly = "true" state-off="'glyphicon glyphicon-star-empty'" aria-labelledby="custom-icons-1"></uib-rating></div>
+                <div id = "divId" style = "width : 80%; height : 50%;" infinite-scroll='loadDriverReviews()' infinite-scroll-distance='1'> 
+                    
+                    <table>
+                        <tr ng-repeat = "driver in driverReviews">
+                            <td>{{driver.rating}}</td>
+                            <td>{{driver.review}}</td>
+                        </tr>
+                    </table>
+                    
+                </div>
+                
+                <button class = "btn btn-primary" ng-click = "requestRide(driver.driverId)">{{buttonLabel}}</button>
+            
+            </div>
+          
+          
+            </div>
+                
+            
+    </div>
+        
+        
+</div>
+
+
+
+</div>

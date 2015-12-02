@@ -1,19 +1,48 @@
 var uberApp = angular.module('uberApp');
-uberApp.controller("ridesController",function($scope, $state, $http, $window, NgMap){
+uberApp.controller("ridesController",function($scope, $state, $http, $window, NgMap, $uibModal, uberService){
 	var Map;
 	var source_address = {};
 	var destination_address = {};
 	var driverData = {};
 	$scope.ridesHistory = [];
+	$scope.driverReviews = [];
+	$scope.driverReviewsArray = [];
+	$scope.currCursor = 0;
 	$scope.noScroll = false;
 	$scope.count = 0;
+	
+	    uberService.setRideHider(true);
+	 
 	NgMap.getMap().then(function(map) {
 	    Map = map;
 	  });
 	$scope.ratingg = 5;
 	
     $scope.buttonLabel = "Request Ride";
-	
+
+    $http.get('/getPendingReview').success(function(response){
+    	
+    	if(response.statusCode == 200){
+    		var modalInstance = $uibModal.open({
+    		      animation: $scope.animationsEnabled,
+    		      templateUrl: 'myModal.html',
+    		      controller : 'modalController',
+    		      backdrop  : 'static',
+    		      keyboard : false,
+    		      resolve: {
+    		        param: function () {
+    		          return {rideDetails: response.message};
+    		        }
+    		      }
+    		    }); 
+    	}
+    	else{
+    	        // $("myImageModal").modal("show");
+    		console.log("Reached else");
+    	 }
+    	
+    });
+   
 	$scope.fetchDrivers = function(source, destination){
 		$scope.errorDialog = false;
 		distance = Map.directionsRenderers[0].directions.routes[0].legs[0].distance.value * 0.000621371;
@@ -54,29 +83,22 @@ uberApp.controller("ridesController",function($scope, $state, $http, $window, Ng
 	}
 	
 	$scope.positions = [];
+	
 
 	$scope.showDriverDetails = function(event,position) {
 		console.log("Position is "+JSON.stringify(position));
 		$scope.driverPanel = true;
 		$scope.driver = driverData[position._id.toString()];
-		console.log("driver Data "+JSON.stringify(driverData));
-		window.scrollTo(0,document.body.scrollHeight);
-		
+		$scope.driverId = position._id;
+		//window.scrollTo(0,document.body.scrollHeight);
+		$http.get('/getDriverReviews/'+$scope.driverId).success(function(response){
+			if(response.statusCode == 200){	
+				 $scope.driverReviews=response.message;
+			     
+				} 
+			
+		});
 		}
-	$scope.examples = [
-	                   {
-	                     name: 'Dynamic Group Header - 1',
-	                     age: 10
-	                   },
-	                   {
-	                     name: 'sreeram',
-	                     age: 20
-	                   },
-	                   {
-	                     name: 'gokul',
-	                     age: 21
-	                   }
-	                 ];
 	$scope.loadMore = function(){
 			
 			if(!$scope.noScroll ){
@@ -99,12 +121,22 @@ uberApp.controller("ridesController",function($scope, $state, $http, $window, Ng
 			}	
 	}
 	
+	$scope.loadDriverReviews = function(){
+		var range = 10;		
+		if(($scope.currCursor + range) > $scope.driverReviews.length)	{
+			range = $scope.driverReviews.length - $scope.currCursor;
+		}						
+		for(var i = $scope.currCursor ; i < range ; i++)	{
+			$scope.driverReviewsArray.push($scope.driverReviews[i]);
+		}
+	}
+	
 	function getAddress(location, callback){
 		  if(location.length >= 5 && typeof google != 'undefined'){
 		    var addr = {};
 		    var geocoder = new google.maps.Geocoder();
 		    geocoder.geocode({ 'address': location }, function(results, status){
-		    	console.log("results");
+		    	console.log("results" +JSON.stringify(results));
 		        addr.lat = results[0].geometry.location.lat();
 		        addr.lng = results[0].geometry.location.lng()
 		      if (status == google.maps.GeocoderStatus.OK){
@@ -146,11 +178,12 @@ uberApp.controller("ridesController",function($scope, $state, $http, $window, Ng
 				  addr.state = "";
 			  }
 			  if(!(addr.hasOwnProperty("zipcode"))){
-				  addr.zipcode = 0;
+				  addr.zipcode = null;
 			  }
 			  if(!(addr.hasOwnProperty("country"))){
 				  addr.country = "";
 			  }
+			  console.log(addr);
 			  callback(addr);
 		        } else {
 		          response({success:false});
@@ -168,7 +201,8 @@ uberApp.controller("ridesController",function($scope, $state, $http, $window, Ng
 		
 		var source = new google.maps.LatLng(source_address.lat, source_address.lng);
 	    var dest = new google.maps.LatLng(destination_address.lat, destination_address.lng);
-	    var distance = google.maps.geometry.spherical.computeDistanceBetween(source, dest);
+	    //var distance = google.maps.geometry.spherical.computeDistanceBetween(source, dest);
+	    var distance = Map.directionsRenderers[0].directions.routes[0].legs[0].distance.value * 0.000621371;
 		locations = {source_location : {lat : source_address.lat, lng : source_address.lng},
 					destination_location : {lat : destination_address.lat, lng : destination_address.lng}};
 		rideData = {
@@ -192,11 +226,16 @@ uberApp.controller("ridesController",function($scope, $state, $http, $window, Ng
 		
 		$http.put('/createRide', {rideData : rideData,locations : locations }).success(function(response){
 			
-			if(response.statusCode == 200)
-				$scope.buttonLabel = response.message;
+			
+			if(response.statusCode == 200){
+				console.log(response.message)
+				var rideId=response.message;
+				uberService.setRideId(rideId);
+				uberService.setRideHider(false);
+				$state.go('updateRide',{"rideId" : rideId});
+			}
 			
 		});
 		
 	}
-
 });
