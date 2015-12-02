@@ -29,10 +29,10 @@ function updateCustomerProfile(req,res){
 	mq_client.make_request('customer_service_req_q',msg_payload, function(results){
 		if(results.code==200){
 			console.log("results received");
-			res.send(results.value);
+			res.send({"status":"success" , 'msg': 'Successfully inserted'});
 		}
-		else{
-			res.render("error");
+		else if(results.code==401){
+			res.send({"status":"fail" , 'msg': results.value});
 		}
 	});
 }

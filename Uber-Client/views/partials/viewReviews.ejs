@@ -1,0 +1,92 @@
+<div class="row">
+
+<div class="col-md-6" ng-controller="viewDriverReviewsController">
+<div ng-if = "noRequests" class="alert alert-danger">{{noRequestsMessage}}</div>
+
+<table  class="table table-bordered"  >
+    <thead class="info">
+      <tr>
+        <th><button ng-click="viewDrivers()" style="background-color: black;color: #fff;border-color: black;" class="btn btn-primary"  >Select driver to view driver reviews</button></th>
+        
+      </tr>
+    </thead>
+    </table>
+<div id = "divId"  infinite-scroll='loadMoreDrivers()' infinite-scroll-distance='1'>
+<div ng-if="viewDriversClicked" ng-repeat="driver in drivers">
+      <button type="button"  ng-click=setCurrentDriver(driver) class="btn btn-success" style="width:100%" data-toggle="modal" data-target="#viewDrivers" style="background-color: black;color: #fff;border-color: black;">{{driver.FIRSTNAME}}  {{driver.LASTNAME}}</button>
+      </div>
+      </div>
+          <div class="modal fade" id="viewDrivers" role="dialog">
+     <div class="modal-dialog">
+     <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+           <h4 class="modal-title">Driver reviews</h4>
+           <br>
+           <br>
+         
+  </div>
+  <div class="modal-body">
+  <div id = "divId1"  infinite-scroll='loadMoreReviews()' infinite-scroll-distance='1'>
+
+  <table class="table">
+    <tr  ng-repeat="review in driverReviews"class="success">
+        <td>Review{{review}}</td>
+  </tr>
+  </table>
+   </div>
+  <div class="modal-footer">
+          
+         <!--    <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="rejectRequest()">Reject Request</button>-->
+        </div>
+ 
+  </div>
+  </div>
+  </div>
+  </div>
+  </div>
+  <div class="col-md-6" ng-controller="fetchCustomersController">
+<div ng-if = "noRequests" class="alert alert-danger">{{noRequestsMessage}}</div>
+
+<table  class="table table-bordered"  >
+    <thead class="info">
+      <tr>
+        <th><button ng-click="viewCustomers()" style="background-color: black;color: #fff;border-color: black;" class="btn btn-primary" >See customer to view customer reviews</button></th>
+        
+      </tr>
+    </thead>
+    </table>
+<div id = "divId"  infinite-scroll='loadMore()' infinite-scroll-distance='1'>
+<div ng-if="viewCustomersClicked" ng-repeat="customer in customers">
+      <button type="button"  ng-click=setCurrentCustomer(customer) class="btn btn-success" style="width:100%" data-toggle="modal" data-target="#viewCustomers">{{customer.FIRSTNAME}}  {{customer.LASTNAME}}</button>
+      </div>
+      </div>
+          <div class="modal fade" id="viewCustomers" role="dialog">
+     <div class="modal-dialog">
+     <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+           <h4 class="modal-title">Customer details</h4>
+           <br>
+           <br>
+         
+  </div>
+  <div class="modal-body">
+ <div id = "divId"  infinite-scroll='loadMore()' infinite-scroll-distance='1'>
+
+  <table class="table">
+    <tr  ng-repeat="review in reviews"class="success">
+        <td>Review{{currentCustomer.review}}</td>
+  </tr>
+  </table>
+   </div>
+  <div class="modal-footer">
+  
+         <!--    <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="rejectRequest()">Reject Request</button>-->
+        </div>
+  </div>
+  </div>
+  </div>
+  </div>
+  </div>
+  </div>

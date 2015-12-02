@@ -33,7 +33,7 @@ function getCustomerProfile(message, callback){
 	});
 }
 function updateCustomerDetails(message, callback){
-	console.log("In server Update Profile");
+  	console.log("In server Update Profile");
 	var ssn=message.ssn;
 	var firstName=message.data[0];
 	var lastName=message.data[1];
@@ -45,16 +45,38 @@ function updateCustomerDetails(message, callback){
 	var phone=message.data[7];
 	var email=message.data[8];
 	var res={};
-	customerDAO.updateCustomerDetails(ssn,firstName,lastName,address,city,state,zip_primary,zip_secondary,phone,email,function(results) {
+	customerDAO.getCustomerDetails('',phone, function(results){
 		if(results){
-			res.code=200;
-			res.value="Successfully Updated";
-			callback(res);
+			if(phone==results[0].PHONE_NUMBER){
+				res.code = "401";
+				res.value="Phone exists";
+				callback(res);
+			}
 		}
 		else{
-			res.code=401;
-			res.value="No records found";
-			callback(res);
+			customerDAO.getCustomerCredentialsDetails(email, function(results) {
+				if(results){
+					if(email==results[0].EMAIL){
+					res.code = "401";
+					res.value="Email exists";
+					callback(res);
+					}
+				}
+				else{
+					customerDAO.updateCustomerDetails(ssn,firstName,lastName,address,city,state,zip_primary,zip_secondary,phone,email,function(results) {
+						if(results){
+							res.code=200;
+							res.value="Successfully Updated";
+							callback(res);
+						}
+						else{
+							res.code=401;
+							res.value="No records found";
+							callback(res);
+						}
+					});
+				}
+			})
 		}
 	});
 }

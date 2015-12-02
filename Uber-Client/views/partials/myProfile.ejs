@@ -1,0 +1,33 @@
+  <div class = "row" ng-controller="adminProfileController">
+  <div ng-if="errorDialog" class="alert alert-danger">{{errorMessage}}</div>
+     <div ><!-- class = "col-md-4 col-md-offset-4" style = "left : 30px">-->
+ <!--  <button class="btn btn-primary" ng-click="viewMyProfile()">View my profile</button>-->
+  <table ng-if="profileFound" class="table">
+    <tr class="success">
+        <td>Admin SSN:{{adminProfile.ADMIN_ID}}</td>
+  </tr>
+   <tr class="success">
+        <td>First Name:{{adminProfile.FIRSTNAME}}</td>
+  </tr>
+   <tr class="success">
+        <td>Last Name:{{adminProfile.LASTNAME}}</td>
+  </tr>
+   <tr class="success">
+        <td>Address:{{adminProfile.ADDRESS}}</td>
+  </tr>
+   <tr class="success">
+        <td>City:{{adminProfile.CITY}}</td>
+  </tr>
+   <tr class="success">
+        <td>Zipcode:{{adminProfile.ZIPCODE}}</td>
+  </tr>
+   <tr class="success">
+        <td>State:{{adminProfile.STATE}}</td>
+  </tr>
+   <tr class="success">
+        <td>Phone number:{{adminProfile.PHONE_NUMBER}}</td>
+  </tr>
+
+  </table>
+    </div>
+ </div>

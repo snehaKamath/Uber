@@ -1,0 +1,89 @@
+<div ng-controller="adminGraphsController">
+ <div class="row"  >
+
+<button type="button"  class="btn btn-danger" style="width:100%;background-color: black;color: #fff;border-color: black;" ng-click=getRevenueGraph() > View graph for total revenue per day</button><br><br>
+
+<div  id="graph" ng-if="loadGraph">Loading graph...</div>
+<div id="graph1"></div>
+<div id="line1"></div>
+<div ng-if="loadGraph1" >
+<div revenue></div>
+</div>
+</div>
+
+<div class="row"  >
+<button type="button" class="btn btn-danger"  style="width:100%;background-color: black;color: #fff;border-color: black;" ng-click=getPerZipCodeGraph() >View graph for rides per Zipcode</button><br><br>
+<div id="zipcode" ng-if="zipCode">
+<input type="text" class="form-control" id="driver_zip_1" style="width:47%;display:inline;" maxlength="5" placeholder="Zip Code(XXXXX)" ng-model="$parent.zip_1">&nbsp;&nbsp;-
+<div ng-if = "invalidZipCode" class="alert alert-danger">{{invalidZipCodeMessage}}</div>
+<button class="btn btn-danger" style="background-color: black;color: #fff;border-color: black;" ng-click="viewPerZipCodeGraph()" >Submit</button>
+<div  id="graph" ng-if="loadGraph_4">Loading graph...</div>
+<div id="graph4"></div>
+<div id="line4"></div>
+<div style="position:relative;top:40px" id="g4" ng-if="loadGraph4"  zipcode></div>
+</div>
+</div>
+
+<!--  </div>-->
+<!--  <div class="col-md-6">-->
+<div class="row">
+<button type="button"  class="btn btn-danger" style="width:100%;background-color: black;color: #fff;border-color: black;" ng-click=getPerCustomerGraph() >View graph for rides per Customer</button><br><br>
+  <div id="cust" ng-if="perCustomer">
+<input type="text" class="form-control" id="ssn_id_1" maxlength="3" placeholder="123" style="width:25%;display:inline;" ng-model="$parent.ssn_id_1"> -
+			<input type="text" class="form-control" id="ssn_id_2" maxlength="2" placeholder="12" style="width:20%;display:inline;" ng-model="$parent.ssn_id_2"> - 
+			<input type="text" class="form-control" id="ssn_id_3" maxlength="4" placeholder="1234(SSN Number)" style="width:47%;display:inline;" ng-model="$parent.ssn_id_3">
+		<br><br><br>
+		<div ng-if = "invalidSSN" class="alert alert-danger">{{invalidSSNmessage}}</div>
+	<button class="btn btn-danger" style="background-color: black;color: #fff;border-color: black;" ng-click="viewPerCustomerGraph()" >Submit</button>
+		  
+		</div>
+		<div  id="graph" ng-if="loadGraph_2">Loading graph...</div>
+<div id="graph2"></div>
+<div id="line2"></div>
+<div ng-if="loadGraph2" >
+<div id="cu" customer></div>
+</div>
+</div>
+
+<div class="row">
+<button type="button" class="btn btn-danger"  style="width:100%;background-color: black;color: #fff;border-color: black;" ng-click=getPerDriverGraph() >View graph for rides per driver</button><br><br>
+  <div id="dri" ng-if="perDriver">
+<input type="text" class="form-control" id="ssn_id_1" maxlength="3" placeholder="123" style="width:25%;display:inline;" ng-model="$parent.ssn_id_1"> -
+			<input type="text" class="form-control" id="ssn_id_2" maxlength="2" placeholder="12" style="width:20%;display:inline;" ng-model="$parent.ssn_id_2"> - 
+			<input type="text" class="form-control" id="ssn_id_3" maxlength="4" placeholder="1234(SSN Number)" style="width:47%;display:inline;" ng-model="$parent.ssn_id_3">
+		<br><br><br>
+		<div ng-if = "invalidSSN" class="alert alert-danger">{{invalidSSNmessage}}</div>
+<button class="btn btn-danger" style="background-color: black;color: #fff;border-color: black;" ng-click="viewPerDriverGraph()" >Submit</button>
+		  
+		</div>
+		<div  id="graph" ng-if="loadGraph_3">Loading graph...</div>
+<div id="graph3"></div>
+<div id="line3"></div>
+<div ng-if="loadGraph3" >
+<div driver></div>
+</div>
+</div>
+<!--  </div>
+  </div>
+  <div class=row>-->
+ <!--   <div  class="col-md-4 col-md-offset-4" style = "left : 30px">-->
+ <div class="row">
+<button type="button" class="btn btn-danger"  style="width:100%;background-color: black;color: #fff;border-color: black;" ng-click=getPerCityGraph() >View graph for rides per City</button><br><br>
+<div ng-if="cityname">
+<div id="cit">
+<input type="text" class="form-control" id="city" style="width:47%;display:inline;"  placeholder="city" ng-model="$parent.city">&nbsp;&nbsp;
+<div ng-if = "invalidCity" class="alert alert-danger">{{invalidCityMessage}}</div>
+<button class="btn btn-danger" style="background-color: black;color: #fff;border-color: black;" ng-click="viewPerCityGraph()" >Submit</button>
+</div>
+<div  id="graph" ng-if="loadGraph_5">Loading graph...</div>
+<div id="graph5"></div>
+<div id="line5"></div>
+<div ng-if="loadGraph5" >
+<div city></div>
+</div>
+</div>
+ <!--   </div>-->
+  
+  
+  </div>
+  </div>

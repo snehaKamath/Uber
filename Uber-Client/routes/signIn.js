@@ -12,12 +12,28 @@ function adminSignIn(req, res)	{
   var adminEmailid=req.body.adminEmailid;
   var adminPassword=req.body.adminPassword;
   var admin_signIn_details={adminEmailid:adminEmailid,adminPassword:adminPassword,reqType:"adminSignIn"};
+  
+  if(adminEmailid==undefined || adminPassword==undefined){
+    json_responses = {"statusCode" : 401, message : "email and password cannot be empty"};
+    res.send(json_responses);
+  }
+  if(adminEmailid.length>24 || adminPassword.length > 24){
+    json_responses = {"statusCode" : 401, message : "length cannot be greater than 24"};
+    res.send(json_responses);
+    }
+  
   mq_client.make_request('signin_req_q',admin_signIn_details,function(results){
-  if(results.status=="login successful"){
+        if(results.statusCode==200){
          req.session.adminEmailid=adminEmailid;
-         req.session.adminId=results.adminId;
-       }
-         res.send(results);      
+         req.session.adminId=results.message.ADMIN_ID;
+       
+         json_responses = {statusCode : 200, message : "success"};
+         res.send(json_responses);
+         }else{
+         json_responses = {statusCode : 401, message : results.message};
+         res.send(json_responses);
+       } 
+      
   });
 }
 

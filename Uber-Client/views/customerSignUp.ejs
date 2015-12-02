@@ -28,6 +28,7 @@
 						<span class="label label-danger" ng-hide="ssn_typeerror">Please Enter Only numbers</span>
 						<span class="label label-danger" ng-hide="ssn_emptyerror">SSN is mandatory</span>
 						<span class="label label-danger" ng-hide="ssn_sizeerror">SSN Must be in (123-23-4567) format</span>
+						<span class="label label-danger" ng-hide="ssn_exists">SSN Already exists</span>
 						<br/><br/>
 						*First Name<br/>
 						<input type="text" class="form-control" id="customer_firstname" maxlength="24" placeholder="First Name" ng-model="customer_firstname">
@@ -121,12 +122,14 @@
 						<input type="text" class="form-control" style="width:61%;display:inline;" id="customer_phone_number" maxlength="10" placeholder="Phone Number" ng-model="customer_phone_number">
 						<span class="label label-danger" ng-hide="phone_typeerror">Phone Number contains illegal characters</span>
 						<span class="label label-danger" ng-hide="phone_sizeerror">Phone Number must be 10 digits</span>
-						<span class="label label-danger" ng-hide="phone_emptyerror">Phone Number is mandatory</span><br/><br/>
+						<span class="label label-danger" ng-hide="phone_emptyerror">Phone Number is mandatory</span>
+						<span class="label label-danger" ng-hide="phone_exists">Phone Number already exists</span><br/><br/>
 						*Email:<br/>
 						<input type="email" class="form-control" id="customer_email" maxlength="32" placeholder="Email" ng-model="customer_email">
 						<span class="label label-danger" ng-hide="email_typeerror">Email format is not correct</span>
 						<span class="label label-danger" ng-hide="email_sizeerror">Email must be 32 characters in length</span>
-						<span class="label label-danger" ng-hide="email_emptyerror">Email ID is mandatory</span><br/>
+						<span class="label label-danger" ng-hide="email_emptyerror">Email ID is mandatory</span>
+						<span class="label label-danger" ng-hide="email_exists">Account with entered email ID Exists</span><br/>
 						*Password:<br/>
 						<input type="password" class="form-control" id="customer_password" maxlength="8" placeholder="Password" ng-model="customer_password">
 						<span class="label label-danger" ng-hide="password_sizeerror">Password length must be 8 characters</span>

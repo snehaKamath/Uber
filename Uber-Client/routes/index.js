@@ -51,7 +51,7 @@ function driverSignUp(req,res)	{
 function homePage(req,res)
 {	
 	
-	if(req.session.adminEmailid)	{
+	if(req.session.adminId)	{
 		res.render('adminHome');
 	}
 	else if(req.session.driverId)	{

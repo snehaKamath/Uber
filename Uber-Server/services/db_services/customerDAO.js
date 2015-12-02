@@ -1,5 +1,5 @@
 var bcrypt = require('../app_services/bcrypt');
-var mysql = require('mysql');    //Use this only for format
+var mysql = require('mysql');    //Use this only for mysql.format
  
 exports.validateCustomer = function(email, password, callback){
 	 
@@ -25,8 +25,28 @@ exports.validateCustomer = function(email, password, callback){
 };
 	
 
-exports.getCustomerDetails = function(query,params,callback){
-	mysql_pool.query(query, params, function (err, rows, fields) {
+exports.getCustomerDetails = function(ssn,email,callback){
+	var get_customer_query="select * from customer where customer_id=? OR PHONE_NUMBER=?";
+	var params=[ssn,email];
+	mysql_pool.query(get_customer_query, params, function (err, rows, fields) {
+		if(err){
+			callback(null);
+		}
+		else{
+			if(rows.length>0){
+				callback(rows);
+			}
+			else{
+				callback(null);
+			}
+		}
+	});
+};
+
+exports.getCustomerCredentialsDetails = function(email,callback){
+	var get_customer_credentials_query="select * from customer_credentials where email=?";
+	var params=[email];
+	mysql_pool.query(get_customer_credentials_query, params, function (err, rows, fields) {
 		if(err){
 			callback(null);
 		}
@@ -42,9 +62,11 @@ exports.getCustomerDetails = function(query,params,callback){
 };
 
 exports.insertDataToDatabase=function(customer_id,firstname,lastname,address,city,zipcode_primary,zipcode_secondary,state,phone_number,email,password,status,cardnumber,cardtype,expirydate,cvv,cardholdername,callback){
+	
 	var firstInsertQuery="insert into customer values(?,?,?,?,?,?,?,?,?)";
 	var params=[customer_id,firstname,lastname,address,city,zipcode_primary,zipcode_secondary,state,phone_number];
 	var finalQuery=mysql.format(firstInsertQuery,params)+";";
+	
 	var secondInsertQuery="insert into customer_credentials values(?,?,?,?)";
 	params=[email,password,customer_id,status];
 	finalQuery+=mysql.format(secondInsertQuery,params)+";";
@@ -52,6 +74,7 @@ exports.insertDataToDatabase=function(customer_id,firstname,lastname,address,cit
 	params=[customer_id,cardnumber,cardtype,expirydate,cvv,cardholdername];
 	finalQuery+=mysql.format(thirdInsertQuery,params);
 	console.log(finalQuery);
+	
 	mysql_pool.query(finalQuery, function (err, rows, fields) {
 		if(rows){
 			callback(rows);
@@ -143,44 +166,6 @@ exports.updateCustomerDetails=function(ssn,firstName,lastName,address,city,state
 	console.log(finalQuery);
 	mysql_pool.query(finalQuery, function (err, rows, fields) {
 		if(rows){
-			callback(rows);
-		}
-		else{
-			callback(null);
-		}
-	});
-};
-
-exports.getRideStatus=function(ssn,callback){
-	console.log("In Server get ride status");
-	var get_rideStatus_query="select r.*,d.FIRSTNAME as dfname, d.LASTNAME as dlname from rides r, driver d where d.driver_id = r.driver_id and customer_id=? ORDER BY REQUESTED_TIME DESC LIMIT 1";
-	console.log(ssn);
-	var params=[ssn];
-	mysql_pool.query(get_rideStatus_query,params, function (err, rows, fields) {
-		console.log(err);
-		console.log("Ride Status "+rows);
-		if(rows.length > 0){
-			 if(rows[0].SOURCE_ZIPCODE != null)
-		    	  rows[0].SOURCE_ZIPCODE = Number(rows[0].SOURCE_ZIPCODE);
-		    	  else
-		    		  rows[0].SOURCE_ZIPCODE = "";
-		    	  
-		    	  if(rows[0].DESTINATION_ZIPCODE != null)
-			    	  rows[0].DESTINATION_ZIPCODE = Number(rows[0].DESTINATION_ZIPCODE);
-			    	  else
-			    		  rows[0].DESTINATION_ZIPCODE = "";
-		    	  
-		    	  source_address = rows[0].SOURCE_STREET+","+rows[0].SOURCE_AREA+","+rows[0].SOURCE_CITY+","+rows[0].SOURCE_STATE+" "+rows[0].SOURCE_ZIPCODE;
-		    	  source_address = source_address.replace(",,",",");
-		    	  
-		    	  destination_address = rows[0].DESTINATION_STREET+","+rows[0].DESTINATION_AREA+","+rows[0].DESTINATION_CITY+","+rows[0].DESTINATION_STATE+" "+rows[0].DESTINATION_ZIPCODE;
-		    	  destination_address = destination_address.replace(",,",",");
-		    	  
-		    	  if(source_address.charAt(0) == ",")
-		    		  rows[0].source_address =   source_address.slice(1,source_address.length);
-		    	  
-		    	  if(destination_address.charAt(0) == ",")
-		    		  rows[0].destination_address =   destination_address.slice(1,destination_address.length);
 			callback(rows);
 		}
 		else{

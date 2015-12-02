@@ -37,9 +37,26 @@ uberApp.config([ '$urlRouterProvider', '$stateProvider',
                 url:'/updateRide',
                 templateUrl:'partials/updateRide',
                 params : {rideId : null}
-             });
-         
-         
+             }).state('fetch',{
+        	url:'/fetch',
+        	templateUrl:'partials/fetch',
+     	   }).state('riderequest',{
+           url:'/riderequests',
+           templateUrl:'partials/riderequest',
+           controller:'driverRideController',
+       	   }).state('driverridehistory',{
+           url:'/driverridehistory',
+           templateUrl:'partials/driverridehistory',
+           controller:'driverridehistorycontroller',
+       }).state('driverprofile',{
+           url:'/driverprofile',
+           templateUrl:'partials/driverprofile',
+           controller:'driverController',
+       }).state('ongoingride',{
+           url:'/Ridenow',
+           templateUrl:'partials/ongoingride',
+           controller:'driverRideController',    
+      });
          
 }]);
 uberApp.factory("uberService", function(){

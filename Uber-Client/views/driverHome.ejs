@@ -1,8 +1,31 @@
 <head>
-    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"></link>
-    <style>
+  
+<!-- Latest compiled and minified CSS -->
+<% include headerScripts.ejs%>
+
+</script>
+	<script src="/angularjs/UberApplication.js"></script>
+<script src="/angularjs/driverRideController.js"></script>
+	
+		<script>
+function initialize() {
+  var mapProp = {
+    center:new google.maps.LatLng(51.508742,-0.120850),
+    zoom:5,
+    mapTypeId:google.maps.MapTypeId.ROADMAP
+  };
+  var map=new google.maps.Map(document.getElementById("googleMap"), mapProp);
+}
+google.maps.event.addDomListener(window, 'load', initialize);
+</script>
+	<script src="//angular-ui.github.io/bootstrap/ui-bootstrap-tpls-0.14.3.js"></script>
+<script src="/angularjs/UberApplication.js"></script>
+	<script src="/angularjs/driverController.js"></script>
+<script src="/angularjs/driverRideController.js"></script>
+	<script src="/angularjs/driverRideHistoryController.js"></script>
+<style>
     
-    .verticalLine {
+  .verticalLine {
         position : absolute; 
         top : 60;
         left : 356px;
@@ -21,15 +44,35 @@
 background-color:black;
 }
         
+        
     </style>
+	<style>
 
-<%include headerScripts %>
-<script src="/angularjs/uberApplication.js"></script>
+    .glyphicon-star{
+    font-size: 30px;
+    color : #FFDF00;
+}
+    .glyphicon-star-empty{
+    font-size: 30px;
+    color : #00000;
+}
+
+</style>
 </head>
  
 <body ng-app = "uberApp">
     <div class = "header">
-     
+    	<div class="row">
+    		<div class="col-md-4">
+    			<img src="/images/logo.png" width="250" height="40" style="margin-left:40px;margin-top:20px">
+    		</div>
+    		<div class="col-md-4">
+    		
+    		</div>
+    		<div class="col-md-4">
+    			<p align="right"><a href="/logout" class="btn btn-default" role="button" style="margin-top:20px;margin-right:30px">LOGOUT</a></p>
+    		</div>
+    	</div>
     </div>
  <hr class = "verticalLine"/>
  <div class="row">
@@ -37,22 +80,23 @@ background-color:black;
   <div class="col-md-3"> 
       
  <ul class="nav nav-pills nav-stacked">
-     
-  <li role="presentation"><a ui-sref="customerProfile"><center>Profile</center></a></li>
-  <li role="presentation" class="active"><a ui-sref="customerTrips"><center>My Trips</center></a></li>
-  <li role="presentation"><a ui-sref="createRide"><center>Create Ride</center></a></li>
+  <li role="presentation"><a ui-sref="riderequest"><center>Driver Requests</center></a></li>
+      <li role="presentation"><a ui-sref="driverridehistory"><center>Ride History</center></a></li></li>
+      <li role="presentation"><a ui-sref="driverprofile"><center> Profile</center></a></li>
+
 </ul>
       
       
 </div>
       
  
- <div class="col-md-9">
+ <div class="col-md-8">
      
 <div ui-view></div>
  </div>
    
 </div>
+	
     
 </body>
 
@@ -64,8 +108,3 @@ background-color:black;
     
 </script>
     
-
- 
- 
- 
- 

@@ -83,7 +83,6 @@ uberApp.controller("ridesController",function($scope, $state, $http, $window, Ng
 	}
 	
 	$scope.positions = [];
-	
 
 	$scope.showDriverDetails = function(event,position) {
 		console.log("Position is "+JSON.stringify(position));
@@ -98,6 +97,10 @@ uberApp.controller("ridesController",function($scope, $state, $http, $window, Ng
 				} 
 			
 		});
+
+		console.log("driver Data "+JSON.stringify(driverData));
+		window.scrollTo(0,document.body.scrollHeight);
+		
 		}
 	$scope.loadMore = function(){
 			
@@ -183,7 +186,6 @@ uberApp.controller("ridesController",function($scope, $state, $http, $window, Ng
 			  if(!(addr.hasOwnProperty("country"))){
 				  addr.country = "";
 			  }
-			  console.log(addr);
 			  callback(addr);
 		        } else {
 		          response({success:false});
@@ -201,7 +203,6 @@ uberApp.controller("ridesController",function($scope, $state, $http, $window, Ng
 		
 		var source = new google.maps.LatLng(source_address.lat, source_address.lng);
 	    var dest = new google.maps.LatLng(destination_address.lat, destination_address.lng);
-	    //var distance = google.maps.geometry.spherical.computeDistanceBetween(source, dest);
 	    var distance = Map.directionsRenderers[0].directions.routes[0].legs[0].distance.value * 0.000621371;
 		locations = {source_location : {lat : source_address.lat, lng : source_address.lng},
 					destination_location : {lat : destination_address.lat, lng : destination_address.lng}};
@@ -238,4 +239,5 @@ uberApp.controller("ridesController",function($scope, $state, $http, $window, Ng
 		});
 		
 	}
+
 });

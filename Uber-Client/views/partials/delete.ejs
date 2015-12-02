@@ -1,0 +1,108 @@
+<div>
+<div class="row">
+
+<div class="col-md-6" ng-controller="deleteDriverController">
+<div ng-if = "invalidSSN" class="alert alert-danger">{{invalidSSNmessage}}</div>
+<table  class="table table-bordered"  >
+    <thead class="info">
+      <tr>
+        <th><button ng-click="deleteDriverClicked()" style="width:100%;background-color: black;color: #fff;border-color: black;" class="btn btn-primary" >Delete Driver</button></th>
+    </thead>
+    <tbody>
+    <tr>
+    <td>
+    <div>
+   
+			<input type="text" class="form-control" id="driver_id_1" maxlength="3" placeholder="123" style="width:25%;display:inline;" ng-model="driver_id_1"> -
+				<input type="text" class="form-control" id="driver_id_2" maxlength="2" placeholder="12" style="width:20%;display:inline;" ng-model="driver_id_2"> - 
+				<input type="text" class="form-control" id="driver_id_3" maxlength="4" placeholder="1234(SSN Number)" style="width:47%;display:inline;" ng-model="driver_id_3">
+			<!--  	<span class="label label-danger" ng-hide="ssn_typeerror">Please Enter Only numbers</span>
+				<span class="label label-danger" ng-hide="ssn_emptyerror">SSN is mandatory</span>
+				<span class="label label-danger" ng-hide="ssn_sizeerror">SSN Must be in (123-23-4567) format</span>-->
+		
+				<br/><br>
+				<button class="btn btn-danger" style="background-color: black;color: #fff;border-color: black;" ng-click="deleteDriver()">Delete this driver</button>
+				<div ng-if="driverDeleted" class="alert alert-danger">{{driverDeletedMessage}}</div>
+				<div ng-if="driverNotDeleted" class="alert alert-danger">{{driverNotDeletedMessage}}</div>
+				<div ng-if="driverAlreadyDeleted" class="alert alert-danger">{{driverAlreadyDeletedMessage}}</div>
+    </div>
+    
+    
+    
+    </tbody>
+    
+   
+    </table>
+    </div>
+    <div class="col-md-6" ng-controller="deleteCustomerController">
+    <div ng-if = "invalidSSN" class="alert alert-danger">{{invalidSSNmessage}}</div>
+    <table  class="table table-bordered"  >
+    <thead class="info">
+      <tr>
+    <th><button ng-click="deleteCustomerClicked()" style="width:100%;background-color: black;color: #fff;border-color: black;" class="btn btn-primary" >Delete Customer</button></th>
+      </tr>
+    </thead>
+     <tbody  >
+    <tr>
+    <td>
+    <div>
+             
+			    <input type="text" class="form-control" id="customer_id_1" maxlength="3" placeholder="123" style="width:25%;display:inline;" ng-model="customer_id_1"> -
+				<input type="text" class="form-control" id="customer_id_2" maxlength="2" placeholder="12" style="width:20%;display:inline;" ng-model="customer_id_2"> - 
+				<input type="text" class="form-control" id="customer_id_3" maxlength="4" placeholder="1234(SSN Number)" style="width:47%;display:inline;" ng-model="customer_id_3">
+			<!--  	<span class="label label-danger" ng-hide="ssn_typeerror">Please Enter Only numbers</span>
+				<span class="label label-danger" ng-hide="ssn_emptyerror">SSN is mandatory</span>
+				<span class="label label-danger" ng-hide="ssn_sizeerror">SSN Must be in (123-23-4567) format</span>-->
+		
+				<br/><br>
+				<button class="btn btn-danger" style="background-color: black;color: #fff;border-color: black;" ng-click="deleteCustomer()">Delete this customer</button>
+				<div ng-if="customerDeleted" class="alert alert-danger">{{customerDeletedMessage}}</div>
+				<div ng-if="customerNotDeleted" class="alert alert-danger">{{customerNotDeletedMessage}}</div>
+				<div ng-if="customerAlreadyDeleted" class="alert alert-danger">{{customerAlreadyDeletedMessage}}</div>
+    </div>
+    
+    
+    
+    </tbody>
+    </table>
+    </div>
+    </div>
+    <div class="row" ng-controller="deleteBillController">
+    <div  class="col-md-6 col-md-offset-4" style="position:absolute;left:20px">
+     <div ng-if = "invalidSSN" class="alert alert-danger">{{invalidSSNmessage}}</div>
+    <table  class="table table-bordered"  >
+    <thead class="info">
+      <tr>
+         <th><button ng-click="deleteBillClicked()" style="width:100%;background-color: black;color: #fff;border-color: black;" class="btn btn-primary" >Delete Bill</button></th>
+      </tr>
+    </thead>
+     <tbody>
+    <tr>
+    <td>
+    <div>
+             
+			    <input type="text" class="form-control" id="bill_id_1" maxlength="3" placeholder="123" style="width:25%;display:inline;" ng-model="bill_id_1"> -
+				<input type="text" class="form-control" id="bill_id_2" maxlength="2" placeholder="12" style="width:20%;display:inline;" ng-model="bill_id_2"> - 
+				<input type="text" class="form-control" id="bill_id_3" maxlength="4" placeholder="1234(SSN Number)" style="width:47%;display:inline;" ng-model="bill_id_3">
+			<!--  	<span class="label label-danger" ng-hide="ssn_typeerror">Please Enter Only numbers</span>
+				<span class="label label-danger" ng-hide="ssn_emptyerror">SSN is mandatory</span>
+				<span class="label label-danger" ng-hide="ssn_sizeerror">SSN Must be in (123-23-4567) format</span>-->
+		
+				<br/><br>
+				<button class="btn btn-danger" style="background-color: black;color: #fff;border-color: black;" ng-click="deleteBill()">Delete this bill</button>
+				<div ng-if="billDeleted" class="alert alert-danger">{{billDeletedMessage}}</div>
+				<div ng-if="billNotDeleted" class="alert alert-danger">{{billNotDeletedMessage}}</div>
+				<div ng-if="billAlreadyDeleted" class="alert alert-danger">{{billAlreadyDeletedMessage}}</div>
+    </div>
+    
+    
+    
+    </tbody>
+    </table>
+    </div>
+    
+    </div>
+    
+    </div>
+
+    
